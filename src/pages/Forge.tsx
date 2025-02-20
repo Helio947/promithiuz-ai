@@ -1,5 +1,5 @@
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Header from "@/components/Header";
 import {
   ReactFlow,
@@ -12,38 +12,118 @@ import {
   Connection,
   Edge,
   Node,
+  XYPosition,
 } from '@xyflow/react';
 import { Button } from "@/components/ui/button";
 import { Play, PlayCircle, Settings, MessageSquare } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { AIBlockNode } from '@/components/forge/AIBlockNode';
+import { DraggableBlock } from '@/components/forge/DraggableBlock';
 import '@xyflow/react/dist/style.css';
 
-// Node types
 const nodeTypes = {
-  // We'll add custom node types here
+  aiBlock: AIBlockNode,
 };
 
 const initialNodes: Node[] = [
   {
     id: 'welcome',
-    type: 'special',
-    data: { label: 'Welcome to The Forge!' },
+    type: 'aiBlock',
+    data: { label: 'Start Here', type: 'chat-response' },
     position: { x: 250, y: 5 },
   },
 ];
 
-const initialEdges: Edge[] = [];
+const aiBlocks = [
+  { type: 'analyze-text', label: 'Analyze Text' },
+  { type: 'send-email', label: 'Send Email' },
+  { type: 'generate-image', label: 'Generate Image' },
+  { type: 'chat-response', label: 'Chat Response' },
+  { type: 'analyze-data', label: 'Analyze Data' },
+  { type: 'social-post', label: 'Social Media Post' },
+  { type: 'document', label: 'Document Action' },
+  { type: 'web-action', label: 'Web Action' },
+  { type: 'notification', label: 'Send Notification' },
+  { type: 'database', label: 'Database Action' },
+];
 
 const Forge = () => {
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isTestMode, setIsTestMode] = useState(false);
   const { toast } = useToast();
 
   const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    [setEdges]
+    (params: Connection) => {
+      setEdges((eds) => {
+        // Check if connection already exists
+        const connectionExists = eds.some(
+          edge => edge.source === params.source && edge.target === params.target
+        );
+        
+        if (connectionExists) {
+          toast({
+            title: "Connection exists",
+            description: "These blocks are already connected!",
+          });
+          return eds;
+        }
+
+        toast({
+          title: "Blocks Connected",
+          description: "Your AI blocks are now linked together!",
+        });
+        return addEdge(params, eds);
+      });
+    },
+    [setEdges, toast]
   );
+
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+
+      if (!reactFlowWrapper.current) return;
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+
+      const position: XYPosition = {
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      };
+
+      const newNode = {
+        id: `${type}-${Date.now()}`,
+        type: 'aiBlock',
+        position,
+        data: { label: aiBlocks.find(block => block.type === type)?.label || 'New Block', type },
+      };
+
+      setNodes((nds) => nds.concat(newNode));
+      
+      toast({
+        title: "Block Added",
+        description: "New AI block has been added to your workflow!",
+      });
+    },
+    [setNodes, toast]
+  );
+
+  const onDragStart = (event: React.DragEvent, nodeType: string) => {
+    event.dataTransfer.setData('application/reactflow', nodeType);
+    event.dataTransfer.effectAllowed = 'move';
+  };
 
   const handleTestRun = () => {
     setIsTestMode(true);
@@ -54,6 +134,24 @@ const Forge = () => {
   };
 
   const handleRun = () => {
+    if (nodes.length < 2) {
+      toast({
+        title: "Workflow Empty",
+        description: "Add some blocks to your workflow before running it!",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (edges.length === 0) {
+      toast({
+        title: "No Connections",
+        description: "Connect your blocks together before running the workflow!",
+        variant: "destructive",
+      });
+      return;
+    }
+
     toast({
       title: "Workflow Running",
       description: "Your workflow has been activated and is now running.",
@@ -96,13 +194,15 @@ const Forge = () => {
 
           <div className="grid grid-cols-12 gap-6">
             {/* Main Canvas */}
-            <div className="col-span-9 bg-white rounded-xl border shadow-sm h-[600px] relative">
+            <div className="col-span-9 bg-white rounded-xl border shadow-sm h-[600px] relative" ref={reactFlowWrapper}>
               <ReactFlow
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onDragOver={onDragOver}
+                onDrop={onDrop}
                 nodeTypes={nodeTypes}
                 fitView
                 className="bg-dots"
@@ -128,7 +228,7 @@ const Forge = () => {
                 </div>
                 <p className="text-sm text-gray-600">
                   Drag AI blocks from the toolbox below onto the canvas to start building your workflow. 
-                  Need help? Just ask!
+                  Connect blocks by dragging from one handle to another.
                 </p>
               </div>
 
@@ -141,10 +241,14 @@ const Forge = () => {
                   </h3>
                 </div>
                 <div className="p-4 space-y-3">
-                  {/* We'll add draggable blocks here */}
-                  <div className="p-3 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50 text-center text-sm text-gray-500">
-                    AI Blocks coming soon...
-                  </div>
+                  {aiBlocks.map((block) => (
+                    <DraggableBlock
+                      key={block.type}
+                      type={block.type}
+                      label={block.label}
+                      onDragStart={onDragStart}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
