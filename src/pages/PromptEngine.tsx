@@ -24,172 +24,304 @@ const categories = [
   "Data Analysis",
   "AI Training",
   "Image Generation",
-  "Translation"
+  "Translation",
+  "General Business",
+  "Social Media"
 ];
 
 const samplePrompts: Prompt[] = [
   {
     id: "1",
-    title: "Comprehensive Customer Feedback Analysis",
-    description: "Deep dive analysis of customer feedback with actionable insights.",
-    category: "Customer Service",
-    prompt: `Analyze the following customer feedback data and provide a detailed report with:
+    title: "Universal Business Content Generator",
+    description: "Create engaging content for any business type or industry.",
+    category: "Content Creation",
+    prompt: `Generate professional business content following this framework:
 
-1. Key Themes and Patterns:
-   - Identify recurring topics and issues
-   - Group feedback by product/service areas
-   - Highlight emerging trends
+1. Business Context:
+   [Replace with your business type: retail/service/B2B/etc.]
+   [Replace with your target audience: consumers/professionals/businesses]
+   [Replace with your industry: tech/healthcare/retail/etc.]
 
-2. Sentiment Analysis:
-   - Overall sentiment distribution (positive/negative/neutral)
-   - Sentiment by product/service category
-   - Trend analysis over time
+2. Content Type Selection:
+   Choose content type:
+   - Blog post
+   - Social media update
+   - Newsletter
+   - Website copy
+   - Product description
+   - Case study
+   
+3. Key Message Framework:
+   - Main value proposition: [What makes your offering unique?]
+   - Target audience pain points: [List 3-5 key challenges]
+   - Solutions offered: [How your product/service helps]
+   - Call to action: [Desired audience response]
 
-3. Priority Areas:
-   - Critical issues requiring immediate attention
-   - Common pain points
-   - Areas of positive feedback
+4. Tone and Style Guide:
+   - Brand voice: [professional/friendly/expert/casual]
+   - Technical level: [beginner/intermediate/expert]
+   - Industry-specific terminology: [list key terms]
+   - Cultural considerations: [any specific cultural context]
 
-4. Actionable Recommendations:
-   - Short-term improvements
-   - Long-term strategic changes
-   - Customer experience enhancements
+5. Content Structure:
+   - Attention-grabbing headline
+   - Engaging introduction
+   - Main points (3-5)
+   - Supporting evidence
+   - Practical examples
+   - Clear conclusion
+   - Call to action
 
-5. Competitive Intelligence:
-   - Mentions of competitors
-   - Comparative analysis
-   - Market positioning insights
+6. SEO Elements:
+   - Primary keyword: [main topic]
+   - Secondary keywords: [3-5 related terms]
+   - Meta description
+   - Header structure
 
-[Insert Customer Feedback Data Here]`,
-    saves: 834,
-    likes: 1256
+[Replace placeholders with your specific details]`,
+    saves: 1234,
+    likes: 1567
   },
   {
     id: "2",
-    title: "AI-Powered Content Calendar Generator",
-    description: "Create a comprehensive content strategy with AI-optimized posts.",
-    category: "Marketing",
-    prompt: `Generate a detailed 30-day social media content calendar for [Industry] that includes:
+    title: "Universal Customer Service Response Template",
+    description: "Professional response templates for any customer interaction.",
+    category: "Customer Service",
+    prompt: `Create customer service responses using this comprehensive template:
 
-1. Content Strategy:
-   - Primary business goals
-   - Target audience segments
-   - Key messaging themes
-   - Brand voice guidelines
+1. Situation Assessment:
+   [Customer Issue Type: complaint/inquiry/feedback/request]
+   [Urgency Level: routine/urgent/critical]
+   [Communication Channel: email/chat/social/phone]
 
-2. Daily Post Schedule:
-   [For each day, include]
-   - Platform-specific content
-   - Optimal posting times
-   - Content type (image/video/text/poll)
-   - Primary and secondary hashtags
-   - Engagement prompts
+2. Response Structure:
+   
+   Opening:
+   - Personalized greeting
+   - Acknowledgment of issue
+   - Empathy statement
+   - Thank you for [specific action/feedback]
 
-3. Content Themes:
-   - Educational content (20%)
-   - Brand storytelling (15%)
-   - User-generated content (15%)
-   - Product showcases (20%)
-   - Industry news/trends (15%)
-   - Community engagement (15%)
+   Body:
+   - Clear understanding confirmation
+   - Specific solution/answer
+   - Step-by-step instructions (if needed)
+   - Alternative options (if applicable)
+   - Timeline expectations
+   
+   Closing:
+   - Next steps summary
+   - Additional assistance offer
+   - Contact information
+   - Professional sign-off
 
-4. Engagement Tactics:
-   - Questions to ask followers
-   - Call-to-action variations
-   - Interactive elements
-   - Contest/giveaway ideas
+3. Tone Guidelines:
+   - Professional yet approachable
+   - Clear and concise
+   - Positive language focus
+   - Solution-oriented
+   
+4. Resolution Elements:
+   - Immediate solution
+   - Long-term prevention
+   - Follow-up plan
+   - Documentation needs
 
-5. Performance Metrics:
-   - KPI targets per post
-   - Engagement rate goals
-   - Conversion objectives
+5. Quality Checklist:
+   - Grammar and spelling
+   - Tone appropriateness
+   - Complete information
+   - Clear next steps
+   - Brand voice alignment
 
-[Customize for Industry: {Industry Name}]`,
-    saves: 967,
-    likes: 1489
+[Customize each section based on your specific situation]`,
+    saves: 945,
+    likes: 1289
   },
   {
     id: "3",
-    title: "AI Image Generation Art Director",
-    description: "Detailed prompts for generating professional marketing visuals.",
-    category: "Image Generation",
-    prompt: `Create professional marketing visuals using the following structured prompt:
+    title: "Universal Marketing Campaign Generator",
+    description: "Create comprehensive marketing campaigns for any business type.",
+    category: "Marketing",
+    prompt: `Design a complete marketing campaign using this adaptable framework:
 
-1. Style Definition:
-   - Art style: [modern/vintage/minimalist/etc.]
-   - Color palette: [primary colors + hex codes]
-   - Mood: [professional/playful/serious/etc.]
-   - Lighting: [bright/moody/natural/etc.]
+1. Campaign Foundation:
+   Business Type: [retail/service/B2B/etc.]
+   Target Audience: [demographics/psychographics]
+   Campaign Objective: [awareness/leads/sales/loyalty]
+   Budget Range: [small/medium/large]
+   Timeline: [duration and key dates]
 
-2. Subject Details:
-   - Main subject: [product/person/scene]
-   - Background: [setting/environment]
-   - Composition: [rule of thirds/centered/etc.]
-   - Perspective: [front view/aerial/etc.]
+2. Market Analysis:
+   - Target market size
+   - Competitor activities
+   - Market trends
+   - Seasonal factors
+   - Geographic considerations
 
-3. Technical Specifications:
-   - Resolution: [dimensions]
-   - Aspect ratio: [16:9/1:1/etc.]
-   - Quality parameters: [photorealistic/illustrated]
-   - Style references: [link to examples]
+3. Campaign Elements:
+   
+   Digital Marketing:
+   - Social media strategy
+   - Email marketing plan
+   - Content marketing
+   - SEO optimization
+   - PPC advertising
 
-4. Brand Elements:
-   - Logo placement: [position]
-   - Brand colors: [hex codes]
-   - Typography: [font styles]
-   - Brand guidelines: [specific requirements]
+   Traditional Marketing:
+   - Print materials
+   - Direct mail
+   - Event marketing
+   - Local advertising
+   - PR activities
 
-negative prompt: [unwanted elements]
+4. Content Strategy:
+   - Key messages
+   - Content themes
+   - Brand voice guidelines
+   - Visual elements
+   - Call-to-action variations
 
-[Add specific details for your brand]`,
-    saves: 723,
-    likes: 1156
+5. Channel Strategy:
+   - Primary channels
+   - Secondary channels
+   - Timing for each
+   - Cross-channel integration
+   - Budget allocation
+
+6. Success Metrics:
+   - KPI definitions
+   - Tracking methods
+   - ROI calculations
+   - Reporting schedule
+   - Optimization points
+
+[Replace placeholders with your specific campaign details]`,
+    saves: 878,
+    likes: 1432
   },
   {
     id: "4",
-    title: "Product Development Research Assistant",
-    description: "AI-powered analysis for product innovation and market research.",
-    category: "Product Development",
-    prompt: `Conduct a comprehensive product development analysis for [Product Concept] including:
+    title: "Business Analytics Report Generator",
+    description: "Create comprehensive business analytics reports for any industry.",
+    category: "Data Analysis",
+    prompt: `Generate detailed business analytics reports using this template:
 
-1. Market Analysis:
-   - Target market size and segments
-   - Competitor landscape
-   - Market trends and opportunities
-   - Price point analysis
-   - Distribution channels
+1. Report Overview:
+   Business Type: [your industry]
+   Time Period: [analysis timeframe]
+   Report Focus: [specific metrics/KPIs]
+   Audience: [stakeholders/team/board]
 
-2. Technical Feasibility:
-   - Required technologies
-   - Development timeline
-   - Resource requirements
-   - Technical risks and mitigation
-   - Scalability considerations
+2. Data Collection Framework:
+   
+   Performance Metrics:
+   - Revenue metrics
+   - Cost analysis
+   - Profit margins
+   - Growth rates
+   - Market share
 
-3. User Experience:
-   - User personas
-   - User journey mapping
-   - Key features and benefits
-   - Pain points addressed
-   - Usability requirements
+   Operational Metrics:
+   - Efficiency indicators
+   - Resource utilization
+   - Process metrics
+   - Quality measures
+   - Timeline analysis
 
-4. Business Viability:
-   - Development costs
-   - Revenue projections
-   - Break-even analysis
-   - Marketing strategy
-   - Growth opportunities
+   Customer Metrics:
+   - Satisfaction scores
+   - Retention rates
+   - Lifetime value
+   - Acquisition costs
+   - Engagement levels
 
-5. Implementation Roadmap:
-   - Development phases
-   - Key milestones
+3. Analysis Structure:
+   - Executive summary
+   - Key findings
+   - Detailed analysis
+   - Trend identification
+   - Comparative analysis
+   - Future projections
+
+4. Visualization Requirements:
+   - Charts/graphs types
+   - Data tables
+   - Key metrics dashboard
+   - Trend lines
+   - Comparative views
+
+5. Recommendations:
+   - Action items
+   - Priority levels
+   - Resource needs
+   - Implementation timeline
+   - Expected outcomes
+
+6. Implementation Guide:
+   - Step-by-step plan
    - Resource allocation
-   - Risk management
+   - Timeline
    - Success metrics
+   - Review points
 
-[Insert Product Concept Details Here]`,
-    saves: 645,
-    likes: 892
+[Customize metrics and focus areas for your business]`,
+    saves: 756,
+    likes: 989
+  },
+  {
+    id: "5",
+    title: "Universal AI Image Generation Template",
+    description: "Create professional visuals for any business purpose.",
+    category: "Image Generation",
+    prompt: `Generate professional business visuals using this comprehensive prompt structure:
+
+1. Image Purpose:
+   [Select: marketing/product/social media/website]
+   [Define: primary message/emotion to convey]
+   [Specify: intended platform/usage]
+
+2. Visual Elements:
+
+   Subject Matter:
+   - Main focus: [product/person/scene/concept]
+   - Supporting elements: [list key components]
+   - Background: [setting/environment]
+   - Composition: [layout/arrangement]
+
+   Style Guidelines:
+   - Art style: [realistic/illustrated/minimal/etc.]
+   - Color scheme: [brand colors/mood colors]
+   - Lighting: [natural/studio/dramatic]
+   - Texture: [smooth/rough/glossy/matte]
+
+3. Technical Specifications:
+   - Resolution: [dimensions]
+   - Format: [aspect ratio]
+   - File type: [PNG/JPG/etc.]
+   - Quality level: [standard/high/ultra]
+
+4. Brand Integration:
+   - Logo placement
+   - Brand colors
+   - Typography
+   - Visual identity elements
+
+5. Optimization For:
+   - Platform requirements
+   - Device display
+   - Loading speed
+   - Accessibility
+
+Negative Prompt Elements:
+- Unwanted elements
+- Style exclusions
+- Technical restrictions
+- Brand misalignments
+
+[Replace all bracketed sections with your specific requirements]`,
+    saves: 689,
+    likes: 934
   }
 ];
 
