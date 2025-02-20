@@ -1,5 +1,5 @@
 
-import { Brain, Sparkles, LineChart, Users } from "lucide-react";
+import { Brain, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -14,18 +14,6 @@ const features = [
     title: "The Forge",
     description: "Create custom AI workflows with our intuitive drag-and-drop interface.",
     route: "/forge"
-  },
-  {
-    icon: LineChart,
-    title: "Predictive Analytics",
-    description: "Forecast trends and make data-driven decisions with advanced analytics.",
-    route: "/analytics"
-  },
-  {
-    icon: Users,
-    title: "The Pantheon",
-    description: "Connect with a community of business owners and AI experts.",
-    route: "/pantheon"
   }
 ];
 
@@ -34,12 +22,12 @@ const Features = () => {
     <section id="features" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Powerful Features for Your Business</h2>
+          <h2 className="text-3xl font-bold mb-4">Steal the Fire of AI</h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             Discover tools and insights that will transform how you run your business
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           {features.map((feature, index) => (
             <Link
               key={index}
