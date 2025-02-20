@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import PrometheusVision from "./pages/PrometheusVision";
 import Forge from "./pages/Forge";
+import PromptEngine from "./pages/PromptEngine";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/prometheus-vision" element={<PrometheusVision />} />
           <Route path="/forge" element={<Forge />} />
+          <Route path="/prompt-engine" element={<PromptEngine />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

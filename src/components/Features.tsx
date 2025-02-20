@@ -1,5 +1,5 @@
 
-import { Brain, Sparkles } from "lucide-react";
+import { Brain, Sparkles, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -14,6 +14,12 @@ const features = [
     title: "The Forge",
     description: "Create custom AI workflows with our intuitive drag-and-drop interface.",
     route: "/forge"
+  },
+  {
+    icon: MessageSquare,
+    title: "Prompt Engine",
+    description: "Explore our curated repository of business-ready prompts to enhance your AI interactions.",
+    route: "/prompt-engine"
   }
 ];
 
@@ -27,7 +33,7 @@ const Features = () => {
             Discover tools and insights that will transform how you run your business
           </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Link
               key={index}
