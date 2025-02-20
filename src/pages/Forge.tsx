@@ -214,23 +214,26 @@ const Forge = () => {
           </div>
 
           <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-9 bg-white rounded-xl border shadow-sm h-[600px] relative" ref={reactFlowWrapper}>
-              <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onDragOver={onDragOver}
-                onDrop={onDrop}
-                nodeTypes={nodeTypes}
-                fitView
-                className="bg-dots"
-              >
-                <Background />
-                <Controls />
-                <MiniMap />
-              </ReactFlow>
+            <div className="col-span-9">
+              <div className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" ref={reactFlowWrapper}>
+                <ReactFlow
+                  nodes={nodes}
+                  edges={edges}
+                  onNodesChange={onNodesChange}
+                  onEdgesChange={onEdgesChange}
+                  onConnect={onConnect}
+                  onDragOver={onDragOver}
+                  onDrop={onDrop}
+                  nodeTypes={nodeTypes}
+                  fitView
+                  className="bg-dots"
+                >
+                  <Background />
+                  <Controls />
+                  <MiniMap />
+                </ReactFlow>
+              </div>
+              <AIBlocksToolbox onDragStart={onDragStart} />
             </div>
 
             <div className="col-span-3 space-y-6">
@@ -244,7 +247,6 @@ const Forge = () => {
               ) : (
                 <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
               )}
-              <AIBlocksToolbox onDragStart={onDragStart} />
             </div>
           </div>
         </div>

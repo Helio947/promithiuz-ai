@@ -123,7 +123,7 @@ export const TestSimulator = ({ nodes, edges, onTestComplete }: TestSimulatorPro
           <div className="space-y-3">
             {results.map((result) => {
               const node = nodes.find(n => n.id === result.nodeId);
-              const nodeLabel = node?.data?.label || 'Unknown Node';
+              const nodeLabel = typeof node?.data?.label === 'string' ? node.data.label : 'Unknown Node';
               
               return (
                 <div 
