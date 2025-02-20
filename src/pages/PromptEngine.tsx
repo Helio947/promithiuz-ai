@@ -41,51 +41,51 @@ const PromptEngineContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Header />
       
-      <main className="pt-24 pb-12">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
-              Prompt Engine
-            </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover and share powerful prompts that drive business results. Our curated repository helps you leverage AI more effectively.
-            </p>
-          </div>
-
-          <div className="mb-8">
-            <SearchBar 
-              value={searchQuery}
-              onChange={setSearchQuery}
-            />
-            <div className="flex flex-col gap-4">
-              <CategoryFilter
-                selectedCategory={selectedCategory}
-                onSelectCategory={setSelectedCategory}
-              />
-              <div className="flex justify-center">
-                <Button
-                  variant={showFavorites ? "default" : "outline"}
-                  onClick={() => setShowFavorites(!showFavorites)}
-                  className="rounded-full"
-                >
-                  <BookmarkIcon className="w-4 h-4 mr-2" />
-                  {showFavorites ? "Show All" : "Show Favorites"}
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPrompts.map((prompt) => (
-              <PromptCard key={prompt.id} prompt={prompt} />
-            ))}
-          </div>
-
-          <CreatePromptDialog onPromptCreated={handlePromptCreated} />
+      <main className="container mx-auto px-4 pt-24 pb-12">
+        {/* Simplified header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-semibold mb-2">
+            Prompt Engine
+          </h1>
+          <p className="text-muted-foreground text-sm">
+            Discover, create, and share AI prompts
+          </p>
         </div>
+
+        {/* Streamlined search and filters */}
+        <div className="max-w-2xl mx-auto space-y-4 mb-8">
+          <SearchBar 
+            value={searchQuery}
+            onChange={setSearchQuery}
+          />
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <CategoryFilter
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
+            <Button
+              variant={showFavorites ? "default" : "outline"}
+              onClick={() => setShowFavorites(!showFavorites)}
+              size="sm"
+              className="shrink-0"
+            >
+              <BookmarkIcon className="w-4 h-4 mr-2" />
+              {showFavorites ? "All Prompts" : "Favorites"}
+            </Button>
+          </div>
+        </div>
+
+        {/* Results grid with larger cards on mobile */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredPrompts.map((prompt) => (
+            <PromptCard key={prompt.id} prompt={prompt} />
+          ))}
+        </div>
+
+        <CreatePromptDialog onPromptCreated={handlePromptCreated} />
       </main>
     </div>
   );

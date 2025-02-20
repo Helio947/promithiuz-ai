@@ -9,13 +9,14 @@ interface CategoryFilterProps {
 
 const CategoryFilter = ({ selectedCategory, onSelectCategory }: CategoryFilterProps) => {
   return (
-    <div className="flex flex-wrap justify-center gap-2">
+    <div className="flex gap-2 overflow-x-auto pb-2 hide-scrollbar">
       {categories.map((category) => (
         <Button
           key={category}
           variant={selectedCategory === category ? "default" : "outline"}
           onClick={() => onSelectCategory(selectedCategory === category ? null : category)}
-          className="rounded-full"
+          size="sm"
+          className="shrink-0 text-xs"
         >
           {category}
         </Button>

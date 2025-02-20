@@ -9,12 +9,12 @@ interface SearchBarProps {
 
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   return (
-    <div className="relative max-w-xl mx-auto mb-6">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
       <Input
         type="search"
         placeholder="Search prompts..."
-        className="pl-10"
+        className="pl-10 w-full"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
