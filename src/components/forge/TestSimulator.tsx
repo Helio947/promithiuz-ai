@@ -121,38 +121,41 @@ export const TestSimulator = ({ nodes, edges, onTestComplete }: TestSimulatorPro
 
         {results.length > 0 && (
           <div className="space-y-3">
-            {results.map((result) => (
-              <div 
-                key={result.nodeId}
-                className={`p-3 rounded-lg border ${
-                  result.status === 'success' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-medium">
-                    {nodes.find(n => n.id === result.nodeId)?.data.label}
-                  </span>
-                  {result.status === 'success' ? (
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <XCircle className="h-4 w-4 text-red-500" />
+            {results.map((result) => {
+              const node = nodes.find(n => n.id === result.nodeId);
+              const nodeLabel = node?.data?.label || 'Unknown Node';
+              
+              return (
+                <div 
+                  key={result.nodeId}
+                  className={`p-3 rounded-lg border ${
+                    result.status === 'success' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="font-medium">{nodeLabel}</span>
+                    {result.status === 'success' ? (
+                      <CheckCircle className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-red-500" />
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-500 flex items-center gap-2">
+                    <span className="flex items-center">
+                      <Timer className="h-3 w-3 mr-1" />
+                      {(result.duration / 1000).toFixed(1)}s
+                    </span>
+                    <span className="flex items-center">
+                      <DollarSign className="h-3 w-3 mr-1" />
+                      ${result.cost.toFixed(3)}
+                    </span>
+                  </div>
+                  {result.error && (
+                    <p className="text-xs text-red-600 mt-1">{result.error}</p>
                   )}
                 </div>
-                <div className="text-xs text-gray-500 flex items-center gap-2">
-                  <span className="flex items-center">
-                    <Timer className="h-3 w-3 mr-1" />
-                    {(result.duration / 1000).toFixed(1)}s
-                  </span>
-                  <span className="flex items-center">
-                    <DollarSign className="h-3 w-3 mr-1" />
-                    ${result.cost.toFixed(3)}
-                  </span>
-                </div>
-                {result.error && (
-                  <p className="text-xs text-red-600 mt-1">{result.error}</p>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
