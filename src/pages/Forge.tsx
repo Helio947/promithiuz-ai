@@ -1,4 +1,3 @@
-
 import { useCallback, useRef, useState } from 'react';
 import Header from "@/components/Header";
 import {
@@ -35,16 +34,16 @@ const initialNodes: Node[] = [
 ];
 
 const aiBlocks = [
-  { type: 'analyze-text', label: 'Analyze Text' },
-  { type: 'send-email', label: 'Send Email' },
-  { type: 'generate-image', label: 'Generate Image' },
-  { type: 'chat-response', label: 'Chat Response' },
-  { type: 'analyze-data', label: 'Analyze Data' },
-  { type: 'social-post', label: 'Social Media Post' },
-  { type: 'document', label: 'Document Action' },
-  { type: 'web-action', label: 'Web Action' },
-  { type: 'notification', label: 'Send Notification' },
-  { type: 'database', label: 'Database Action' },
+  { type: 'analyze-text' as const, label: 'Analyze Text' },
+  { type: 'send-email' as const, label: 'Send Email' },
+  { type: 'generate-image' as const, label: 'Generate Image' },
+  { type: 'chat-response' as const, label: 'Chat Response' },
+  { type: 'analyze-data' as const, label: 'Analyze Data' },
+  { type: 'social-post' as const, label: 'Social Media Post' },
+  { type: 'document' as const, label: 'Document Action' },
+  { type: 'web-action' as const, label: 'Web Action' },
+  { type: 'notification' as const, label: 'Send Notification' },
+  { type: 'database' as const, label: 'Database Action' },
 ];
 
 const Forge = () => {
@@ -52,7 +51,21 @@ const Forge = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isTestMode, setIsTestMode] = useState(false);
+  const [question, setQuestion] = useState('');
   const { toast } = useToast();
+
+  const handleQuestionSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!question.trim()) return;
+
+    toast({
+      title: "Message sent",
+      description: "Prometheus is thinking about your question...",
+    });
+    
+    // Clear the input
+    setQuestion('');
+  };
 
   const onConnect = useCallback(
     (params: Connection) => {
@@ -213,23 +226,33 @@ const Forge = () => {
               </ReactFlow>
             </div>
 
-            {/* Toolbox & Promi */}
+            {/* Toolbox & Prometheus */}
             <div className="col-span-3 space-y-6">
-              {/* Promi Assistant */}
+              {/* Prometheus Assistant */}
               <div className="bg-white rounded-xl border p-4 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                     <MessageSquare className="h-5 w-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">Promi</h3>
+                    <h3 className="font-semibold">Prometheus</h3>
                     <p className="text-sm text-gray-500">Your AI Guide</p>
                   </div>
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 mb-4">
                   Drag AI blocks from the toolbox below onto the canvas to start building your workflow. 
                   Connect blocks by dragging from one handle to another.
                 </p>
+                <form onSubmit={handleQuestionSubmit} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    placeholder="Ask me anything about The Forge..."
+                    className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                  <Button type="submit" size="sm">Ask</Button>
+                </form>
               </div>
 
               {/* AI Blocks Toolbox */}
