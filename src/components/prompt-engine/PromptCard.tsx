@@ -1,12 +1,16 @@
 
 import { Bookmark, Share2, ThumbsUp } from "lucide-react";
 import { Prompt } from "@/types/prompt-engine";
+import { useUserPrompts } from "@/contexts/UserPromptsContext";
 
 interface PromptCardProps {
   prompt: Prompt;
 }
 
 const PromptCard = ({ prompt }: PromptCardProps) => {
+  const { isFavorited, toggleFavorite } = useUserPrompts();
+  const isFavorite = isFavorited(prompt.id);
+
   return (
     <div className="bg-white rounded-xl border p-6 hover:shadow-lg transition-all">
       <div className="flex items-start justify-between mb-4">
@@ -29,8 +33,13 @@ const PromptCard = ({ prompt }: PromptCardProps) => {
             <ThumbsUp className="h-4 w-4" />
             {prompt.likes}
           </button>
-          <button className="flex items-center gap-1 hover:text-primary transition-colors">
-            <Bookmark className="h-4 w-4" />
+          <button 
+            className={`flex items-center gap-1 transition-colors ${
+              isFavorite ? "text-primary" : "hover:text-primary"
+            }`}
+            onClick={() => toggleFavorite(prompt.id)}
+          >
+            <Bookmark className="h-4 w-4" fill={isFavorite ? "currentColor" : "none"} />
             {prompt.saves}
           </button>
         </div>

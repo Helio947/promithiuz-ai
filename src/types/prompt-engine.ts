@@ -7,6 +7,7 @@ export interface Prompt {
   prompt: string;
   saves: number;
   likes: number;
+  isFavorited?: boolean;
 }
 
 export const categories = [
