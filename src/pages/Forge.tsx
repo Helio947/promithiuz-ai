@@ -20,6 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { AIBlockNode } from '@/components/forge/AIBlockNode';
 import { PrometheusChat } from '@/components/forge/PrometheusChat';
 import { AIBlocksToolbox } from '@/components/forge/AIBlocksToolbox';
+import { TemplatesLibrary } from '@/components/forge/TemplatesLibrary';
 import { initialNodes, aiBlocks } from '@/constants/forge';
 import '@xyflow/react/dist/style.css';
 
@@ -160,6 +161,11 @@ const Forge = () => {
     });
   };
 
+  const handleTemplateSelect = (templateNodes: Node[], templateEdges: Edge[]) => {
+    setNodes(templateNodes);
+    setEdges(templateEdges);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -216,6 +222,7 @@ const Forge = () => {
 
             <div className="col-span-3 space-y-6">
               <PrometheusChat onAddBlock={addBlockToCanvas} />
+              <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
               <AIBlocksToolbox onDragStart={onDragStart} />
             </div>
           </div>
