@@ -14,7 +14,7 @@ const SearchBar = ({ value, onChange }: SearchBarProps) => {
       <Input
         type="search"
         placeholder="Search prompts..."
-        className="pl-10 w-full"
+        className="pl-10 w-full text-base bg-background"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
