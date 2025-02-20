@@ -14,7 +14,7 @@ const Header = () => {
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Features</a>
-            <a href="#oracle" className="text-gray-600 hover:text-primary transition-colors">Oracle's View</a>
+            <a href="#prometheus" className="text-gray-600 hover:text-primary transition-colors">Prometheus Vision</a>
             <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
             <Button className="bg-primary hover:bg-primary/90 text-white">
               Get Started

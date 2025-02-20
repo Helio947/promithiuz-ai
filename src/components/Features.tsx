@@ -4,7 +4,7 @@ import { Brain, Sparkles, LineChart, Users } from "lucide-react";
 const features = [
   {
     icon: Brain,
-    title: "The Oracle's View",
+    title: "Prometheus Vision",
     description: "Get personalized AI-driven insights and recommendations for your business growth."
   },
   {
