@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import Header from "@/components/Header";
-import { Brain, Users, Target, BarChart, Send, Loader2, MessageSquare } from "lucide-react";
+import { Brain, Users, Target, BarChart, Send, Loader2, MessageSquare, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,7 +8,15 @@ import { useToast } from "@/components/ui/use-toast";
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  id: string;
 }
+
+const suggestedQueries = [
+  "How is our revenue trending this quarter?",
+  "What's our customer satisfaction score?",
+  "Show me our top performing products",
+  "Analyze our marketing campaign performance"
+];
 
 const nodes = [
   {
@@ -43,6 +51,8 @@ const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -61,19 +71,21 @@ const PrometheusVision = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (!input.trim()) return;
+  const handleSendMessage = async (content: string) => {
+    if (!content.trim()) return;
 
-    const userMessage = input.trim();
+    const userMessage = content.trim();
     setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setMessages(prev => [...prev, { role: 'user', content: userMessage, id: Date.now().toString() }]);
     setIsLoading(true);
+    setIsTyping(true);
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
+      setIsTyping(false);
       const aiResponse = `Based on your query "${userMessage}", here's what I found in your business data...`;
       
-      setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: aiResponse, id: Date.now().toString() }]);
     } catch (error) {
       toast({
         title: "Error",
@@ -82,6 +94,24 @@ const PrometheusVision = () => {
       });
     } finally {
       setIsLoading(false);
+      setIsTyping(false);
+    }
+  };
+
+  const copyMessage = async (content: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+      toast({
+        description: "Message copied to clipboard",
+      });
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "Failed to copy message",
+        variant: "destructive",
+      });
     }
   };
 
@@ -164,23 +194,33 @@ const PrometheusVision = () => {
               </div>
               
               <div className="flex-1 overflow-y-auto space-y-4 my-4 scroll-smooth">
-                {messages.map((message, index) => (
+                {messages.map((message) => (
                   <div
-                    key={index}
+                    key={message.id}
                     className={cn(
                       "group flex flex-col transition-all duration-300",
                       message.role === 'user' ? "items-end" : "items-start"
                     )}
                   >
                     <div className={cn(
-                      "p-4 rounded-2xl max-w-[80%] shadow-sm transition-all duration-300",
-                      "hover:shadow-md",
+                      "relative p-4 rounded-2xl max-w-[80%] shadow-sm transition-all duration-300",
+                      "hover:shadow-md group/message",
                       message.role === 'user' 
                         ? "bg-gradient-to-r from-primary to-primary/90 text-white rounded-br-none" 
                         : "bg-gray-100 text-gray-800 rounded-bl-none",
                       "animate-in slide-in-from-bottom-1 duration-300"
                     )}>
                       {message.content}
+                      <button
+                        onClick={() => copyMessage(message.content, message.id)}
+                        className="absolute top-2 right-2 opacity-0 group-hover/message:opacity-100 transition-opacity duration-200"
+                      >
+                        {copiedId === message.id ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+                        )}
+                      </button>
                     </div>
                     <span className={cn(
                       "text-xs mt-1 opacity-0 transition-opacity duration-200",
@@ -191,14 +231,32 @@ const PrometheusVision = () => {
                     </span>
                   </div>
                 ))}
+                {isTyping && (
+                  <div className="flex items-center space-x-2 text-gray-500">
+                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                )}
                 {messages.length === 0 && (
-                  <div className="flex flex-col items-center justify-center h-full text-center text-gray-500 space-y-4 animate-in fade-in-50 duration-500">
+                  <div className="flex flex-col items-center justify-center h-full text-center space-y-6 animate-in fade-in-50 duration-500">
                     <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
                       <MessageSquare className="h-8 w-8 text-gray-400" />
                     </div>
                     <div>
                       <p className="font-medium mb-1">Ask me anything about your business</p>
-                      <p className="text-sm">I'll analyze your data and provide insights</p>
+                      <p className="text-sm text-gray-500 mb-4">I'll analyze your data and provide insights</p>
+                      <div className="flex flex-wrap gap-2 justify-center">
+                        {suggestedQueries.map((query, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSendMessage(query)}
+                            className="text-sm px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors duration-200"
+                          >
+                            {query}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
@@ -209,7 +267,7 @@ const PrometheusVision = () => {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleSendMessage();
+                    handleSendMessage(input);
                   }}
                   className="flex gap-2"
                 >
