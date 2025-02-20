@@ -1,7 +1,6 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Header from "@/components/Header";
-import { Brain, Users, Target, BarChart, Send, Loader2 } from "lucide-react";
+import { Brain, Users, Target, BarChart, Send, Loader2, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
@@ -44,9 +43,9 @@ const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
-  // Simulate health score changes
   useEffect(() => {
     const interval = setInterval(() => {
       setHealthScore(prev => {
@@ -58,6 +57,10 @@ const PrometheusVision = () => {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const handleSendMessage = async () => {
     if (!input.trim()) return;
 
@@ -67,7 +70,6 @@ const PrometheusVision = () => {
     setIsLoading(true);
 
     try {
-      // Simulate AI response - replace with actual AI integration
       await new Promise(resolve => setTimeout(resolve, 1000));
       const aiResponse = `Based on your query "${userMessage}", here's what I found in your business data...`;
       
@@ -99,9 +101,7 @@ const PrometheusVision = () => {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left Column - Health Score and Nodes */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Central Pulse Animation */}
               <div className="relative w-48 h-48 mx-auto mb-16">
                 <div 
                   className={cn(
@@ -119,7 +119,6 @@ const PrometheusVision = () => {
                 </div>
               </div>
 
-              {/* Interactive Nodes */}
               <div className="grid md:grid-cols-2 gap-6">
                 {nodes.map((node, index) => (
                   <button
@@ -153,33 +152,59 @@ const PrometheusVision = () => {
               </div>
             </div>
 
-            {/* Right Column - Ask Prometheus Interface */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 h-[600px] flex flex-col">
-              <h2 className="text-xl font-semibold mb-4">Ask Prometheus</h2>
+            <div className="bg-white rounded-2xl shadow-lg p-6 h-[600px] flex flex-col backdrop-blur-sm border border-gray-100">
+              <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                  <MessageSquare className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold">Ask Prometheus</h2>
+                  <p className="text-sm text-gray-500">AI-powered business insights</p>
+                </div>
+              </div>
               
-              {/* Messages Container */}
-              <div className="flex-1 overflow-y-auto space-y-4 mb-4">
+              <div className="flex-1 overflow-y-auto space-y-4 my-4 scroll-smooth">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={cn(
-                      "p-4 rounded-lg max-w-[80%]",
-                      message.role === 'user' 
-                        ? "bg-primary text-white ml-auto" 
-                        : "bg-gray-100 text-gray-800"
+                      "group flex flex-col transition-all duration-300",
+                      message.role === 'user' ? "items-end" : "items-start"
                     )}
                   >
-                    {message.content}
+                    <div className={cn(
+                      "p-4 rounded-2xl max-w-[80%] shadow-sm transition-all duration-300",
+                      "hover:shadow-md",
+                      message.role === 'user' 
+                        ? "bg-gradient-to-r from-primary to-primary/90 text-white rounded-br-none" 
+                        : "bg-gray-100 text-gray-800 rounded-bl-none",
+                      "animate-in slide-in-from-bottom-1 duration-300"
+                    )}>
+                      {message.content}
+                    </div>
+                    <span className={cn(
+                      "text-xs mt-1 opacity-0 transition-opacity duration-200",
+                      "group-hover:opacity-70",
+                      message.role === 'user' ? "text-right" : "text-left"
+                    )}>
+                      {message.role === 'user' ? 'You' : 'Prometheus AI'}
+                    </span>
                   </div>
                 ))}
                 {messages.length === 0 && (
-                  <div className="text-center text-gray-500 mt-8">
-                    Ask me anything about your business metrics and I'll analyze the data for you.
+                  <div className="flex flex-col items-center justify-center h-full text-center text-gray-500 space-y-4 animate-in fade-in-50 duration-500">
+                    <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center">
+                      <MessageSquare className="h-8 w-8 text-gray-400" />
+                    </div>
+                    <div>
+                      <p className="font-medium mb-1">Ask me anything about your business</p>
+                      <p className="text-sm">I'll analyze your data and provide insights</p>
+                    </div>
                   </div>
                 )}
+                <div ref={messagesEndRef} />
               </div>
 
-              {/* Input Area */}
               <div className="border-t pt-4">
                 <form
                   onSubmit={(e) => {
@@ -193,13 +218,25 @@ const PrometheusVision = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask a question..."
-                    className="flex-1 rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                    className={cn(
+                      "flex-1 rounded-xl border border-gray-200",
+                      "px-4 py-2 text-sm",
+                      "placeholder:text-gray-400",
+                      "focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary",
+                      "transition-all duration-300",
+                      isLoading && "opacity-50 cursor-not-allowed"
+                    )}
                     disabled={isLoading}
                   />
                   <Button 
                     type="submit"
                     disabled={isLoading || !input.trim()}
-                    className="bg-primary hover:bg-primary/90"
+                    className={cn(
+                      "bg-primary hover:bg-primary/90",
+                      "rounded-xl px-4",
+                      "transition-all duration-300",
+                      "disabled:opacity-50"
+                    )}
                   >
                     {isLoading ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
