@@ -20,7 +20,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { AIBlockNode } from '@/components/forge/AIBlockNode';
 import { PrometheusChat } from '@/components/forge/PrometheusChat';
 import { AIBlocksToolbox } from '@/components/forge/AIBlocksToolbox';
-import { initialNodes } from '@/constants/forge';
+import { initialNodes, aiBlocks } from '@/constants/forge';
 import '@xyflow/react/dist/style.css';
 
 const nodeTypes = {
