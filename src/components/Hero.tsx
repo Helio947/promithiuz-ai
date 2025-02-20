@@ -19,51 +19,66 @@ const Hero = () => {
           {/* Main content */}
           <div className="text-center mb-12">
             <div className="mb-8 inline-block">
-              <div className="inline-flex items-center px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium">
-                Join 10,000+ Growing Businesses
+              <div className="inline-flex items-center px-4 py-2 bg-accent/10 rounded-full text-accent font-medium">
+                AI Made Simple for Every Business
               </div>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent">
-              Boost Your Sales By 3x With AI-Powered Market Insights
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight">
+              Slash Costs & Save Time with AI
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Get personalized strategies and predictions that help you identify untapped opportunities and outperform your competition.
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Your friendly AI companion that helps you understand, implement, and profit from AI - no tech expertise needed.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
-                Get My AI Growth Strategy
-                <ArrowRight className="ml-2 h-4 w-4" />
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+              >
+                Start Your AI Journey
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline">
-                See Live Demo
+              <Button size="lg" variant="outline" className="text-lg">
+                Watch 2-Min Demo
               </Button>
             </div>
             
-            {/* Social proof */}
-            <div className="text-sm text-muted-foreground mb-8">
-              Trusted by industry leaders
-            </div>
-            <div className="flex flex-wrap justify-center items-center gap-8 mb-12">
-              {/* Company logos in grayscale */}
-              <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7" alt="Company Logo" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-              <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b" alt="Company Logo" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
-              <img src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" alt="Company Logo" className="h-8 opacity-50 hover:opacity-75 transition-opacity" />
+            {/* Features grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 text-left">
+              {[
+                {
+                  title: "Easy Setup",
+                  description: "Get started in minutes with our step-by-step guide"
+                },
+                {
+                  title: "24/7 AI Assistant",
+                  description: "Friendly chat support to answer all your questions"
+                },
+                {
+                  title: "Visual Learning",
+                  description: "Understanding AI through simple animations & examples"
+                }
+              ].map((feature, index) => (
+                <div key={index} className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+                  <h3 className="font-semibold mb-2 text-lg">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </div>
+              ))}
             </div>
 
             {/* Testimonial */}
             <div className="max-w-2xl mx-auto bg-white/50 dark:bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-              <blockquote className="text-lg italic text-gray-600 mb-4">
-                "Using this AI platform, we've increased our market share by 27% in just 3 months. The insights are incredibly accurate and actionable."
+              <blockquote className="text-lg italic text-muted-foreground mb-4">
+                "I never thought AI could be this easy to understand and implement. This platform helped me automate my customer service and saved me 15 hours every week."
               </blockquote>
               <div className="flex items-center justify-center gap-4">
                 <img 
                   src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-                  alt="Sarah Chen"
+                  alt="Maria Rodriguez"
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div className="text-left">
-                  <div className="font-semibold">Sarah Chen</div>
-                  <div className="text-sm text-muted-foreground">CMO at TechGrowth</div>
+                  <div className="font-semibold">Maria Rodriguez</div>
+                  <div className="text-sm text-muted-foreground">Small Business Owner</div>
                 </div>
               </div>
             </div>
