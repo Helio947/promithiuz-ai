@@ -1,9 +1,20 @@
 
+import { Node } from '@xyflow/react';
+
 export const quickTips = [
   "How do I connect blocks?",
   "What does each color mean?",
   "How do I test my workflow?",
   "Show me example workflows",
+];
+
+export const initialNodes: Node[] = [
+  {
+    id: 'welcome',
+    type: 'aiBlock',
+    data: { label: 'Start Here', type: 'chat-response' },
+    position: { x: 250, y: 5 },
+  },
 ];
 
 export const aiBlocks = [
@@ -17,13 +28,4 @@ export const aiBlocks = [
   { type: 'web-action' as const, label: 'Web Action' },
   { type: 'notification' as const, label: 'Send Notification' },
   { type: 'database' as const, label: 'Database Action' },
-];
-
-export const initialNodes = [
-  {
-    id: 'welcome',
-    type: 'aiBlock',
-    data: { label: 'Start Here', type: 'chat-response' },
-    position: { x: 250, y: 5 },
-  },
 ];

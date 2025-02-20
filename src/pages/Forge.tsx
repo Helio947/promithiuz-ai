@@ -214,4 +214,15 @@ const Forge = () => {
               </ReactFlow>
             </div>
 
-            <div className="col-span-3 space
+            <div className="col-span-3 space-y-6">
+              <PrometheusChat onAddBlock={addBlockToCanvas} />
+              <AIBlocksToolbox onDragStart={onDragStart} />
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export default Forge;
