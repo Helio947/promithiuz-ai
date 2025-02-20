@@ -21,6 +21,7 @@ import { AIBlockNode } from '@/components/forge/AIBlockNode';
 import { PrometheusChat } from '@/components/forge/PrometheusChat';
 import { AIBlocksToolbox } from '@/components/forge/AIBlocksToolbox';
 import { TemplatesLibrary } from '@/components/forge/TemplatesLibrary';
+import { TestSimulator } from '@/components/forge/TestSimulator';
 import { initialNodes, aiBlocks } from '@/constants/forge';
 import '@xyflow/react/dist/style.css';
 
@@ -129,11 +130,23 @@ const Forge = () => {
   };
 
   const handleTestRun = () => {
+    if (nodes.length === 0) {
+      toast({
+        title: "No Nodes Found",
+        description: "Add some blocks to your workflow before running a test.",
+        variant: "destructive",
+      });
+      return;
+    }
     setIsTestMode(true);
     toast({
       title: "Test Mode Activated",
       description: "Your workflow is now in test mode. Any actions will be simulated.",
     });
+  };
+
+  const handleTestComplete = () => {
+    setIsTestMode(false);
   };
 
   const handleRun = () => {
@@ -222,7 +235,15 @@ const Forge = () => {
 
             <div className="col-span-3 space-y-6">
               <PrometheusChat onAddBlock={addBlockToCanvas} />
-              <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
+              {isTestMode ? (
+                <TestSimulator 
+                  nodes={nodes}
+                  edges={edges}
+                  onTestComplete={handleTestComplete}
+                />
+              ) : (
+                <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
+              )}
               <AIBlocksToolbox onDragStart={onDragStart} />
             </div>
           </div>
