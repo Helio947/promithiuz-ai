@@ -322,6 +322,257 @@ Negative Prompt Elements:
 [Replace all bracketed sections with your specific requirements]`,
     saves: 689,
     likes: 934
+  },
+  {
+    id: "6",
+    title: "Universal HR Policy Generator",
+    description: "Create comprehensive HR policies for any organization.",
+    category: "HR",
+    prompt: `Generate professional HR policies using this framework:
+
+1. Policy Foundation:
+   Organization Type: [corporate/startup/nonprofit/etc.]
+   Employee Count: [team size range]
+   Work Model: [office/remote/hybrid]
+   Jurisdiction: [location/legal framework]
+
+2. Policy Structure:
+   - Purpose and scope
+   - Definitions of terms
+   - Policy statement
+   - Procedures and guidelines
+   - Responsibilities
+   - Compliance requirements
+
+3. Key Policy Areas:
+   
+   Employment Basics:
+   - Hiring process
+   - Probation period
+   - Working hours
+   - Compensation
+   - Benefits
+
+   Workplace Conduct:
+   - Code of conduct
+   - Dress code
+   - Communication guidelines
+   - Conflict resolution
+   - Ethics policy
+
+   Performance Management:
+   - Review process
+   - Goal setting
+   - Career development
+   - Training programs
+   - Promotion criteria
+
+4. Implementation Plan:
+   - Communication strategy
+   - Training requirements
+   - Documentation needs
+   - Review schedule
+   - Update procedures
+
+[Customize sections based on your organization's needs]`,
+    saves: 567,
+    likes: 823
+  },
+  {
+    id: "7",
+    title: "Universal Sales Script Generator",
+    description: "Create effective sales scripts for any product or service.",
+    category: "Sales",
+    prompt: `Generate professional sales scripts using this template:
+
+1. Pre-Call Planning:
+   Product/Service: [your offering]
+   Target Customer: [ideal customer profile]
+   Industry: [customer's sector]
+   Pain Points: [key challenges]
+
+2. Script Structure:
+
+   Opening:
+   - Introduction (15 seconds)
+   - Rapport building
+   - Purpose statement
+   - Permission to proceed
+
+   Discovery:
+   - Qualification questions
+   - Need assessment
+   - Current situation
+   - Pain point exploration
+   - Budget discussion
+
+   Solution Presentation:
+   - Value proposition
+   - Features and benefits
+   - Use case examples
+   - ROI demonstration
+   - Competitive advantages
+
+   Objection Handling:
+   - Common objections
+   - Response templates
+   - Follow-up questions
+   - Alternative solutions
+
+   Closing:
+   - Trial close techniques
+   - Final offer
+   - Next steps
+   - Follow-up plan
+
+3. Customization Points:
+   - Industry terminology
+   - Pain point specifics
+   - Success stories
+   - Pricing options
+
+[Replace sections with your specific details]`,
+    saves: 789,
+    likes: 1045
+  },
+  {
+    id: "8",
+    title: "Universal Social Media Strategy Generator",
+    description: "Create effective social media strategies for any business.",
+    category: "Social Media",
+    prompt: `Generate a comprehensive social media strategy using this framework:
+
+1. Platform Strategy:
+   [List relevant platforms]
+   [Define primary/secondary platforms]
+   [Platform-specific goals]
+   [Audience presence analysis]
+
+2. Content Framework:
+
+   Content Types:
+   - Educational posts
+   - Behind-the-scenes
+   - Customer spotlights
+   - Product showcases
+   - Industry news
+   - Interactive content
+
+   Content Mix:
+   - 30% Educational
+   - 25% Promotional
+   - 25% Engagement
+   - 20% Entertainment
+
+3. Posting Schedule:
+   - Optimal times
+   - Frequency by platform
+   - Content calendar
+   - Seasonal adjustments
+
+4. Engagement Strategy:
+   - Response templates
+   - Community guidelines
+   - Crisis management
+   - Influencer collaboration
+
+5. Performance Tracking:
+   - Key metrics
+   - Analytics tools
+   - Report templates
+   - Optimization process
+
+[Customize based on your business needs]`,
+    saves: 678,
+    likes: 934
+  },
+  {
+    id: "9",
+    title: "Universal Translation Prompt",
+    description: "Create accurate translations while maintaining context and tone.",
+    category: "Translation",
+    prompt: `Generate accurate translations using this comprehensive framework:
+
+1. Content Analysis:
+   Source Language: [specify language]
+   Target Language: [specify language]
+   Content Type: [marketing/technical/legal/etc.]
+   Audience: [target readers]
+
+2. Translation Requirements:
+   
+   Context Preservation:
+   - Industry context
+   - Cultural nuances
+   - Brand voice
+   - Technical terminology
+
+   Style Guidelines:
+   - Tone of voice
+   - Formality level
+   - Local idioms
+   - Cultural adaptations
+
+3. Quality Checks:
+   - Grammar accuracy
+   - Cultural appropriateness
+   - Technical accuracy
+   - Brand consistency
+
+4. Localization Elements:
+   - Date formats
+   - Number formats
+   - Currency
+   - Units of measurement
+   - Color associations
+   - Cultural references
+
+[Add your specific content for translation]`,
+    saves: 456,
+    likes: 678
+  },
+  {
+    id: "10",
+    title: "Universal AI Training Data Generator",
+    description: "Create high-quality training data for AI models.",
+    category: "AI Training",
+    prompt: `Generate AI training data using this structured framework:
+
+1. Data Requirements:
+   AI Model Type: [classification/recognition/generation]
+   Data Type: [text/image/audio/video]
+   Volume Needed: [dataset size]
+   Quality Level: [basic/standard/premium]
+
+2. Data Structure:
+   
+   Input Format:
+   - Data fields
+   - File formats
+   - Size limits
+   - Quality parameters
+
+   Annotation Guidelines:
+   - Label definitions
+   - Classification rules
+   - Edge cases
+   - Quality criteria
+
+3. Diversity Requirements:
+   - Demographic variation
+   - Use case coverage
+   - Edge case inclusion
+   - Bias prevention
+
+4. Quality Control:
+   - Validation process
+   - Error checking
+   - Consistency rules
+   - Review guidelines
+
+[Customize based on your AI project needs]`,
+    saves: 345,
+    likes: 567
   }
 ];
 
