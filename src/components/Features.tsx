@@ -1,26 +1,31 @@
 
 import { Brain, Sparkles, LineChart, Users } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const features = [
   {
     icon: Brain,
     title: "Prometheus Vision",
-    description: "Get personalized AI-driven insights and recommendations for your business growth."
+    description: "Get personalized AI-driven insights and recommendations for your business growth.",
+    route: "/prometheus-vision"
   },
   {
     icon: Sparkles,
     title: "The Forge",
-    description: "Create custom AI workflows with our intuitive drag-and-drop interface."
+    description: "Create custom AI workflows with our intuitive drag-and-drop interface.",
+    route: "/forge"
   },
   {
     icon: LineChart,
     title: "Predictive Analytics",
-    description: "Forecast trends and make data-driven decisions with advanced analytics."
+    description: "Forecast trends and make data-driven decisions with advanced analytics.",
+    route: "/analytics"
   },
   {
     icon: Users,
     title: "The Pantheon",
-    description: "Connect with a community of business owners and AI experts."
+    description: "Connect with a community of business owners and AI experts.",
+    route: "/pantheon"
   }
 ];
 
@@ -36,8 +41,9 @@ const Features = () => {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <div
+            <Link
               key={index}
+              to={feature.route}
               className="p-6 rounded-2xl border border-gray-200 bg-white hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
             >
               <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
@@ -45,7 +51,7 @@ const Features = () => {
               </div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-600">{feature.description}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
