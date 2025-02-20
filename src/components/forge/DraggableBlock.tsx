@@ -1,4 +1,3 @@
-
 import { cn } from '@/lib/utils';
 import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database } from 'lucide-react';
 import {
@@ -35,16 +34,16 @@ const colorMap = {
 } as const;
 
 const tooltipDescriptions = {
-  'analyze-text': 'Analyze text content to understand sentiment, extract key information, or classify topics.',
-  'send-email': 'Automatically send customized emails based on triggers or conditions.',
-  'generate-image': 'Create AI-generated images from text descriptions or modify existing images.',
-  'chat-response': 'Generate human-like conversational responses for chatbots or customer service.',
-  'analyze-data': 'Process and analyze data to uncover patterns, trends, and insights.',
-  'social-post': 'Create and schedule social media posts across different platforms.',
-  'document': 'Generate, modify, or analyze documents and text files.',
-  'web-action': 'Perform automated actions on websites or web applications.',
-  'notification': 'Send notifications through various channels like SMS, push, or in-app alerts.',
-  'database': 'Store, retrieve, or update data in your database systems.',
+  'analyze-text': 'Understand the meaning and emotion behind any text.',
+  'send-email': 'Send automatic emails when something happens.',
+  'generate-image': 'Create or edit images using AI.',
+  'chat-response': 'Have AI respond to messages like a human.',
+  'analyze-data': 'Find patterns and insights in your data.',
+  'social-post': 'Create and schedule posts for social media.',
+  'document': 'Create or change documents automatically.',
+  'web-action': 'Do things on websites automatically.',
+  'notification': 'Send alerts to users via SMS or apps.',
+  'database': 'Save and retrieve information.',
 } as const;
 
 interface DraggableBlockProps {
