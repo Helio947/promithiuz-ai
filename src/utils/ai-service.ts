@@ -10,11 +10,16 @@ const initModel = async () => {
       console.log('Initializing text generation model...');
       model = await pipeline(
         'text-generation',
-        'Xenova/distilgpt2'  // This is a lightweight model suitable for browser
+        'gpt2'  // Using GPT-2 for better text generation
       );
       console.log('Model initialized successfully');
     } catch (error) {
       console.error('Model initialization failed:', error);
+      toast({
+        title: "Error",
+        description: "Failed to initialize AI model. Please try again.",
+        variant: "destructive"
+      });
       throw error;
     }
   }
@@ -31,17 +36,25 @@ export const generateAIResponse = async (prompt: string) => {
     const generator = await initModel();
     
     const result = await generator(prompt, {
-      max_length: 100,
-      num_return_sequences: 1
+      max_length: 150,
+      num_return_sequences: 1,
+      temperature: 0.7,
+      top_k: 50,
+      top_p: 0.9,
+      do_sample: true
     });
 
-    console.log('Generation completed');
-    return result[0].generated_text;
+    console.log('Generation completed:', result);
+    
+    // Clean up the generated text by removing the input prompt
+    const generatedText = result[0].generated_text.slice(prompt.length).trim();
+    
+    return generatedText;
   } catch (error) {
     console.error('Generation error:', error);
     toast({
       title: "Error",
-      description: error.message,
+      description: "Failed to generate response. Please try again.",
       variant: "destructive"
     });
     throw error;
@@ -49,11 +62,12 @@ export const generateAIResponse = async (prompt: string) => {
 };
 
 export const generateBusinessInsights = async (businessDescription: string) => {
-  const prompt = `Analyze this business: "${businessDescription}". 
-Suggest:
-- Automation opportunities
-- Service improvements
-- Cost savings strategies
+  const prompt = `As Promithiuz AI, analyze this business and provide practical advice: "${businessDescription}"
+
+Key recommendations:
+1. Automation opportunities
+2. Service improvements
+3. Cost reduction strategies
 
 Analysis:`;
   
@@ -64,6 +78,11 @@ Analysis:`;
     return result;
   } catch (error) {
     console.error('Business analysis failed:', error);
+    toast({
+      title: "Error",
+      description: "Failed to analyze business. Please try again.",
+      variant: "destructive"
+    });
     throw error;
   }
 };
