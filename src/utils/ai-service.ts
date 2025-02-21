@@ -1,17 +1,79 @@
 
 import { toast } from "@/components/ui/use-toast";
 
+const analyzeBusinessDescription = (description: string) => {
+  // Extract key business elements from the description
+  const keywords = description.toLowerCase().split(' ');
+  
+  // Basic business type detection
+  const businessTypes = {
+    restaurant: ['restaurant', 'food', 'cafe', 'dining', 'menu', 'chef', 'kitchen'],
+    retail: ['shop', 'store', 'retail', 'sales', 'products', 'inventory'],
+    service: ['service', 'consulting', 'agency', 'professional'],
+    tech: ['software', 'tech', 'digital', 'online', 'app', 'website'],
+  };
+
+  // Determine business type
+  let detectedType = 'general';
+  for (const [type, indicators] of Object.entries(businessTypes)) {
+    if (indicators.some(word => keywords.includes(word))) {
+      detectedType = type;
+      break;
+    }
+  }
+
+  // Generate insights based on business type and description length
+  const insights = {
+    restaurant: [
+      "Implement online ordering to increase revenue",
+      "Analyze peak hours to optimize staffing",
+      "Use inventory management software to reduce waste",
+      "Create a loyalty program for repeat customers",
+      "Consider delivery partnerships to expand reach"
+    ],
+    retail: [
+      "Implement inventory tracking system",
+      "Develop an online presence",
+      "Create targeted marketing campaigns",
+      "Optimize store layout for better flow",
+      "Set up a customer feedback system"
+    ],
+    service: [
+      "Automate appointment scheduling",
+      "Implement CRM system for client management",
+      "Develop service packages",
+      "Create case studies from successful projects",
+      "Set up referral program"
+    ],
+    tech: [
+      "Implement agile methodologies",
+      "Set up automated testing",
+      "Create comprehensive documentation",
+      "Establish a clear product roadmap",
+      "Implement user feedback loops"
+    ],
+    general: [
+      "Create a digital marketing strategy",
+      "Implement customer feedback systems",
+      "Analyze market competition",
+      "Optimize operational efficiency",
+      "Develop employee training programs"
+    ]
+  };
+
+  return insights[detectedType as keyof typeof insights];
+};
+
 export const generateAIResponse = async (prompt: string) => {
-  // Simple response generation logic
+  // Generate personalized insights based on the business description
+  const relevantInsights = analyzeBusinessDescription(prompt);
+  
   return new Promise<string>((resolve) => {
     setTimeout(() => {
-      resolve(`Based on your input, here are some AI-powered insights:
-1. Consider implementing mobile ordering to reduce wait times
-2. Explore eco-friendly packaging options
-3. Analyze peak hours to optimize staffing
-4. Track inventory more efficiently using AI-powered systems
-5. Implement a loyalty program to increase customer retention`);
-    }, 1500); // Simulate API delay
+      resolve(`Based on your business description, here are tailored recommendations:
+
+${relevantInsights.map((insight, index) => `${index + 1}. ${insight}`).join('\n')}`);
+    }, 1500); // Simulate API delay for natural feel
   });
 };
 
@@ -21,24 +83,18 @@ export const generateBusinessInsights = async (businessDescription: string) => {
   }
 
   if (businessDescription.length < 10) {
-    throw new Error('Please provide more details about your business for better analysis.');
+    throw new Error('Please provide more details about your business for better analysis (minimum 10 characters).');
   }
 
   try {
     console.log('Starting business analysis...');
-    const prompt = `Analyzing business: "${businessDescription}"
-
-Key focus areas:
-1. Automation opportunities
-2. Cost reduction
-3. Customer experience
-4. Market expansion
-5. Technology integration
-
-Analysis:`;
+    console.log('Analyzing business description:', businessDescription);
     
-    const result = await generateAIResponse(prompt);
+    const result = await generateAIResponse(businessDescription);
+    
     console.log('Analysis completed successfully');
+    console.log('Generated insights:', result);
+    
     return result;
   } catch (error) {
     console.error('Business analysis failed:', error);
