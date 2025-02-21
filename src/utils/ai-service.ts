@@ -15,8 +15,7 @@ export const initializeAI = async () => {
         'text-generation',
         'Xenova/gpt2',  // Using GPT-2 which is supported in browser
         { 
-          device: 'cpu',  // Using CPU as fallback since WebGPU might not be supported
-          quantized: false // Disable quantization for better compatibility
+          device: 'cpu'  // Using CPU as fallback since WebGPU might not be supported
         }
       );
       console.log('AI model initialized successfully');
