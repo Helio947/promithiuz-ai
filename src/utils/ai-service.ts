@@ -1,5 +1,5 @@
-
 import { toast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const analyzeBusinessDescription = (description: string) => {
   // Extract key business elements from the description
@@ -66,20 +66,11 @@ const analyzeBusinessDescription = (description: string) => {
 
 export const generateAIResponse = async (prompt: string) => {
   try {
-    // Try OpenAI API first
-    const response = await fetch('/api/analyze-business', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt }),
+    const { data, error } = await supabase.functions.invoke('analyze-business', {
+      body: { prompt }
     });
 
-    if (!response.ok) {
-      throw new Error('API request failed');
-    }
-
-    const data = await response.json();
+    if (error) throw error;
     return data.generatedText;
   } catch (error) {
     console.log('Falling back to local analysis due to:', error);
