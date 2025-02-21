@@ -1,5 +1,6 @@
 
 export interface CalculatorInputs {
+  businessType: string;
   totalEmployees: number;
   customerServiceReps: number;
   averageResponseTime: number;

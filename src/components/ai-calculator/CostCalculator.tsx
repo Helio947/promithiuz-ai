@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   Dialog,
@@ -8,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Building2, Users, Clock, TrendingUp } from "lucide-react";
+import { Building2, Users, Clock, TrendingUp, Briefcase } from "lucide-react";
 import { CalculatorMetrics } from "./CalculatorMetrics";
 import { AIChat } from "./AIChat";
 import { calculateAISavings, type CalculatorInputs, type CalculatedSavings } from "@/utils/ai-calculator";
@@ -21,6 +20,7 @@ interface CostCalculatorProps {
 export function CostCalculator({ open, onOpenChange }: CostCalculatorProps) {
   const [step, setStep] = useState(1);
   const [inputs, setInputs] = useState<CalculatorInputs>({
+    businessType: '',
     totalEmployees: 0,
     customerServiceReps: 0,
     averageResponseTime: 0,
@@ -32,7 +32,7 @@ export function CostCalculator({ open, onOpenChange }: CostCalculatorProps) {
   const handleInputChange = (field: keyof CalculatorInputs, value: string) => {
     setInputs(prev => ({
       ...prev,
-      [field]: Number(value) || 0
+      [field]: field === 'businessType' ? value : Number(value) || 0
     }));
   };
 
@@ -55,6 +55,19 @@ export function CostCalculator({ open, onOpenChange }: CostCalculatorProps) {
           <div className="space-y-6 py-4">
             <div className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium flex items-center gap-2">
+                    <Briefcase className="h-4 w-4 text-primary" />
+                    What do you Do
+                  </label>
+                  <Input
+                    type="text"
+                    placeholder="Enter your business type (e.g., Retail, Tech, Healthcare)"
+                    value={inputs.businessType}
+                    onChange={(e) => handleInputChange('businessType', e.target.value)}
+                  />
+                </div>
+
                 <div className="space-y-2">
                   <label className="text-sm font-medium flex items-center gap-2">
                     <Building2 className="h-4 w-4 text-primary" />
