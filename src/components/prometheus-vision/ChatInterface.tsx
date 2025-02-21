@@ -5,6 +5,7 @@ import MessageList from "./MessageList";
 import MessageInput from "./MessageInput";
 import SuggestedQueries from "./SuggestedQueries";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ChatInterfaceProps {
   messages: Message[];
@@ -23,7 +24,7 @@ const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInt
     }
   };
 
-  const onSendMessage = (content: string) => {
+  const onSendMessage = async (content: string) => {
     const newMessage: Message = {
       role: 'user',
       content,
@@ -31,6 +32,36 @@ const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInt
       timestamp: new Date()
     };
     setMessages([...messages, newMessage]);
+    
+    // Start AI response
+    setIsTyping(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('chat-with-ai', {
+        body: { prompt: content }
+      });
+
+      if (error) throw error;
+
+      const aiMessage: Message = {
+        role: 'assistant',
+        content: data.generatedText,
+        id: Math.random().toString(),
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: "I apologize, but I'm having trouble processing your request right now. Please try again later.",
+        id: Math.random().toString(),
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsTyping(false);
+    }
   };
 
   return (
