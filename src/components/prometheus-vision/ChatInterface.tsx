@@ -8,11 +8,12 @@ import { cn } from "@/lib/utils";
 
 interface ChatInterfaceProps {
   messages: Message[];
-  onSendMessage: (content: string) => void;
+  setMessages: (messages: Message[]) => void;
   isTyping: boolean;
+  setIsTyping: (isTyping: boolean) => void;
 }
 
-const ChatInterface = ({ messages, onSendMessage, isTyping }: ChatInterfaceProps) => {
+const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInterfaceProps) => {
   const [input, setInput] = useState("");
 
   const handleSendMessage = (content: string) => {
@@ -20,6 +21,16 @@ const ChatInterface = ({ messages, onSendMessage, isTyping }: ChatInterfaceProps
       onSendMessage(content);
       setInput("");
     }
+  };
+
+  const onSendMessage = (content: string) => {
+    const newMessage: Message = {
+      role: 'user',
+      content,
+      id: Math.random().toString(),
+      timestamp: new Date()
+    };
+    setMessages([...messages, newMessage]);
   };
 
   return (
@@ -37,8 +48,15 @@ const ChatInterface = ({ messages, onSendMessage, isTyping }: ChatInterfaceProps
       </div>
 
       <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden">
-        <MessageList messages={messages} />
-        <SuggestedQueries onQuerySelect={handleSendMessage} />
+        <MessageList messages={messages} isTyping={isTyping} />
+        <SuggestedQueries 
+          queries={[
+            "Show me sales trends",
+            "Analyze customer feedback",
+            "Revenue forecast"
+          ]} 
+          onSelectQuery={handleSendMessage} 
+        />
         <MessageInput
           input={input}
           setInput={setInput}
@@ -51,4 +69,3 @@ const ChatInterface = ({ messages, onSendMessage, isTyping }: ChatInterfaceProps
 };
 
 export default ChatInterface;
-

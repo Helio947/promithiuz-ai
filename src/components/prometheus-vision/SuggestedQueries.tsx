@@ -24,4 +24,3 @@ const SuggestedQueries = ({ queries, onSelectQuery }: SuggestedQueriesProps) => 
 };
 
 export default SuggestedQueries;
-

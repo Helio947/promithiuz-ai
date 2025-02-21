@@ -34,8 +34,8 @@ const PrometheusVision = () => {
 
           <div className="max-w-2xl mx-auto">
             <ChatInterface 
-              messages={messages} 
-              setMessages={setMessages} 
+              messages={messages}
+              setMessages={setMessages}
               isTyping={isTyping}
               setIsTyping={setIsTyping}
             />
@@ -47,4 +47,3 @@ const PrometheusVision = () => {
 };
 
 export default PrometheusVision;
-
