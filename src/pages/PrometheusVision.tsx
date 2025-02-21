@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import Header from "@/components/Header";
 import { Brain, Users, Target, BarChart, Send, Loader2, MessageSquare, Copy, Check, ChevronRight } from "lucide-react";
@@ -6,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
+import { generateBusinessInsights } from "@/utils/ai-service";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -57,6 +57,8 @@ const PrometheusVision = () => {
   const [isTyping, setIsTyping] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [businessDescription, setBusinessDescription] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -99,9 +101,7 @@ const PrometheusVision = () => {
     setIsTyping(true);
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setIsTyping(false);
-      const aiResponse = `Based on your query "${userMessage}", here's what I found in your business data...`;
+      const aiResponse = await generateAIResponse(userMessage);
       
       setMessages(prev => [...prev, {
         role: 'assistant',
@@ -112,12 +112,45 @@ const PrometheusVision = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to get response. Please try again.",
+        description: "Failed to get AI response. Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
       setIsTyping(false);
+    }
+  };
+
+  const handleBusinessAnalysis = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!businessDescription.trim()) return;
+
+    setIsAnalyzing(true);
+    try {
+      const insights = await generateBusinessInsights(businessDescription);
+      setMessages([
+        {
+          role: 'assistant',
+          content: "Welcome! I've analyzed your business and here are my AI-powered recommendations:",
+          id: Date.now().toString(),
+          timestamp: new Date()
+        },
+        {
+          role: 'assistant',
+          content: insights,
+          id: (Date.now() + 1).toString(),
+          timestamp: new Date()
+        }
+      ]);
+      setBusinessDescription('');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to analyze business. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsAnalyzing(false);
     }
   };
 
@@ -159,6 +192,40 @@ const PrometheusVision = () => {
               Your business insights hub powered by AI
             </p>
           </div>
+
+          {messages.length === 0 && (
+            <div className="max-w-2xl mx-auto mb-16">
+              <form onSubmit={handleBusinessAnalysis} className="space-y-4">
+                <div>
+                  <label htmlFor="business-description" className="block text-sm font-medium text-gray-700 mb-2">
+                    Tell me about your business or idea
+                  </label>
+                  <textarea
+                    id="business-description"
+                    value={businessDescription}
+                    onChange={(e) => setBusinessDescription(e.target.value)}
+                    placeholder="Example: I run a small coffee shop and want to modernize my business with AI..."
+                    className="w-full min-h-[120px] p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    disabled={isAnalyzing}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isAnalyzing || !businessDescription.trim()}
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Analyzing your business...
+                    </>
+                  ) : (
+                    "Get AI-Powered Insights"
+                  )}
+                </Button>
+              </form>
+            </div>
+          )}
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-8">
