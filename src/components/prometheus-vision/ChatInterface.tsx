@@ -99,7 +99,15 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm h-[600px] flex flex-col">
+    <div className="bg-white rounded-lg shadow-sm h-[600px] flex flex-col relative">
+      <div 
+        className={cn(
+          "absolute top-0 left-0 right-0 h-1 rounded-t-lg transition-opacity duration-1000",
+          "bg-gradient-to-r from-primary via-secondary to-primary",
+          "animate-pulse",
+          isTyping ? "opacity-100" : "opacity-0"
+        )}
+      />
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div key={message.id}>
@@ -183,4 +191,3 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
 };
 
 export default ChatInterface;
-
