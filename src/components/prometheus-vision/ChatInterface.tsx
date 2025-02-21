@@ -10,6 +10,8 @@ import { generateAIResponse } from "@/utils/ai-service";
 interface ChatInterfaceProps {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  isTyping: boolean;
+  setIsTyping: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const suggestedQueries = [
@@ -19,10 +21,9 @@ const suggestedQueries = [
   "Campaign performance"
 ];
 
-const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
+const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInterfaceProps) => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -109,15 +110,7 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm h-[600px] flex flex-col relative">
-      <div 
-        className={cn(
-          "absolute top-0 left-0 right-0 h-1 rounded-t-lg transition-opacity duration-1000",
-          "bg-gradient-to-r from-primary via-secondary to-primary",
-          "animate-pulse",
-          isTyping ? "opacity-100" : "opacity-0"
-        )}
-      />
+    <div className="bg-white rounded-lg shadow-sm h-[600px] flex flex-col">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message) => (
           <div key={message.id}>
