@@ -1,8 +1,13 @@
 
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BusinessInsightsForm from "@/components/prometheus-vision/BusinessInsightsForm";
+import { useState } from "react";
+import { Message } from "@/types/prometheus-vision";
 
 const Hero = () => {
+  const [messages, setMessages] = useState<Message[]>([]);
+  
   return (
     <div className="min-h-screen pt-16 flex items-center justify-center relative overflow-hidden">
       {/* Background gradient */}
@@ -40,6 +45,11 @@ const Hero = () => {
               <Button size="lg" variant="outline" className="text-lg">
                 Watch 2-Min Demo
               </Button>
+            </div>
+
+            {/* Business Insights Form */}
+            <div className="max-w-2xl mx-auto mb-12">
+              <BusinessInsightsForm setMessages={setMessages} />
             </div>
             
             {/* Features grid */}
