@@ -4,7 +4,7 @@ import { Message } from "@/types/prometheus-vision";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
-import { Send, Loader2, Copy, Check, ChevronRight } from "lucide-react";
+import { Send, Loader2, Copy, Check, ChevronRight, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { generateAIResponse } from "@/utils/ai-service";
 
