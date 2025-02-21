@@ -53,7 +53,7 @@ const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(isTyping);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -152,7 +152,7 @@ const PrometheusVision = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Prometheus Vision
+              Promithiuz AI Vision
             </h1>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Your business insights hub powered by AI
@@ -217,7 +217,7 @@ const PrometheusVision = () => {
                   <MessageSquare className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold">Ask Prometheus</h2>
+                  <h2 className="text-xl font-semibold">Ask Promithiuz AI</h2>
                   <p className="text-sm text-gray-500">AI-powered business insights</p>
                 </div>
               </div>
@@ -265,7 +265,7 @@ const PrometheusVision = () => {
                           "group-hover:opacity-70",
                           message.role === 'user' ? "text-right" : "text-left"
                         )}>
-                          {message.role === 'user' ? 'You' : 'Prometheus AI'}
+                          {message.role === 'user' ? 'You' : 'Promithiuz AI'}
                         </span>
                       </div>
                     </div>

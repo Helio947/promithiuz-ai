@@ -17,7 +17,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Welcome to The Forge! I'm Prometheus, your AI guide. How can I help you build your workflow today?",
+      content: "Welcome to The Forge! I'm Promithiuz AI, your AI guide. How can I help you build your workflow today?",
       sender: 'prometheus',
       timestamp: new Date(),
     },
@@ -85,7 +85,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
 
     toast({
       title: "Message sent",
-      description: "Prometheus is thinking about your question...",
+      description: "Promithiuz AI is thinking about your question...",
     });
   };
 
@@ -100,7 +100,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
           <MessageSquare className="h-5 w-5 text-white" />
         </div>
         <div>
-          <h3 className="font-semibold">Prometheus</h3>
+          <h3 className="font-semibold">Promithiuz AI</h3>
           <p className="text-sm text-gray-500">Your AI Guide</p>
         </div>
       </div>

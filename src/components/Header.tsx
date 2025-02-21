@@ -13,7 +13,7 @@ const Header = () => {
         <div className="h-16 flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Prometheus
+              Promithiuz AI
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
@@ -25,7 +25,7 @@ const Header = () => {
                 location.pathname === "/prometheus-vision" && "text-primary"
               )}
             >
-              Prometheus Vision
+              Promithiuz Vision
             </Link>
             <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
             <Button className="bg-primary hover:bg-primary/90 text-white">
