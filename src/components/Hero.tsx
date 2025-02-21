@@ -1,4 +1,3 @@
-
 import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -123,7 +122,7 @@ const Hero = () => {
                 className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
                 onClick={() => setShowCalculator(true)}
               >
-                Calculate Your AI Savings
+                The AI Calculator
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>

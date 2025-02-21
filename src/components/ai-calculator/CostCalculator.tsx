@@ -70,7 +70,7 @@ export function CostCalculator({ open, onOpenChange }: { open: boolean; onOpenCh
       <DialogContent className="sm:max-w-[600px] bg-background">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">
-            {step === 1 ? "Calculate Your AI Savings" : "Your Potential AI Impact"}
+            {step === 1 ? "The AI Calculator" : "Your AI Impact Results"}
           </DialogTitle>
         </DialogHeader>
 
@@ -136,7 +136,7 @@ export function CostCalculator({ open, onOpenChange }: { open: boolean; onOpenCh
                 size="lg"
                 onClick={calculateSavings}
               >
-                Calculate Savings
+                Calculate Impact
               </Button>
             </div>
           </div>
