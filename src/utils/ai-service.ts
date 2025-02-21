@@ -1,44 +1,38 @@
 
 import { toast } from "@/components/ui/use-toast";
 
-const API_ENDPOINT = 'https://api.openai.com/v1/chat/completions';
+const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
 
 export const generateAIResponse = async (prompt: string) => {
   if (!prompt.trim()) {
     throw new Error('Please provide a business description.');
   }
 
-  const apiKey = localStorage.getItem('OPENAI_API_KEY');
+  const apiKey = localStorage.getItem('GOOGLE_AI_API_KEY');
   
   if (!apiKey) {
     toast({
       title: "API Key Required",
-      description: "Please enter your OpenAI API key in the settings.",
+      description: "Please enter your Google AI API key in the settings.",
       variant: "destructive"
     });
-    throw new Error('OpenAI API key is required');
+    throw new Error('Google AI API key is required');
   }
 
   try {
     console.log('Starting to generate response...');
     
-    const response = await fetch(API_ENDPOINT, {
+    const response = await fetch(`${API_ENDPOINT}?key=${apiKey}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: "gpt-4",
-        messages: [{
-          role: "system",
-          content: "You are a business analyst AI that provides concise, practical advice."
-        }, {
-          role: "user",
-          content: prompt
-        }],
-        temperature: 0.7,
-        max_tokens: 500
+        contents: [{
+          parts: [{
+            text: prompt
+          }]
+        }]
       })
     });
 
@@ -47,7 +41,7 @@ export const generateAIResponse = async (prompt: string) => {
     }
 
     const data = await response.json();
-    return data.choices[0].message.content;
+    return data.candidates[0].content.parts[0].text;
   } catch (error) {
     console.error('Generation error:', error);
     toast({
