@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import Header from "@/components/Header";
 import { Brain, Users, Target, BarChart, Send, Loader2, MessageSquare, Copy, Check, ChevronRight } from "lucide-react";
@@ -53,7 +54,7 @@ const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isTyping, setIsTyping] = useState(isTyping);
+  const [isTyping, setIsTyping] = useState(false);  // Fixed: Set initial value to false
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
