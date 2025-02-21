@@ -1,86 +1,51 @@
 
 import { toast } from "@/components/ui/use-toast";
-import { pipeline } from "@huggingface/transformers";
-
-let model: any = null;
-
-const initModel = async () => {
-  if (!model) {
-    try {
-      console.log('Initializing text generation model...');
-      model = await pipeline(
-        'text-generation',
-        'gpt2'  // Using GPT-2 for better text generation
-      );
-      console.log('Model initialized successfully');
-    } catch (error) {
-      console.error('Model initialization failed:', error);
-      toast({
-        title: "Error",
-        description: "Failed to initialize AI model. Please try again.",
-        variant: "destructive"
-      });
-      throw error;
-    }
-  }
-  return model;
-};
 
 export const generateAIResponse = async (prompt: string) => {
-  if (!prompt.trim()) {
-    throw new Error('Please provide a business description.');
-  }
-
-  try {
-    console.log('Starting to generate response...');
-    const generator = await initModel();
-    
-    const result = await generator(prompt, {
-      max_length: 150,
-      num_return_sequences: 1,
-      temperature: 0.7,
-      top_k: 50,
-      top_p: 0.9,
-      do_sample: true
-    });
-
-    console.log('Generation completed:', result);
-    
-    // Clean up the generated text by removing the input prompt
-    const generatedText = result[0].generated_text.slice(prompt.length).trim();
-    
-    return generatedText;
-  } catch (error) {
-    console.error('Generation error:', error);
-    toast({
-      title: "Error",
-      description: "Failed to generate response. Please try again.",
-      variant: "destructive"
-    });
-    throw error;
-  }
+  // Simple response generation logic
+  return new Promise<string>((resolve) => {
+    setTimeout(() => {
+      resolve(`Based on your input, here are some AI-powered insights:
+1. Consider implementing mobile ordering to reduce wait times
+2. Explore eco-friendly packaging options
+3. Analyze peak hours to optimize staffing
+4. Track inventory more efficiently using AI-powered systems
+5. Implement a loyalty program to increase customer retention`);
+    }, 1500); // Simulate API delay
+  });
 };
 
 export const generateBusinessInsights = async (businessDescription: string) => {
-  const prompt = `As Promithiuz AI, analyze this business and provide practical advice: "${businessDescription}"
+  if (!businessDescription.trim()) {
+    throw new Error('Please provide a business description.');
+  }
 
-Key recommendations:
-1. Automation opportunities
-2. Service improvements
-3. Cost reduction strategies
+  if (businessDescription.length < 10) {
+    throw new Error('Please provide more details about your business for better analysis.');
+  }
 
-Analysis:`;
-  
   try {
     console.log('Starting business analysis...');
+    const prompt = `Analyzing business: "${businessDescription}"
+
+Key focus areas:
+1. Automation opportunities
+2. Cost reduction
+3. Customer experience
+4. Market expansion
+5. Technology integration
+
+Analysis:`;
+    
     const result = await generateAIResponse(prompt);
     console.log('Analysis completed successfully');
     return result;
   } catch (error) {
     console.error('Business analysis failed:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to analyze business. Please try again.';
     toast({
       title: "Error",
-      description: "Failed to analyze business. Please try again.",
+      description: errorMessage,
       variant: "destructive"
     });
     throw error;

@@ -1,10 +1,11 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { generateBusinessInsights } from "@/utils/ai-service";
 import { useToast } from "@/components/ui/use-toast";
 import { Message } from "@/types/prometheus-vision";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface BusinessInsightsFormProps {
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
@@ -13,11 +14,18 @@ interface BusinessInsightsFormProps {
 const BusinessInsightsForm = ({ setMessages }: BusinessInsightsFormProps) => {
   const [businessDescription, setBusinessDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const handleBusinessAnalysis = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!businessDescription.trim()) return;
+    setError(null);
+
+    if (businessDescription.length < 10) {
+      setError('Please provide more details about your business for better analysis (at least 10 characters).');
+      return;
+    }
 
     setIsAnalyzing(true);
     try {
@@ -37,12 +45,10 @@ const BusinessInsightsForm = ({ setMessages }: BusinessInsightsFormProps) => {
         }
       ]);
       setBusinessDescription('');
+      setError(null);
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to analyze business. Please try again.",
-        variant: "destructive",
-      });
+      const errorMessage = error instanceof Error ? error.message : 'Failed to analyze business. Please try again.';
+      setError(errorMessage);
     } finally {
       setIsAnalyzing(false);
     }
@@ -59,10 +65,16 @@ const BusinessInsightsForm = ({ setMessages }: BusinessInsightsFormProps) => {
             id="business-description"
             value={businessDescription}
             onChange={(e) => setBusinessDescription(e.target.value)}
-            placeholder="Example: I run a small coffee shop and want to modernize my business with AI..."
+            placeholder="Example: I run a small coffee shop in downtown and want to modernize my business with AI. We currently serve about 200 customers daily and have 5 employees..."
             className="w-full min-h-[120px] p-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary/20 focus:border-primary"
             disabled={isAnalyzing}
           />
+          {error && (
+            <Alert variant="destructive" className="mt-2">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
         </div>
         <Button
           type="submit"
