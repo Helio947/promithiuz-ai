@@ -1,3 +1,4 @@
+
 import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -114,7 +115,7 @@ const Hero = () => {
             </div>
 
             {/* Single centered button */}
-            <div className="flex justify-center mb-12">
+            <div className="flex justify-center">
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
@@ -122,29 +123,6 @@ const Hero = () => {
                 Calculate Your AI Savings
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </div>
-
-            {/* Case Study */}
-            <div className="max-w-2xl mx-auto bg-white/50 dark:bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-              <div className="text-left">
-                <h3 className="text-2xl font-bold mb-4">Real Business Impact</h3>
-                <div className="space-y-4">
-                  <p className="text-lg">
-                    "Using AI automation, we reduced our customer response time from 3 hours to 5 minutes, saved $4,200 monthly in operational costs, and increased customer satisfaction by 47%."
-                  </p>
-                  <div className="flex items-center gap-4 pt-4 border-t border-white/10">
-                    <img 
-                      src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158"
-                      alt="Sarah Chen"
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <div className="font-semibold">Sarah Chen</div>
-                      <div className="text-sm text-muted-foreground">CEO, TechFlow Solutions</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
