@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import { Message } from "@/types/prometheus-vision";
 import ChatInterface from "@/components/prometheus-vision/ChatInterface";
+import { cn } from "@/lib/utils";
 
 const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -46,3 +47,4 @@ const PrometheusVision = () => {
 };
 
 export default PrometheusVision;
+
