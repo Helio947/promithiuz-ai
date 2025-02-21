@@ -1,5 +1,5 @@
 
-import { ArrowRight, Clock, DollarSign, Brain, Sparkles } from "lucide-react";
+import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BusinessInsightsForm from "@/components/prometheus-vision/BusinessInsightsForm";
 import { useState } from "react";
@@ -20,43 +20,98 @@ const Hero = () => {
       </div>
 
       <div className="container mx-auto px-4 py-20 relative">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           {/* Main content */}
           <div className="text-center mb-12">
             <div className="mb-8 inline-block">
               <div className="inline-flex items-center px-4 py-2 bg-accent/10 rounded-full text-accent font-medium">
-                Proven AI Impact for Your Business
+                Real AI Impact for Small Businesses
               </div>
             </div>
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-secondary bg-clip-text text-transparent leading-tight">
               Save 15+ Hours Weekly & Cut Costs by 40%
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Our AI solutions deliver measurable results: automating tasks, reducing operational costs, and scaling your business efficiency.
+              Small businesses using AI save 520-1,560 hours yearly and reduce costs by $10,000-$50,000 annually.
             </p>
 
-            {/* Key Metrics Grid */}
-            <div className="grid sm:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+            {/* Key Business Areas Grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 transform hover:scale-105 transition-transform">
                 <div className="flex justify-center mb-4">
-                  <Clock className="h-8 w-8 text-primary" />
+                  <MessageSquare className="h-12 w-12 text-primary" />
                 </div>
-                <h3 className="text-3xl font-bold mb-2">15.5hrs</h3>
-                <p className="text-muted-foreground">Average Weekly Time Saved</p>
+                <h3 className="text-lg font-semibold mb-2">Customer Support</h3>
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold text-green-500">80%</p>
+                  <p className="text-muted-foreground">Inquiries Automated</p>
+                  <p className="text-xl font-semibold text-primary">$2,000/mo saved</p>
+                </div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+              
+              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 transform hover:scale-105 transition-transform">
                 <div className="flex justify-center mb-4">
-                  <DollarSign className="h-8 w-8 text-green-500" />
+                  <Users className="h-12 w-12 text-purple-500" />
                 </div>
-                <h3 className="text-3xl font-bold mb-2">40%</h3>
-                <p className="text-muted-foreground">Average Cost Reduction</p>
+                <h3 className="text-lg font-semibold mb-2">Social Media</h3>
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold text-green-500">416hrs</p>
+                  <p className="text-muted-foreground">Saved Yearly</p>
+                  <p className="text-xl font-semibold text-primary">$1,500/mo saved</p>
+                </div>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10">
+              
+              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 transform hover:scale-105 transition-transform">
                 <div className="flex justify-center mb-4">
-                  <Brain className="h-8 w-8 text-purple-500" />
+                  <BarChart className="h-12 w-12 text-blue-500" />
                 </div>
-                <h3 className="text-3xl font-bold mb-2">89%</h3>
-                <p className="text-muted-foreground">Task Automation Rate</p>
+                <h3 className="text-lg font-semibold mb-2">Inventory Management</h3>
+                <div className="space-y-2">
+                  <p className="text-3xl font-bold text-green-500">70%</p>
+                  <p className="text-muted-foreground">Stockout Reduction</p>
+                  <p className="text-xl font-semibold text-primary">$20K/yr extra revenue</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Detailed Metrics Grid */}
+            <div className="grid sm:grid-cols-2 gap-6 mb-12">
+              <div className="bg-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/10">
+                <h3 className="text-2xl font-bold mb-6">Time Savings Breakdown</h3>
+                <div className="space-y-4">
+                  {[
+                    { area: "Content Creation", hours: 8, icon: <Users className="text-purple-500" /> },
+                    { area: "Customer Support", hours: 30, icon: <MessageSquare className="text-blue-500" /> },
+                    { area: "Inventory Management", hours: 5, icon: <Building2 className="text-green-500" /> },
+                  ].map((item) => (
+                    <div key={item.area} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {item.icon}
+                        <span>{item.area}</span>
+                      </div>
+                      <span className="font-bold">{item.hours}hrs/week</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/10">
+                <h3 className="text-2xl font-bold mb-6">Cost Reduction Impact</h3>
+                <div className="space-y-4">
+                  {[
+                    { area: "Manual Labor", savings: 2000, icon: <Clock className="text-primary" /> },
+                    { area: "Automation", savings: 1500, icon: <Brain className="text-secondary" /> },
+                    { area: "Loss Prevention", savings: 450, icon: <ShieldCheck className="text-green-500" /> },
+                  ].map((item) => (
+                    <div key={item.area} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        {item.icon}
+                        <span>{item.area}</span>
+                      </div>
+                      <span className="font-bold">${item.savings}/mo</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -76,36 +131,6 @@ const Hero = () => {
             {/* Business Insights Form */}
             <div className="max-w-2xl mx-auto mb-12">
               <BusinessInsightsForm setMessages={setMessages} />
-            </div>
-            
-            {/* Real Impact Examples */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 text-left">
-              {[
-                {
-                  title: "Customer Service",
-                  metric: "73% faster response time",
-                  description: "AI chatbots handle 89% of common inquiries"
-                },
-                {
-                  title: "Data Analysis",
-                  metric: "95% time reduction",
-                  description: "Automated reporting & insights generation"
-                },
-                {
-                  title: "Process Automation",
-                  metric: "$2,800 monthly savings",
-                  description: "Streamlined operations & reduced manual work"
-                }
-              ].map((impact, index) => (
-                <div key={index} className="bg-card/50 backdrop-blur-sm p-6 rounded-xl border border-white/10">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold text-lg">{impact.title}</h3>
-                  </div>
-                  <p className="text-2xl font-bold text-primary mb-2">{impact.metric}</p>
-                  <p className="text-muted-foreground">{impact.description}</p>
-                </div>
-              ))}
             </div>
 
             {/* Case Study */}
@@ -138,4 +163,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
