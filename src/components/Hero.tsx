@@ -3,9 +3,11 @@ import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, Shield
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Message } from "@/types/prometheus-vision";
+import { CostCalculator } from "./ai-calculator/CostCalculator";
 
 const Hero = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [showCalculator, setShowCalculator] = useState(false);
   
   return (
     <div className="min-h-screen pt-16 flex items-center justify-center relative overflow-hidden">
@@ -119,6 +121,7 @@ const Hero = () => {
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+                onClick={() => setShowCalculator(true)}
               >
                 Calculate Your AI Savings
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -127,6 +130,11 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      <CostCalculator 
+        open={showCalculator} 
+        onOpenChange={setShowCalculator}
+      />
     </div>
   );
 };
