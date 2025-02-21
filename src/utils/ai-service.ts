@@ -65,16 +65,28 @@ const analyzeBusinessDescription = (description: string) => {
 };
 
 export const generateAIResponse = async (prompt: string) => {
-  // Generate personalized insights based on the business description
-  const relevantInsights = analyzeBusinessDescription(prompt);
-  
-  return new Promise<string>((resolve) => {
-    setTimeout(() => {
-      resolve(`Based on your business description, here are tailored recommendations:
+  try {
+    // Try OpenAI API first
+    const response = await fetch('/api/analyze-business', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt }),
+    });
 
-${relevantInsights.map((insight, index) => `${index + 1}. ${insight}`).join('\n')}`);
-    }, 1500); // Simulate API delay for natural feel
-  });
+    if (!response.ok) {
+      throw new Error('API request failed');
+    }
+
+    const data = await response.json();
+    return data.generatedText;
+  } catch (error) {
+    console.log('Falling back to local analysis due to:', error);
+    // Fallback to local analysis if API fails
+    const relevantInsights = analyzeBusinessDescription(prompt);
+    return `Based on your business description, here are tailored recommendations:\n\n${relevantInsights.map((insight, index) => `${index + 1}. ${insight}`).join('\n')}`;
+  }
 };
 
 export const generateBusinessInsights = async (businessDescription: string) => {
