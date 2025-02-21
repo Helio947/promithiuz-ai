@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import { Message } from "@/types/prometheus-vision";
 import BusinessInsightsForm from "@/components/prometheus-vision/BusinessInsightsForm";
 import ChatInterface from "@/components/prometheus-vision/ChatInterface";
-import BusinessMetricsGrid from "@/components/prometheus-vision/BusinessMetricsGrid";
 
 const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -28,8 +27,7 @@ const PrometheusVision = () => {
             <BusinessInsightsForm setMessages={setMessages} />
           )}
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            <BusinessMetricsGrid />
+          <div className="max-w-2xl mx-auto">
             <ChatInterface messages={messages} setMessages={setMessages} />
           </div>
         </div>
