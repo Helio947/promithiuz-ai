@@ -34,19 +34,36 @@ export const AIChat = ({ savings, inputs }: AIChatProps) => {
     setIsLoading(true);
 
     try {
+      const workforceSize = inputs.customerServiceReps || inputs.totalEmployees;
+      const monthlyHours = workforceSize * 160;
+      const automatedHours = monthlyHours * 0.4;
+      
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
         body: { 
-          prompt: `Based on these calculations for a business:
-            - Monthly Labor Cost Savings: $${savings.laborCostSavings.toLocaleString()}
-            - Monthly Time Saved: ${savings.timeSavings.toLocaleString()} hours
-            - Monthly Efficiency Hours Gained: ${savings.efficiencyImprovement.toLocaleString()}
-            - Potential Monthly Revenue Increase: $${savings.revenueIncrease.toLocaleString()}
-            
-            For a business with ${inputs.totalEmployees} employees at $${inputs.averageHourlyCost}/hour.
-            
-            Question: ${currentMessage}
-            
-            Please provide a concise, specific answer based only on these metrics and calculations.`
+          prompt: `Based on these detailed AI impact calculations for a business:
+
+1. Labor Cost Savings: $${savings.laborCostSavings.toLocaleString()}
+   - ${workforceSize} employees working ${monthlyHours} total monthly hours
+   - AI automates ${automatedHours} hours (40% of work)
+   - Hourly cost: $${inputs.averageHourlyCost}
+
+2. Time Savings: ${savings.timeSavings.toLocaleString()} hours
+   - Processing ${inputs.monthlyTickets} monthly tickets
+   - Current response time: ${inputs.averageResponseTime} minutes
+   - AI reduces response time by 80%
+
+3. Efficiency Improvement: ${savings.efficiencyImprovement.toLocaleString()} hours
+   - 30% productivity boost through AI assistance
+   - Smart workflows and automated task management
+   
+4. Revenue Impact: $${savings.revenueIncrease.toLocaleString()}
+   - 1.5x return on labor cost savings
+   - Driven by improved customer satisfaction
+   - Faster response times and consistent service
+
+Question: ${currentMessage}
+
+Please provide a specific, data-driven answer based on these metrics and calculations.`
         }
       });
 
