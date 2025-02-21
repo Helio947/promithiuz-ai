@@ -49,7 +49,7 @@ const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInt
         timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, aiMessage]);
+      setMessages([...messages, newMessage, aiMessage]);
     } catch (error) {
       console.error('Error getting AI response:', error);
       const errorMessage: Message = {
@@ -58,7 +58,7 @@ const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInt
         id: Math.random().toString(),
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages([...messages, newMessage, errorMessage]);
     } finally {
       setIsTyping(false);
     }
