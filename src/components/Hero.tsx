@@ -1,5 +1,5 @@
 
-import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare } from "lucide-react";
+import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare, Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Message } from "@/types/prometheus-vision";
@@ -24,6 +24,19 @@ const Hero = () => {
         <div className="max-w-5xl mx-auto">
           {/* Main content */}
           <div className="text-center mb-12">
+            {/* AI Calculator Button */}
+            <div className="mb-12">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+                onClick={() => setShowCalculator(true)}
+              >
+                <Calculator className="mr-2 h-5 w-5" />
+                AI Calculator
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+
             <div className="mb-8 inline-block">
               <div className="inline-flex items-center px-4 py-2 bg-accent/10 rounded-full text-accent font-medium">
                 Real AI Impact for Small Businesses
