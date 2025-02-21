@@ -113,16 +113,14 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            {/* Single centered button */}
+            <div className="flex justify-center mb-12">
               <Button 
                 size="lg" 
                 className="bg-primary hover:bg-primary/90 text-white text-lg px-8 py-6 animate-glow shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
               >
                 Calculate Your AI Savings
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg">
-                View Success Stories
               </Button>
             </div>
 
