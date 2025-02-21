@@ -13,8 +13,8 @@ export const initializeAI = async () => {
       console.log('Initializing AI model...');
       textGenerator = await pipeline(
         'text-generation',
-        'Xenova/LaMini-Flan-T5-783M',
-        { device: 'webgpu' }
+        'Xenova/gpt2',  // Using GPT-2 which is supported in browser
+        { device: 'cpu' }  // Using CPU as fallback since WebGPU might not be supported
       );
       console.log('AI model initialized successfully');
     } catch (error) {
@@ -29,7 +29,7 @@ export const generateAIResponse = async (prompt: string) => {
   try {
     const generator = await initializeAI();
     const response = await generator(prompt, {
-      max_new_tokens: 200,
+      max_new_tokens: 100,
       temperature: 0.7,
       repetition_penalty: 1.2,
     });
@@ -41,6 +41,6 @@ export const generateAIResponse = async (prompt: string) => {
 };
 
 export const generateBusinessInsights = async (businessDescription: string) => {
-  const prompt = `As Promithiuz AI, analyze this business and provide practical AI implementation suggestions: "${businessDescription}". Focus on actionable insights and specific AI tools that could help.`;
+  const prompt = `Analyze this business and provide practical AI implementation suggestions: "${businessDescription}". Focus on actionable insights.`;
   return generateAIResponse(prompt);
 };
