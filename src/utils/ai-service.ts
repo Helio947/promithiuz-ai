@@ -1,3 +1,4 @@
+
 import { toast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -25,39 +26,44 @@ const analyzeBusinessDescription = (description: string) => {
   // Generate insights based on business type and description length
   const insights = {
     restaurant: [
-      "Implement online ordering to increase revenue",
-      "Analyze peak hours to optimize staffing",
-      "Use inventory management software to reduce waste",
-      "Create a loyalty program for repeat customers",
-      "Consider delivery partnerships to expand reach"
+      "Analyzing your restaurant business...",
+      "I recommend implementing online ordering to increase revenue.",
+      "You should analyze peak hours to optimize staffing.",
+      "Consider using inventory management software to reduce waste.",
+      "A loyalty program could help retain repeat customers.",
+      "Exploring delivery partnerships could expand your reach significantly."
     ],
     retail: [
-      "Implement inventory tracking system",
-      "Develop an online presence",
-      "Create targeted marketing campaigns",
-      "Optimize store layout for better flow",
-      "Set up a customer feedback system"
+      "Looking at your retail business...",
+      "An inventory tracking system would be beneficial for your operations.",
+      "Developing an online presence should be a priority.",
+      "Creating targeted marketing campaigns could boost sales.",
+      "Optimizing your store layout could improve customer flow.",
+      "Implementing a customer feedback system would help improve service."
     ],
     service: [
-      "Automate appointment scheduling",
-      "Implement CRM system for client management",
-      "Develop service packages",
-      "Create case studies from successful projects",
-      "Set up referral program"
+      "Analyzing your service-based business...",
+      "Automating appointment scheduling would save time and resources.",
+      "A CRM system could help manage client relationships better.",
+      "Developing service packages could increase revenue.",
+      "Creating case studies from successful projects would build credibility.",
+      "A referral program could help grow your client base."
     ],
     tech: [
-      "Implement agile methodologies",
-      "Set up automated testing",
-      "Create comprehensive documentation",
-      "Establish a clear product roadmap",
-      "Implement user feedback loops"
+      "Evaluating your tech business...",
+      "Implementing agile methodologies could improve development cycles.",
+      "Setting up automated testing would ensure quality.",
+      "Creating comprehensive documentation is crucial for scaling.",
+      "A clear product roadmap would guide development efforts.",
+      "User feedback loops would help improve your product."
     ],
     general: [
-      "Create a digital marketing strategy",
-      "Implement customer feedback systems",
-      "Analyze market competition",
-      "Optimize operational efficiency",
-      "Develop employee training programs"
+      "Analyzing your business...",
+      "Creating a digital marketing strategy would increase visibility.",
+      "Implementing customer feedback systems could improve service quality.",
+      "Analyzing market competition would help identify opportunities.",
+      "Optimizing operational efficiency could reduce costs.",
+      "Developing employee training programs would improve performance."
     ]
   };
 
@@ -71,12 +77,17 @@ export const generateAIResponse = async (prompt: string) => {
     });
 
     if (error) throw error;
-    return data.generatedText;
+    
+    // Split the response into sentences and return as array
+    const sentences = data.generatedText
+      .split(/(?<=[.!?])\s+/)
+      .filter((sentence: string) => sentence.trim().length > 0);
+    
+    return sentences;
   } catch (error) {
     console.log('Falling back to local analysis due to:', error);
     // Fallback to local analysis if API fails
-    const relevantInsights = analyzeBusinessDescription(prompt);
-    return `Based on your business description, here are tailored recommendations:\n\n${relevantInsights.map((insight, index) => `${index + 1}. ${insight}`).join('\n')}`;
+    return analyzeBusinessDescription(prompt);
   }
 };
 
@@ -110,3 +121,4 @@ export const generateBusinessInsights = async (businessDescription: string) => {
     throw error;
   }
 };
+

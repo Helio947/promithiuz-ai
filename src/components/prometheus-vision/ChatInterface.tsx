@@ -38,6 +38,31 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
+  const addMessageWithDelay = async (sentences: string[]) => {
+    const messageId = Date.now().toString();
+    let currentContent = '';
+
+    // Create initial message with empty content
+    setMessages(prev => [...prev, {
+      role: 'assistant',
+      content: currentContent,
+      id: messageId,
+      timestamp: new Date()
+    }]);
+
+    // Add each sentence with a delay
+    for (const sentence of sentences) {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      currentContent += (currentContent ? ' ' : '') + sentence;
+      
+      setMessages(prev => prev.map(msg =>
+        msg.id === messageId
+          ? { ...msg, content: currentContent }
+          : msg
+      ));
+    }
+  };
+
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) return;
 
@@ -58,13 +83,7 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
 
     try {
       const aiResponse = await generateAIResponse(userMessage);
-      
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: aiResponse,
-        id: Date.now().toString(),
-        timestamp: new Date()
-      }]);
+      await addMessageWithDelay(aiResponse);
     } catch (error) {
       toast({
         title: "Error",
