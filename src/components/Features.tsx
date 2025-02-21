@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const features = [
   {
     icon: Brain,
-    title: "Prometheus Vision",
+    title: "Promithiuz AI Vision",
     description: "Get personalized AI-driven insights and recommendations for your business growth.",
     route: "/prometheus-vision"
   },
