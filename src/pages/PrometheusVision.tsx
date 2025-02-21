@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import { Message } from "@/types/prometheus-vision";
-import BusinessInsightsForm from "@/components/prometheus-vision/BusinessInsightsForm";
 import ChatInterface from "@/components/prometheus-vision/ChatInterface";
 
 const PrometheusVision = () => {
@@ -22,10 +21,6 @@ const PrometheusVision = () => {
               Your business insights hub powered by AI
             </p>
           </div>
-
-          {messages.length === 0 && (
-            <BusinessInsightsForm setMessages={setMessages} />
-          )}
 
           <div className="max-w-2xl mx-auto">
             <ChatInterface messages={messages} setMessages={setMessages} />
