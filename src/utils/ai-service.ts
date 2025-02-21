@@ -11,34 +11,17 @@ export const initializeAI = async () => {
   if (!textGenerator) {
     try {
       console.log('Initializing AI model...');
-      
-      // Try WebGPU first, fall back to WASM if not available
-      const device = 'webgpu';
-      
       textGenerator = await pipeline(
         'text-generation',
-        'distilgpt2',  // Using a smaller model that's more likely to work in browser
+        'Xenova/distilgpt2-tiny',  // Using a tiny model specifically for browsers
         { 
-          device
+          device: 'wasm'  // Using WASM directly instead of trying WebGPU first
         }
       );
       console.log('AI model initialized successfully');
     } catch (error) {
       console.error('Detailed initialization error:', error);
-      try {
-        console.log('Falling back to WASM...');
-        textGenerator = await pipeline(
-          'text-generation',
-          'distilgpt2',
-          { 
-            device: 'wasm'
-          }
-        );
-        console.log('Successfully initialized with WASM');
-      } catch (fallbackError) {
-        console.error('Fallback initialization error:', fallbackError);
-        throw new Error(`Failed to initialize AI model: ${error.message}`);
-      }
+      throw new Error(`Failed to initialize AI model: ${error.message}`);
     }
   }
   return textGenerator;
@@ -55,7 +38,7 @@ export const generateAIResponse = async (prompt: string) => {
     console.log('Model initialized, generating with prompt:', prompt);
     
     const response = await generator(prompt, {
-      max_length: 200,  // Set absolute length instead of relative tokens
+      max_length: 100,  // Reduced length for faster response
       temperature: 0.7,
       do_sample: true,
       top_k: 50,
@@ -76,11 +59,10 @@ export const generateAIResponse = async (prompt: string) => {
 
 export const generateBusinessInsights = async (businessDescription: string) => {
   const prompt = `Analyze this business: "${businessDescription}". 
-Provide specific suggestions for:
-- Process automation
-- Customer service
-- Cost reduction
-- Revenue growth`;
+Keep it brief and suggest:
+- Automation
+- Service improvements
+- Cost savings`;
   
   try {
     console.log('Starting business analysis...');
