@@ -35,24 +35,23 @@ export const CalculatorMetrics = ({ savings, inputs }: CalculatorMetricsProps) =
       </div>
 
       <div className="mt-6 space-y-4 text-sm text-muted-foreground border-t pt-4">
-        <h4 className="font-medium text-foreground">How we calculated these numbers:</h4>
-        <ul className="space-y-3 list-disc pl-4">
-          <li>
-            <span className="text-primary font-medium">Labor Cost Savings:</span> Based on {workforceSize} employees working 
-            160 hours per month at ${inputs.averageHourlyCost}/hour, with a 40% reduction in labor costs through AI automation.
+        <h4 className="font-medium text-foreground">How we calculate these numbers:</h4>
+        <ul className="space-y-3">
+          <li className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4 text-primary" />
+            <span>We reduce your monthly labor costs by 40% through AI automation</span>
           </li>
-          <li>
-            <span className="text-secondary font-medium">Time Saved:</span> {inputs.monthlyTickets ? 
-              `Calculated from ${inputs.monthlyTickets} monthly tickets with ${inputs.averageResponseTime} minutes average response time, reduced by 80% with AI` :
-              `Estimated as 40 hours saved per employee per month through AI automation`}.
+          <li className="flex items-center gap-2">
+            <Clock className="h-4 w-4 text-secondary" />
+            <span>Each employee saves 40 hours monthly with AI assistance</span>
           </li>
-          <li>
-            <span className="text-accent font-medium">Efficiency Hours:</span> Based on a 30% improvement in productivity 
-            across {workforceSize} employees working 160 hours per month.
+          <li className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-accent" />
+            <span>AI improves team productivity by 30%</span>
           </li>
-          <li>
-            <span className="text-green-500 font-medium">Revenue Increase:</span> Conservative estimate calculated as 
-            1.5x your labor cost savings, based on improved efficiency and customer satisfaction.
+          <li className="flex items-center gap-2">
+            <Users className="h-4 w-4 text-green-500" />
+            <span>Revenue grows 1.5x your cost savings from better efficiency</span>
           </li>
         </ul>
       </div>
