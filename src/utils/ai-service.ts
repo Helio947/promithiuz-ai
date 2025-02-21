@@ -11,17 +11,34 @@ export const initializeAI = async () => {
   if (!textGenerator) {
     try {
       console.log('Initializing AI model...');
+      
+      // Try WebGPU first, fall back to WASM if not available
+      const device = 'webgpu';
+      
       textGenerator = await pipeline(
         'text-generation',
         'distilgpt2',  // Using a smaller model that's more likely to work in browser
         { 
-          device: 'cpu'  // Using CPU as fallback since WebGPU might not be supported
+          device
         }
       );
       console.log('AI model initialized successfully');
     } catch (error) {
       console.error('Detailed initialization error:', error);
-      throw new Error(`Failed to initialize AI model: ${error.message}`);
+      try {
+        console.log('Falling back to WASM...');
+        textGenerator = await pipeline(
+          'text-generation',
+          'distilgpt2',
+          { 
+            device: 'wasm'
+          }
+        );
+        console.log('Successfully initialized with WASM');
+      } catch (fallbackError) {
+        console.error('Fallback initialization error:', fallbackError);
+        throw new Error(`Failed to initialize AI model: ${error.message}`);
+      }
     }
   }
   return textGenerator;
