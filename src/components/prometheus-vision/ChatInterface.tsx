@@ -36,10 +36,11 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  const addMessageWithDelay = async (sentences: string[]) => {
+  const addMessageWithWordByWord = async (sentences: string[]) => {
     const messageId = Date.now().toString();
     let currentContent = '';
-
+    let paragraphs: string[] = [];
+    
     setMessages(prev => [...prev, {
       role: 'assistant',
       content: currentContent,
@@ -48,14 +49,23 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
     }]);
 
     for (const sentence of sentences) {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      currentContent += (currentContent ? ' ' : '') + sentence;
+      const words = sentence.split(' ');
+      let paragraphContent = '';
       
-      setMessages(prev => prev.map(msg =>
-        msg.id === messageId
-          ? { ...msg, content: currentContent }
-          : msg
-      ));
+      for (const word of words) {
+        await new Promise(resolve => setTimeout(resolve, 100)); // Faster word typing
+        paragraphContent += (paragraphContent ? ' ' : '') + word;
+        currentContent = [...paragraphs, paragraphContent].join('\n\n');
+        
+        setMessages(prev => prev.map(msg =>
+          msg.id === messageId
+            ? { ...msg, content: currentContent }
+            : msg
+        ));
+      }
+      
+      paragraphs.push(paragraphContent);
+      await new Promise(resolve => setTimeout(resolve, 500)); // Pause between sentences
     }
   };
 
@@ -79,7 +89,7 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
 
     try {
       const aiResponse = await generateAIResponse(userMessage);
-      await addMessageWithDelay(aiResponse);
+      await addMessageWithWordByWord(aiResponse);
     } catch (error) {
       toast({
         description: "Failed to get response. Please try again.",
@@ -119,7 +129,7 @@ const ChatInterface = ({ messages, setMessages }: ChatInterfaceProps) => {
                 "max-w-[80%] px-4 py-2 rounded-lg text-sm",
                 message.role === 'user' 
                   ? "bg-primary text-white" 
-                  : "bg-gray-100 text-gray-800"
+                  : "bg-gray-100 text-gray-800 whitespace-pre-wrap"
               )}>
                 {message.content}
               </div>
