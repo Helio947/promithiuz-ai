@@ -13,15 +13,15 @@ export const initializeAI = async () => {
       console.log('Initializing AI model...');
       textGenerator = await pipeline(
         'text-generation',
-        'Xenova/gpt2',  // Using GPT-2 which is supported in browser
+        'distilgpt2',  // Using a smaller model that's more likely to work in browser
         { 
           device: 'cpu'  // Using CPU as fallback since WebGPU might not be supported
         }
       );
       console.log('AI model initialized successfully');
     } catch (error) {
-      console.error('Error initializing AI:', error);
-      throw new Error('Failed to initialize AI model. Please try again.');
+      console.error('Detailed initialization error:', error);
+      throw new Error(`Failed to initialize AI model: ${error.message}`);
     }
   }
   return textGenerator;
@@ -33,37 +33,45 @@ export const generateAIResponse = async (prompt: string) => {
   }
 
   try {
+    console.log('Starting to generate response...');
     const generator = await initializeAI();
-    console.log('Generating response for prompt:', prompt);
+    console.log('Model initialized, generating with prompt:', prompt);
     
     const response = await generator(prompt, {
-      max_new_tokens: 150,
+      max_length: 200,  // Set absolute length instead of relative tokens
       temperature: 0.7,
-      repetition_penalty: 1.2,
       do_sample: true,
       top_k: 50,
-      top_p: 0.9,
     });
     
-    console.log('Generated response:', response);
+    console.log('Raw model response:', response);
+    
+    if (!response || !response[0] || !response[0].generated_text) {
+      throw new Error('Model returned invalid response format');
+    }
+    
     return response[0].generated_text;
   } catch (error) {
-    console.error('Error generating response:', error);
-    throw new Error('Failed to analyze business. Please try again.');
+    console.error('Detailed generation error:', error);
+    throw new Error(`Failed to analyze business: ${error.message}`);
   }
 };
 
 export const generateBusinessInsights = async (businessDescription: string) => {
-  const prompt = `Business Analysis:
-Business: "${businessDescription}"
-
-Please provide specific AI implementation suggestions and practical insights for this business. Focus on:
-1. Process automation opportunities
-2. Customer service improvements
-3. Cost reduction strategies
-4. Revenue growth potential
-
-Analysis:`;
+  const prompt = `Analyze this business: "${businessDescription}". 
+Provide specific suggestions for:
+- Process automation
+- Customer service
+- Cost reduction
+- Revenue growth`;
   
-  return generateAIResponse(prompt);
+  try {
+    console.log('Starting business analysis...');
+    const result = await generateAIResponse(prompt);
+    console.log('Analysis completed successfully');
+    return result;
+  } catch (error) {
+    console.error('Business analysis failed:', error);
+    throw error;
+  }
 };
