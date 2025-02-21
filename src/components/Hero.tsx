@@ -1,7 +1,5 @@
-
 import { ArrowRight, Clock, DollarSign, Brain, Sparkles, BarChart, Users, ShieldCheck, Building2, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import BusinessInsightsForm from "@/components/prometheus-vision/BusinessInsightsForm";
 import { useState } from "react";
 import { Message } from "@/types/prometheus-vision";
 
@@ -126,11 +124,6 @@ const Hero = () => {
               <Button size="lg" variant="outline" className="text-lg">
                 View Success Stories
               </Button>
-            </div>
-
-            {/* Business Insights Form */}
-            <div className="max-w-2xl mx-auto mb-12">
-              <BusinessInsightsForm setMessages={setMessages} />
             </div>
 
             {/* Case Study */}
