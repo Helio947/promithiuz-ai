@@ -1,14 +1,13 @@
-
 import Header from "@/components/Header";
 import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
+import AIToolCategory from "@/components/forged-sword/AIToolCategory";
+import StrategyCategory from "@/components/forged-sword/StrategyCategory";
+import BestPracticeCategory from "@/components/forged-sword/BestPracticeCategory";
+import SystemApproach from "@/components/forged-sword/SystemApproach";
+import CategoryCard from "@/components/forged-sword/CategoryCard";
 
 const textToTextContent = {
   overview: {
@@ -192,82 +191,39 @@ const ForgedSword = () => {
               
               <Accordion type="single" collapsible className="space-y-4">
                 {textToTextContent.aiTools.map((toolCategory, index) => (
-                  <AccordionItem key={`tools-${index}`} value={`tools-${index}`}>
-                    <AccordionTrigger className="text-lg font-medium">
-                      {toolCategory.title}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="space-y-6">
-                        {toolCategory.tools.map((tool, i) => (
-                          <div key={i} className="bg-gray-50 p-4 rounded-lg">
-                            <h4 className="font-medium text-primary mb-2">{tool.name}</h4>
-                            <p className="text-gray-600 mb-2">{tool.use}</p>
-                            <div className="flex flex-wrap gap-2">
-                              {tool.applications.map((app, j) => (
-                                <span key={j} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                                  {app}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <AIToolCategory 
+                    key={index}
+                    title={toolCategory.title}
+                    tools={toolCategory.tools}
+                    index={index}
+                  />
                 ))}
 
                 {textToTextContent.strategies.map((strategy, index) => (
-                  <AccordionItem key={`strategy-${index}`} value={`strategy-${index}`}>
-                    <AccordionTrigger className="text-lg font-medium">
-                      {strategy.title}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-3">
-                        {strategy.items.map((item, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-2" />
-                            <span className="text-gray-600">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <StrategyCategory
+                    key={index}
+                    title={strategy.title}
+                    items={strategy.items}
+                    index={index}
+                  />
                 ))}
 
                 {textToTextContent.bestPractices.map((practice, index) => (
-                  <AccordionItem key={`practice-${index}`} value={`practice-${index}`}>
-                    <AccordionTrigger className="text-lg font-medium">
-                      {practice.title}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-3">
-                        {practice.practices.map((item, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-2" />
-                            <span className="text-gray-600">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <BestPracticeCategory
+                    key={index}
+                    title={practice.title}
+                    practices={practice.practices}
+                    index={index}
+                  />
                 ))}
 
                 {textToTextContent.systemsApproach.map((system, index) => (
-                  <AccordionItem key={`system-${index}`} value={`system-${index}`}>
-                    <AccordionTrigger className="text-lg font-medium">
-                      {system.title}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-3">
-                        {system.steps.map((step, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-2" />
-                            <span className="text-gray-600">{step}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <SystemApproach
+                    key={index}
+                    title={system.title}
+                    steps={system.steps}
+                    index={index}
+                  />
                 ))}
               </Accordion>
             </div>
@@ -275,24 +231,12 @@ const ForgedSword = () => {
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {otherCategories.map((category, index) => (
-              <div 
+              <CategoryCard
                 key={index}
-                className="bg-white rounded-xl p-6 shadow-sm border border-gray-200"
-              >
-                <h3 className="text-xl font-semibold mb-3">{category.title}</h3>
-                <p className="text-gray-600 mb-4">{category.description}</p>
-                <div className="space-y-2">
-                  {category.examples.map((example, i) => (
-                    <div 
-                      key={i}
-                      className="flex items-center gap-2 text-sm text-gray-500"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/40" />
-                      {example}
-                    </div>
-                  ))}
-                </div>
-              </div>
+                title={category.title}
+                description={category.description}
+                examples={category.examples}
+              />
             ))}
           </div>
         </div>
