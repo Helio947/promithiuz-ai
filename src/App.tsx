@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import PrometheusVision from "@/pages/PrometheusVision";
 import Forge from "@/pages/Forge";
 import PromptEngine from "@/pages/PromptEngine";
+import ForgedSword from "@/pages/ForgedSword";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/prompt-engine",
     element: <PromptEngine />,
+  },
+  {
+    path: "/forged-sword",
+    element: <ForgedSword />,
   },
   {
     path: "*",
