@@ -36,6 +36,19 @@ const Header = () => {
             >
               Promithiuz Vision
             </Link>
+            <Link 
+              to="/forged-sword" 
+              className={cn(
+                "text-gray-600 hover:text-primary transition-colors",
+                location.pathname === "/forged-sword" && "text-primary",
+                "flex items-center gap-2"
+              )}
+            >
+              Forged Sword
+              <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
+                Premium
+              </span>
+            </Link>
             <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
             <Button 
               variant="default"
@@ -64,6 +77,14 @@ const Header = () => {
               <DropdownMenuItem asChild>
                 <Link to="/prometheus-vision" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
                   Promithiuz Vision
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/forged-sword" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 flex items-center justify-between">
+                  Forged Sword
+                  <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    Premium
+                  </span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
