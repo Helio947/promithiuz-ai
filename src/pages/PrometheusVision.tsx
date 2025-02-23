@@ -16,18 +16,27 @@ const PrometheusVision = () => {
       <main className="pt-24 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12 relative">
-            <div 
-              className={cn(
-                "absolute inset-0 -z-10 rounded-full opacity-75 blur-2xl",
-                "bg-gradient-to-r from-primary via-secondary to-primary",
-                "transition-opacity duration-1000",
-                isTyping ? "opacity-100" : "opacity-0"
-              )}
-            />
-            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Promithiuz AI Vision
-            </h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            {/* Glowing Ring */}
+            <div className="relative w-40 h-40 mx-auto">
+              <div 
+                className={cn(
+                  "absolute inset-0 rounded-full",
+                  "bg-gradient-to-r from-primary via-secondary to-primary",
+                  "transition-all duration-1000 ease-in-out",
+                  "blur-xl opacity-50",
+                  isTyping ? "scale-125" : "scale-100"
+                )}
+              />
+              <div 
+                className={cn(
+                  "absolute inset-0 rounded-full",
+                  "border-4 border-primary",
+                  "transition-all duration-1000",
+                  isTyping ? "animate-pulse" : ""
+                )}
+              />
+            </div>
+            <p className="text-gray-600 max-w-2xl mx-auto mt-8">
               Your business insights hub powered by AI
             </p>
           </div>
