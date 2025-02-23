@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import PrometheusVision from "./pages/PrometheusVision";
 import Forge from "./pages/Forge";
 import PromptEngine from "./pages/PromptEngine";
+import ForgedSword from "./pages/ForgedSword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/prometheus-vision" element={<PrometheusVision />} />
           <Route path="/forge" element={<Forge />} />
           <Route path="/prompt-engine" element={<PromptEngine />} />
+          <Route path="/forged-sword" element={<ForgedSword />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -32,3 +34,4 @@ const App = () => (
 );
 
 export default App;
+
