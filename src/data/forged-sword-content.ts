@@ -178,12 +178,13 @@ export const otherCategories = [
   {
     title: "Text to Image",
     description: "Learn to create stunning visuals from text descriptions using advanced AI models.",
-    examples: ["Product Visualization", "Marketing Assets", "Concept Art", "Brand Design"]
+    examples: ["Product Visualization", "Marketing Assets", "Concept Art", "Brand Design"],
+    route: "/text-to-image"
   },
   {
     title: "Text to Video",
     description: "Transform your ideas into engaging video content with AI-powered tools.",
-    examples: ["Promotional Videos", "Educational Content", "Social Media", "Presentations"]
+    examples: ["Promotional Videos", "Educational Content", "Social Media", "Presentations"],
+    route: "/text-to-video"
   }
 ];
-

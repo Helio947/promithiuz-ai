@@ -1,37 +1,55 @@
+import Index from "@/pages/Index";
+import NotFound from "@/pages/NotFound";
+import PrometheusVision from "@/pages/PrometheusVision";
+import Forge from "@/pages/Forge";
+import PromptEngine from "@/pages/PromptEngine";
+import TextToText from "@/pages/TextToText";
+import TextToImage from "@/pages/TextToImage";
+import TextToVideo from "@/pages/TextToVideo";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import PrometheusVision from "./pages/PrometheusVision";
-import Forge from "./pages/Forge";
-import PromptEngine from "./pages/PromptEngine";
-import ForgedSword from "./pages/ForgedSword";
-import NotFound from "./pages/NotFound";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Index />,
+  },
+  {
+    path: "/prometheus-vision",
+    element: <PrometheusVision />,
+  },
+  {
+    path: "/forge",
+    element: <Forge />,
+  },
+  {
+    path: "/prompt-engine",
+    element: <PromptEngine />,
+  },
+  {
+    path: "/text-to-text",
+    element: <TextToText />,
+  },
+  {
+    path: "/text-to-image",
+    element: <TextToImage />,
+  },
+  {
+    path: "/text-to-video",
+    element: <TextToVideo />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
+  },
+]);
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/prometheus-vision" element={<PrometheusVision />} />
-          <Route path="/forge" element={<Forge />} />
-          <Route path="/prompt-engine" element={<PromptEngine />} />
-          <Route path="/forged-sword" element={<ForgedSword />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <RouterProvider router={router} />
+  );
+}
 
 export default App;
-
