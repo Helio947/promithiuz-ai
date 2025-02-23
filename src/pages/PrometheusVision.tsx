@@ -17,36 +17,36 @@ const PrometheusVision = () => {
         <div className="container mx-auto">
           <div className="text-center mb-12 relative">
             {/* Glowing Ring */}
-            <div className="relative w-40 h-40 mx-auto">
+            <div className="relative w-40 h-40 mx-auto overflow-hidden rounded-full">
               {/* Outer glow layer */}
               <div 
                 className={cn(
-                  "absolute inset-0 rounded-full",
+                  "absolute inset-0",
                   "bg-gradient-to-r from-primary via-secondary to-primary",
                   "transition-all duration-1000 ease-in-out",
                   "blur-2xl opacity-70",
                   "animate-glow",
-                  isTyping ? "scale-150" : "scale-125"
+                  isTyping ? "scale-110" : "scale-100"
                 )}
               />
               {/* Middle glow layer */}
               <div 
                 className={cn(
-                  "absolute inset-0 rounded-full",
+                  "absolute inset-0",
                   "bg-gradient-to-r from-primary via-secondary to-primary",
                   "transition-all duration-1000 ease-in-out",
                   "blur-xl opacity-50",
-                  isTyping ? "scale-125" : "scale-110"
+                  isTyping ? "scale-105" : "scale-100"
                 )}
               />
               {/* Inner ring */}
               <div 
                 className={cn(
-                  "absolute inset-0 rounded-full",
+                  "absolute inset-0",
                   "border-4 border-primary",
                   "transition-all duration-1000",
                   "bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10",
-                  isTyping ? "animate-pulse scale-110" : "scale-100"
+                  isTyping ? "animate-pulse" : ""
                 )}
               />
             </div>
