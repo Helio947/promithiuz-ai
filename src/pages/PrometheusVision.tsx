@@ -42,7 +42,7 @@ const PrometheusVision = () => {
                 )}
               />
               
-              {/* Inner circle */}
+              {/* Inner circle with subtle glow */}
               <div 
                 className={cn(
                   "absolute inset-6",
@@ -50,9 +50,23 @@ const PrometheusVision = () => {
                   "bg-white",
                   "transition-all duration-300",
                   "border border-gray-100",
-                  "shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]"
+                  "shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]",
+                  "bg-gradient-to-t from-blue-50/40 to-transparent",
+                  isTyping ? "from-blue-100/50" : "from-blue-50/40"
                 )}
-              />
+              >
+                {/* Additional inner glow layer */}
+                <div 
+                  className={cn(
+                    "absolute inset-0",
+                    "rounded-full",
+                    "bg-gradient-to-b from-white via-transparent to-blue-50/30",
+                    "opacity-70",
+                    "transition-opacity duration-300",
+                    isTyping ? "opacity-90" : "opacity-70"
+                  )}
+                />
+              </div>
             </div>
             <p className="text-gray-600 max-w-2xl mx-auto mt-8">
               Your business insights hub powered by AI
