@@ -16,65 +16,43 @@ const PrometheusVision = () => {
       <main className="pt-24 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12 relative">
-            {/* Quantum State Ring */}
+            {/* Minimalist Ring */}
             <div className="relative w-40 h-40 mx-auto">
-              {/* Quantum field backdrop */}
-              <div className="absolute inset-0 rounded-full">
-                <div 
-                  className={cn(
-                    "absolute inset-0",
-                    "bg-gradient-to-r from-cyan-500 via-blue-400 to-cyan-500",
-                    "opacity-10 blur-2xl",
-                    "animate-[pulse_3s_ease-in-out_infinite]"
-                  )}
-                />
-              </div>
-              
-              {/* Outer quantum ring */}
+              {/* Base ring */}
               <div 
                 className={cn(
                   "absolute inset-0",
-                  "border-[3px]",
+                  "border-2",
                   "rounded-full",
-                  "transition-all duration-500",
-                  "border-cyan-400",
-                  "bg-gradient-to-tr from-cyan-500/5 to-blue-400/5",
-                  isTyping ? "scale-110" : "scale-100",
-                  "animate-[spin_12s_linear_infinite]"
+                  "transition-all duration-500 ease-out",
+                  "border-gray-200",
+                  "bg-gradient-to-t from-gray-50 to-white",
+                  isTyping ? "scale-110" : "scale-100"
                 )}
               />
               
-              {/* Middle quantum ring */}
+              {/* Glow ring */}
               <div 
                 className={cn(
-                  "absolute inset-4",
-                  "border-2 border-dashed border-blue-300/40",
+                  "absolute inset-0",
                   "rounded-full",
-                  "transition-all duration-700",
-                  isTyping ? "scale-105 rotate-180" : "scale-100 rotate-0",
-                  "animate-[spin_8s_linear_infinite_reverse]"
-                )}
-              />
-              
-              {/* Inner quantum core */}
-              <div 
-                className={cn(
-                  "absolute inset-8",
-                  "rounded-full",
-                  "bg-gradient-to-br from-cyan-400/30 to-blue-500/30",
                   "transition-all duration-300",
-                  "animate-[pulse_2s_ease-in-out_infinite]",
-                  isTyping ? "opacity-90 scale-110" : "opacity-40 scale-100"
+                  "bg-blue-100/20 blur-md",
+                  isTyping ? "opacity-100 scale-105" : "opacity-0 scale-100"
                 )}
-              >
-                <div className={cn(
-                  "absolute inset-2",
+              />
+              
+              {/* Inner circle */}
+              <div 
+                className={cn(
+                  "absolute inset-6",
                   "rounded-full",
-                  "bg-gradient-to-r from-cyan-200/20 via-blue-300/20 to-cyan-200/20",
-                  "blur-sm",
-                  "animate-[spin_4s_linear_infinite]"
-                )} />
-              </div>
+                  "bg-white",
+                  "transition-all duration-300",
+                  "border border-gray-100",
+                  "shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]"
+                )}
+              />
             </div>
             <p className="text-gray-600 max-w-2xl mx-auto mt-8">
               Your business insights hub powered by AI
