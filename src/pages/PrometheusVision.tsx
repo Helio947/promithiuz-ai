@@ -16,17 +16,54 @@ const PrometheusVision = () => {
       <main className="pt-24 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12 relative">
-            {/* Simple Ring */}
-            <div className="relative w-40 h-40 mx-auto rounded-full">
-              {/* Basic ring with animation */}
+            {/* Quantum State Ring */}
+            <div className="relative w-40 h-40 mx-auto">
+              {/* Quantum particles effect */}
+              <div className="absolute inset-0 rounded-full overflow-hidden">
+                <div 
+                  className={cn(
+                    "absolute inset-0",
+                    "bg-gradient-to-r from-cyan-400 via-blue-500 to-cyan-400",
+                    "opacity-20 blur-xl",
+                    "animate-pulse"
+                  )}
+                />
+              </div>
+              
+              {/* Main quantum ring */}
               <div 
                 className={cn(
                   "absolute inset-0",
-                  "border-4 border-orange-500",
+                  "border-4 border-cyan-500",
                   "rounded-full",
-                  "transition-transform duration-1000",
-                  "bg-orange-50/5",
-                  isTyping ? "scale-105" : "scale-100"
+                  "transition-all duration-700",
+                  "bg-gradient-to-br from-cyan-500/10 to-blue-500/10",
+                  isTyping ? "scale-110" : "scale-100",
+                  "animate-[spin_8s_linear_infinite]"
+                )}
+              />
+              
+              {/* Inner quantum ring */}
+              <div 
+                className={cn(
+                  "absolute inset-2",
+                  "border-2 border-blue-400/50",
+                  "rounded-full",
+                  "transition-all duration-700",
+                  isTyping ? "scale-105" : "scale-100",
+                  "animate-[spin_6s_linear_infinite_reverse]"
+                )}
+              />
+              
+              {/* Energy particles */}
+              <div 
+                className={cn(
+                  "absolute inset-4",
+                  "rounded-full",
+                  "bg-gradient-to-r from-cyan-400/20 via-blue-500/20 to-cyan-400/20",
+                  "transition-opacity duration-1000",
+                  "animate-pulse",
+                  isTyping ? "opacity-100" : "opacity-50"
                 )}
               />
             </div>
