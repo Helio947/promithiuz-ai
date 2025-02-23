@@ -9,6 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      dating_profiles: {
+        Row: {
+          bio: string | null
+          birth_date: string
+          created_at: string
+          full_name: string
+          id: string
+          is_profile_complete: boolean | null
+          looking_for: Database["public"]["Enums"]["relationship_preference"]
+          occupation: string | null
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          birth_date: string
+          created_at?: string
+          full_name: string
+          id: string
+          is_profile_complete?: boolean | null
+          looking_for?: Database["public"]["Enums"]["relationship_preference"]
+          occupation?: string | null
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          birth_date?: string
+          created_at?: string
+          full_name?: string
+          id?: string
+          is_profile_complete?: boolean | null
+          looking_for?: Database["public"]["Enums"]["relationship_preference"]
+          occupation?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -29,6 +65,47 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      questionnaire_responses: {
+        Row: {
+          created_at: string
+          goals: string[]
+          growth_areas: string[]
+          id: string
+          interests: string[]
+          updated_at: string
+          user_id: string | null
+          values: string[]
+        }
+        Insert: {
+          created_at?: string
+          goals: string[]
+          growth_areas: string[]
+          id?: string
+          interests: string[]
+          updated_at?: string
+          user_id?: string | null
+          values: string[]
+        }
+        Update: {
+          created_at?: string
+          goals?: string[]
+          growth_areas?: string[]
+          id?: string
+          interests?: string[]
+          updated_at?: string
+          user_id?: string | null
+          values?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questionnaire_responses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "dating_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_progress: {
         Row: {
@@ -68,7 +145,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      relationship_preference:
+        | "romantic"
+        | "friendship"
+        | "business"
+        | "mentorship"
     }
     CompositeTypes: {
       [_ in never]: never
