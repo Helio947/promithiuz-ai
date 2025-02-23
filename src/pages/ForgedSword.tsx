@@ -37,6 +37,26 @@ const textToTextContent = {
           name: "PaLM API",
           use: "Efficient text processing and generation",
           applications: ["Chat applications", "Content summarization", "Language translation"]
+        },
+        {
+          name: "LLaMA 2",
+          use: "Open-source language model for various applications",
+          applications: ["Local deployment", "Custom fine-tuning", "Research projects"]
+        },
+        {
+          name: "Mistral AI",
+          use: "Efficient and precise language processing",
+          applications: ["Enterprise solutions", "Multilingual tasks", "Document processing"]
+        },
+        {
+          name: "Falcon",
+          use: "Open-source model with strong performance",
+          applications: ["Academic research", "Text analysis", "Content generation"]
+        },
+        {
+          name: "Yi",
+          use: "Advanced multilingual capabilities",
+          applications: ["Translation tasks", "Cross-cultural content", "Language learning"]
         }
       ]
     },
@@ -62,6 +82,36 @@ const textToTextContent = {
           name: "Writesonic",
           use: "Business content automation",
           applications: ["Articles", "Landing pages", "Press releases"]
+        },
+        {
+          name: "Rytr",
+          use: "Versatile content creation assistant",
+          applications: ["Story writing", "Business pitches", "Song lyrics"]
+        },
+        {
+          name: "Notion AI",
+          use: "Integrated document writing assistant",
+          applications: ["Note-taking", "Document editing", "Content organization"]
+        },
+        {
+          name: "Peppertype",
+          use: "Marketing-focused content generation",
+          applications: ["Brand voice", "Website copy", "Social captions"]
+        },
+        {
+          name: "Typeface",
+          use: "Brand-consistent content creation",
+          applications: ["Brand guidelines", "Marketing copy", "Content workflows"]
+        },
+        {
+          name: "QuillBot",
+          use: "Advanced paraphrasing and writing",
+          applications: ["Content rewriting", "Citation checking", "Grammar enhancement"]
+        },
+        {
+          name: "Wordtune",
+          use: "Context-aware writing assistance",
+          applications: ["Sentence rewriting", "Tone adjustment", "Translation assistance"]
         }
       ]
     }
