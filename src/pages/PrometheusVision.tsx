@@ -22,7 +22,7 @@ const PrometheusVision = () => {
               <div 
                 className={cn(
                   "absolute inset-0",
-                  "bg-gradient-to-r from-primary via-secondary to-primary",
+                  "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-400",
                   "transition-all duration-1000 ease-in-out",
                   "blur-2xl opacity-70",
                   "animate-glow",
@@ -33,7 +33,7 @@ const PrometheusVision = () => {
               <div 
                 className={cn(
                   "absolute inset-0",
-                  "bg-gradient-to-r from-primary via-secondary to-primary",
+                  "bg-gradient-to-r from-orange-400 via-orange-500 to-orange-400",
                   "transition-all duration-1000 ease-in-out",
                   "blur-xl opacity-50",
                   isTyping ? "scale-105" : "scale-100"
@@ -43,9 +43,9 @@ const PrometheusVision = () => {
               <div 
                 className={cn(
                   "absolute inset-0",
-                  "border-4 border-primary",
+                  "border-4 border-orange-500",
                   "transition-all duration-1000",
-                  "bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/10",
+                  "bg-gradient-to-r from-orange-400/10 via-orange-500/10 to-orange-400/10",
                   isTyping ? "animate-pulse" : ""
                 )}
               />
