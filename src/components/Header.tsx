@@ -26,7 +26,7 @@ const Header = () => {
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-primary transition-colors">Features</a>
+            <a href="#about" className="text-gray-600 hover:text-primary transition-colors">Who We Are</a>
             <Link 
               to="/prometheus-vision" 
               className={cn(
@@ -36,6 +36,31 @@ const Header = () => {
             >
               Promithiuz Vision
             </Link>
+            <Link 
+              to="/forge" 
+              className={cn(
+                "text-gray-600 hover:text-primary transition-colors",
+                location.pathname === "/forge" && "text-primary"
+              )}
+            >
+              The Forge
+            </Link>
+            <Link 
+              to="/prompt-engine" 
+              className={cn(
+                "text-gray-600 hover:text-primary transition-colors",
+                location.pathname === "/prompt-engine" && "text-primary"
+              )}
+            >
+              Prompt Engine
+            </Link>
+            <Button 
+              variant="default"
+              onClick={() => setCalculatorOpen(true)}
+              className="bg-primary text-white hover:bg-primary/90"
+            >
+              AI Calculator
+            </Button>
             <Link 
               to="/forged-sword" 
               className={cn(
@@ -49,14 +74,6 @@ const Header = () => {
                 Premium
               </span>
             </Link>
-            <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
-            <Button 
-              variant="default"
-              onClick={() => setCalculatorOpen(true)}
-              className="bg-primary text-white hover:bg-primary/90"
-            >
-              AI Calculator
-            </Button>
           </nav>
           
           <DropdownMenu>
@@ -70,8 +87,8 @@ const Header = () => {
               className="w-[200px] bg-white shadow-lg rounded-lg border border-gray-200"
             >
               <DropdownMenuItem asChild>
-                <a href="#features" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
-                  Features
+                <a href="#about" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
+                  Who We Are
                 </a>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -80,23 +97,28 @@ const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/forged-sword" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 flex items-center justify-between">
-                  Forged Sword
-                  <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
-                    Premium
-                  </span>
+                <Link to="/forge" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                  The Forge
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a href="#about" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
-                  About
-                </a>
+                <Link to="/prompt-engine" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                  Prompt Engine
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem 
                 className="w-full text-primary font-medium hover:bg-primary/10 hover:text-primary"
                 onSelect={() => setCalculatorOpen(true)}
               >
                 AI Calculator
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/forged-sword" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 flex items-center justify-between">
+                  Forged Sword
+                  <span className="text-xs font-medium bg-primary/10 text-primary px-2 py-1 rounded-full">
+                    Premium
+                  </span>
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -112,4 +134,3 @@ const Header = () => {
 };
 
 export default Header;
-
