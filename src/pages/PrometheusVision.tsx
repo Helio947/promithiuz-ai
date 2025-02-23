@@ -37,12 +37,12 @@ const PrometheusVision = () => {
                   "absolute inset-0",
                   "rounded-full",
                   "transition-all duration-300",
-                  "bg-blue-100/20 blur-md",
+                  "bg-gradient-to-tr from-primary/20 to-secondary/20 blur-md",
                   isTyping ? "opacity-100 scale-105" : "opacity-0 scale-100"
                 )}
               />
               
-              {/* Inner circle with subtle glow */}
+              {/* Inner circle with gradient glow */}
               <div 
                 className={cn(
                   "absolute inset-6",
@@ -51,8 +51,8 @@ const PrometheusVision = () => {
                   "transition-all duration-300",
                   "border border-gray-100",
                   "shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]",
-                  "bg-gradient-to-t from-blue-50/40 to-transparent",
-                  isTyping ? "from-blue-100/50" : "from-blue-50/40"
+                  "bg-gradient-to-tr from-primary/5 to-secondary/5",
+                  isTyping ? "from-primary/10 to-secondary/10" : "from-primary/5 to-secondary/5"
                 )}
               >
                 {/* Additional inner glow layer */}
@@ -60,7 +60,7 @@ const PrometheusVision = () => {
                   className={cn(
                     "absolute inset-0",
                     "rounded-full",
-                    "bg-gradient-to-b from-white via-transparent to-blue-50/30",
+                    "bg-gradient-to-b from-white via-transparent to-secondary/10",
                     "opacity-70",
                     "transition-opacity duration-300",
                     isTyping ? "opacity-90" : "opacity-70"
@@ -88,3 +88,4 @@ const PrometheusVision = () => {
 };
 
 export default PrometheusVision;
+
