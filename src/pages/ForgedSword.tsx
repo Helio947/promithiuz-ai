@@ -15,6 +15,58 @@ const textToTextContent = {
     title: "Text to Text AI Mastery",
     description: "Comprehensive strategies and best practices for leveraging AI text generation in your small business.",
   },
+  aiTools: [
+    {
+      title: "Language Models & Assistants",
+      tools: [
+        {
+          name: "GPT-4",
+          use: "Advanced language understanding and generation",
+          applications: ["Complex writing", "Code generation", "Creative content"]
+        },
+        {
+          name: "Claude 2",
+          use: "Detailed analysis and long-form content",
+          applications: ["Research synthesis", "Document analysis", "Technical writing"]
+        },
+        {
+          name: "Cohere",
+          use: "Specialized enterprise text generation",
+          applications: ["Customer service", "Product descriptions", "Multi-language support"]
+        },
+        {
+          name: "PaLM API",
+          use: "Efficient text processing and generation",
+          applications: ["Chat applications", "Content summarization", "Language translation"]
+        }
+      ]
+    },
+    {
+      title: "Specialized Text Tools",
+      tools: [
+        {
+          name: "Copy.ai",
+          use: "Marketing content generation",
+          applications: ["Ad copy", "Email campaigns", "Social media posts"]
+        },
+        {
+          name: "Jasper",
+          use: "Content marketing and SEO",
+          applications: ["Blog posts", "Product descriptions", "Marketing materials"]
+        },
+        {
+          name: "Grammarly",
+          use: "Writing enhancement and correction",
+          applications: ["Grammar checking", "Style improvement", "Tone adjustment"]
+        },
+        {
+          name: "Writesonic",
+          use: "Business content automation",
+          applications: ["Articles", "Landing pages", "Press releases"]
+        }
+      ]
+    }
+  ],
   strategies: [
     {
       title: "Content Creation & Marketing",
@@ -101,6 +153,10 @@ const ForgedSword = () => {
     toast.info("Coming soon! Premium features will be available shortly.");
   };
 
+  const handleMasteryClick = () => {
+    toast.info("Explore our comprehensive AI text generation mastery guide below!");
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -126,12 +182,42 @@ const ForgedSword = () => {
 
           <div className="max-w-4xl mx-auto mb-16">
             <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
-              <h2 className="text-2xl font-semibold mb-6">{textToTextContent.overview.title}</h2>
+              <h2 
+                onClick={handleMasteryClick}
+                className="text-2xl font-semibold mb-6 cursor-pointer hover:text-primary transition-colors"
+              >
+                {textToTextContent.overview.title}
+              </h2>
               <p className="text-gray-600 mb-8">{textToTextContent.overview.description}</p>
               
               <Accordion type="single" collapsible className="space-y-4">
+                {textToTextContent.aiTools.map((toolCategory, index) => (
+                  <AccordionItem key={`tools-${index}`} value={`tools-${index}`}>
+                    <AccordionTrigger className="text-lg font-medium">
+                      {toolCategory.title}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-6">
+                        {toolCategory.tools.map((tool, i) => (
+                          <div key={i} className="bg-gray-50 p-4 rounded-lg">
+                            <h4 className="font-medium text-primary mb-2">{tool.name}</h4>
+                            <p className="text-gray-600 mb-2">{tool.use}</p>
+                            <div className="flex flex-wrap gap-2">
+                              {tool.applications.map((app, j) => (
+                                <span key={j} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                                  {app}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+
                 {textToTextContent.strategies.map((strategy, index) => (
-                  <AccordionItem key={index} value={`strategy-${index}`}>
+                  <AccordionItem key={`strategy-${index}`} value={`strategy-${index}`}>
                     <AccordionTrigger className="text-lg font-medium">
                       {strategy.title}
                     </AccordionTrigger>
@@ -216,4 +302,3 @@ const ForgedSword = () => {
 };
 
 export default ForgedSword;
-
