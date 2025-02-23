@@ -38,35 +38,48 @@ const Header = () => {
             </Link>
             <a href="#about" className="text-gray-600 hover:text-primary transition-colors">About</a>
             <Button 
-              className="bg-primary hover:bg-primary/90 text-white"
+              variant="default"
               onClick={() => setCalculatorOpen(true)}
+              className="bg-primary text-white hover:bg-primary/90"
             >
               AI Calculator
             </Button>
           </nav>
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
                 <Menu className="h-6 w-6" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[200px]">
+            <DropdownMenuContent 
+              align="end" 
+              className="w-[200px] bg-white shadow-lg rounded-lg border border-gray-200"
+            >
               <DropdownMenuItem asChild>
-                <a href="#features" className="w-full cursor-pointer">Features</a>
+                <a href="#features" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
+                  Features
+                </a>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/prometheus-vision" className="w-full">Promithiuz Vision</Link>
+                <Link to="/prometheus-vision" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                  Promithiuz Vision
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <a href="#about" className="w-full cursor-pointer">About</a>
+                <a href="#about" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
+                  About
+                </a>
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => setCalculatorOpen(true)}>
+              <DropdownMenuItem 
+                className="w-full text-primary font-medium hover:bg-primary/10 hover:text-primary"
+                onSelect={() => setCalculatorOpen(true)}
+              >
                 AI Calculator
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           
-          {/* AI Calculator Modal */}
           <CostCalculator 
             open={calculatorOpen} 
             onOpenChange={setCalculatorOpen}
@@ -78,3 +91,4 @@ const Header = () => {
 };
 
 export default Header;
+
