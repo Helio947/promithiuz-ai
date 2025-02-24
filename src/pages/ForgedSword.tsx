@@ -34,8 +34,9 @@ const ForgedSword = () => {
           onMasteryClick={handleMasteryClick}
         />
         <MainContent 
-          aiTools={textToTextContent.aiTools}
-          strategies={textToTextContent.strategies}
+          modules={textToTextContent.modules}
+          aiTools={[]}
+          strategies={[]}
           bestPractices={textToTextContent.bestPractices}
           systemsApproach={textToTextContent.systemsApproach}
         />
