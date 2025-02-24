@@ -114,6 +114,14 @@ export const textToTextContent = {
         "Email Marketing - Generate engaging subject lines and personalized email content",
         "Product Descriptions - Craft compelling product narratives with key features and benefits",
         "SEO Optimization - Generate meta descriptions and keyword-rich content"
+      ],
+      examples: [
+        {
+          title: "Blog Post Outline Generator",
+          description: "Generate a structured outline for your blog post topic",
+          defaultPrompt: "Create a blog post outline about 'The Benefits of AI for Small Businesses'",
+          exampleOutput: "1. Introduction\n- Definition of AI for small businesses\n- Current market adoption rates\n\n2. Key Benefits\n- Cost reduction opportunities\n- Time-saving automation\n- Improved customer service\n\n3. Implementation Strategies\n- Starting small with basic AI tools\n- Measuring ROI and success\n\n4. Conclusion\n- Action steps for getting started"
+        }
       ]
     },
     {

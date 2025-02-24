@@ -32,6 +32,7 @@ const MainContent = ({ aiTools, strategies, bestPractices, systemsApproach }: Ma
               title={strategy.title}
               items={strategy.items}
               index={index}
+              examples={strategy.examples}
             />
           ))}
 
@@ -59,4 +60,3 @@ const MainContent = ({ aiTools, strategies, bestPractices, systemsApproach }: Ma
 };
 
 export default MainContent;
-
