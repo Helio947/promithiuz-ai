@@ -32,7 +32,7 @@ const CalculatorInput = ({
             </TooltipTrigger>
             <TooltipContent 
               side="right" 
-              className="max-w-[250px]"
+              className="max-w-[250px] hover:bg-[#E5DEFF] transition-colors"
             >
               <p>{tooltip}</p>
             </TooltipContent>
