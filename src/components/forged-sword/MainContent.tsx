@@ -6,6 +6,7 @@ import StrategyCategory from "./StrategyCategory";
 import BestPracticeCategory from "./BestPracticeCategory";
 import SystemApproach from "./SystemApproach";
 import ModuleProgress from "./ModuleProgress";
+import InteractiveExample from "./InteractiveExample";
 import { useToast } from "@/components/ui/use-toast";
 
 interface MainContentProps {
@@ -21,6 +22,12 @@ interface MainContentProps {
     content: {
       aiTools?: any[];
       strategies?: any[];
+      examples?: Array<{
+        title: string;
+        description: string;
+        defaultPrompt: string;
+        exampleOutput: string;
+      }>;
     };
   }>;
 }
@@ -98,6 +105,23 @@ const MainContent = ({ modules = [], bestPractices, systemsApproach }: MainConte
               />
             ))}
           </Accordion>
+
+          {currentModule.content.examples && (
+            <div className="mt-8 space-y-6">
+              <h3 className="text-xl font-semibold mb-6">Interactive Examples</h3>
+              <div className="grid gap-6 md:grid-cols-2">
+                {currentModule.content.examples.map((example, index) => (
+                  <InteractiveExample
+                    key={index}
+                    title={example.title}
+                    description={example.description}
+                    defaultPrompt={example.defaultPrompt}
+                    exampleOutput={example.exampleOutput}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           <button
             onClick={handleCompleteModule}
