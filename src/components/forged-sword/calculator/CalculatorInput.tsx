@@ -26,12 +26,12 @@ const CalculatorInput = ({
       <div className="flex items-center gap-2">
         <Label htmlFor={id}>{label}</Label>
         <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="w-[250px]">{tooltip}</p>
+            <TooltipContent side="right" className="max-w-[250px]">
+              <p>{tooltip}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
