@@ -28,11 +28,11 @@ const CalculatorInput = ({
         <TooltipProvider>
           <Tooltip delayDuration={0}>
             <TooltipTrigger asChild>
-              <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+              <HelpCircle className="h-4 w-4 text-muted-foreground hover:text-[#7C3AED] transition-colors cursor-help" />
             </TooltipTrigger>
             <TooltipContent 
               side="right" 
-              className="max-w-[250px] hover:bg-[#E5DEFF]"
+              className="max-w-[250px]"
             >
               <p>{tooltip}</p>
             </TooltipContent>
