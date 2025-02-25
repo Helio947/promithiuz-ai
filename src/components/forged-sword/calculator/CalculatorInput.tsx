@@ -30,7 +30,10 @@ const CalculatorInput = ({
             <TooltipTrigger asChild>
               <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
             </TooltipTrigger>
-            <TooltipContent side="right" className="max-w-[250px]">
+            <TooltipContent 
+              side="right" 
+              className="max-w-[250px] transition-colors duration-200 hover:bg-[#E5DEFF]"
+            >
               <p>{tooltip}</p>
             </TooltipContent>
           </Tooltip>
