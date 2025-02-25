@@ -2,6 +2,7 @@
 import MainContent from "@/components/forged-sword/MainContent";
 import Overview from "@/components/forged-sword/Overview";
 import Header from "@/components/Header";
+import ROICalculator from "@/components/forged-sword/ROICalculator";
 import { textToTextContent } from "@/data/forged-sword-content";
 import { useCallback } from "react";
 import { useToast } from "@/components/ui/use-toast";
@@ -33,6 +34,11 @@ const ForgedSword = () => {
           onUnlock={handleUnlock}
           onMasteryClick={handleMasteryClick}
         />
+        
+        <div className="max-w-4xl mx-auto mb-12">
+          <ROICalculator />
+        </div>
+
         <MainContent 
           modules={textToTextContent.modules}
           aiTools={[]}
