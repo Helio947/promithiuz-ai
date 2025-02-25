@@ -38,6 +38,7 @@ const MainContent = ({ modules = [], bestPractices, systemsApproach }: MainConte
   const { toast } = useToast();
 
   const isModuleLocked = (moduleId: string) => {
+    if (moduleId === "foundations") return false; // AI Foundations is always unlocked
     const module = modules.find(m => m.id === moduleId);
     if (!module?.requiredForUnlock) return false;
     return !completedModules.includes(module.requiredForUnlock);
