@@ -38,15 +38,31 @@ const SavingsResults = ({ savings }: SavingsResultsProps) => {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Implement AI chatbots to handle {Math.round(savings.timeSavings * 0.6)} hours of routine customer inquiries</span>
+                <div>
+                  <span>Implement AI chatbots to handle {Math.round(savings.timeSavings * 0.6)} hours of routine customer inquiries</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>Claude (Anthropic) - For deep, nuanced customer support</li>
+                      <li>ChatGPT API - For quick, accurate responses</li>
+                      <li>Dialogflow (Google) - For custom chatbot development</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Set up automated email response systems to reduce response time by up to 80%</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <span>Use AI-powered analytics to predict peak service hours and optimize staff scheduling</span>
+                <div>
+                  <span>Set up automated email response systems to reduce response time by up to 80%</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>GPT-4 API - For personalized email drafting</li>
+                      <li>Resend.com - For automated email infrastructure</li>
+                      <li>Customer.io - For email automation workflows</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -56,11 +72,31 @@ const SavingsResults = ({ savings }: SavingsResultsProps) => {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Integrate AI document processing to save approximately {Math.round(savings.efficiencyImprovement * 0.3)} hours monthly</span>
+                <div>
+                  <span>Integrate AI document processing to save approximately {Math.round(savings.efficiencyImprovement * 0.3)} hours monthly</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>Adobe PDF Services API - For document parsing</li>
+                      <li>OpenAI GPT-4 Vision - For image and document analysis</li>
+                      <li>Amazon Textract - For automated data extraction</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Implement smart task prioritization to boost team efficiency by {Math.round(savings.efficiencyImprovement / savings.timeSavings * 10)}%</span>
+                <div>
+                  <span>Implement smart task prioritization to boost team efficiency by {Math.round(savings.efficiencyImprovement / savings.timeSavings * 10)}%</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>Asana + GPT Integration - For AI-powered task management</li>
+                      <li>Motion.app - For AI scheduling and prioritization</li>
+                      <li>Notion AI - For smart project organization</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -70,11 +106,31 @@ const SavingsResults = ({ savings }: SavingsResultsProps) => {
             <ul className="space-y-2 text-sm">
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Use AI insights to identify upsell opportunities worth up to ${Math.round(savings.revenueIncrease * 0.4)} monthly</span>
+                <div>
+                  <span>Use AI insights to identify upsell opportunities worth up to ${Math.round(savings.revenueIncrease * 0.4)} monthly</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>Salesforce Einstein - For AI-powered sales insights</li>
+                      <li>Gong.io - For conversation intelligence</li>
+                      <li>HubSpot AI Tools - For customer behavior analysis</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-primary">•</span>
-                <span>Implement predictive analytics to improve customer retention and boost revenue by ${Math.round(savings.revenueIncrease * 0.6)}</span>
+                <div>
+                  <span>Implement predictive analytics to improve customer retention and boost revenue by ${Math.round(savings.revenueIncrease * 0.6)}</span>
+                  <div className="mt-1 text-gray-600 text-xs">
+                    Recommended tools:
+                    <ul className="ml-4 list-disc">
+                      <li>BigQuery ML - For customer churn prediction</li>
+                      <li>Amazon SageMaker - For custom ML models</li>
+                      <li>DataRobot - For automated machine learning</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>
@@ -85,4 +141,3 @@ const SavingsResults = ({ savings }: SavingsResultsProps) => {
 };
 
 export default SavingsResults;
-
