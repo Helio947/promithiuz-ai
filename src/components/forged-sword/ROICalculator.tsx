@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { QuestionMarkCircle } from "lucide-react";
 import { calculateAISavings, type CalculatorInputs, type CalculatedSavings } from "@/utils/ai-calculator";
 
 const ROICalculator = () => {
@@ -35,7 +37,19 @@ const ROICalculator = () => {
       
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="businessType">Business Type</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="businessType">Business Type</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">Understanding your business type (e.g., e-commerce, agency, SaaS) helps the calculator tailor its estimations to your specific industry and typical workflows. Different industries have different support needs and operational structures, impacting the potential ROI of AI implementation.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="businessType"
             placeholder="e.g. E-commerce, Agency, SaaS"
@@ -45,7 +59,19 @@ const ROICalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="totalEmployees">Total Employees</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="totalEmployees">Total Employees</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">This helps the calculator estimate the overall impact of AI on your business's efficiency. While the focus is on customer service, AI can improve productivity across various departments.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="totalEmployees"
             type="number"
@@ -56,7 +82,19 @@ const ROICalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="customerServiceReps">Customer Service Representatives</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="customerServiceReps">Customer Service Representatives</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">The number of customer service representatives you employ directly influences the potential labor cost savings. The calculator uses this number to estimate the total hours spent on support and the portion that could be automated by AI.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="customerServiceReps"
             type="number"
@@ -67,7 +105,19 @@ const ROICalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="averageResponseTime">Average Response Time (minutes)</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="averageResponseTime">Average Response Time (minutes)</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">Your average response time to support tickets is a key indicator of customer satisfaction and operational efficiency. The calculator uses this to estimate the potential time savings from faster AI-powered responses.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="averageResponseTime"
             type="number"
@@ -78,7 +128,19 @@ const ROICalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="monthlyTickets">Monthly Support Tickets</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="monthlyTickets">Monthly Support Tickets</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">The number of support tickets your business handles monthly is crucial for estimating time savings. The calculator uses this to project how much time AI could save by automating responses and streamlining workflows.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="monthlyTickets"
             type="number"
@@ -89,7 +151,19 @@ const ROICalculator = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="averageHourlyCost">Average Hourly Cost ($)</Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor="averageHourlyCost">Average Hourly Cost ($)</Label>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <QuestionMarkCircle className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="w-[250px]">This is essential for calculating potential labor cost savings. The calculator multiplies this cost by the estimated hours saved through AI automation to determine the financial benefits.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Input
             id="averageHourlyCost"
             type="number"
@@ -169,3 +243,4 @@ const ROICalculator = () => {
 };
 
 export default ROICalculator;
+
