@@ -127,6 +127,19 @@ const ROICalculator = () => {
           </div>
         </div>
       )}
+
+      <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-100">
+        <h4 className="text-lg font-semibold mb-4">How We Calculate Your ROI</h4>
+        <div className="space-y-4 text-sm text-gray-600">
+          <p><span className="font-medium">Labor Cost Savings:</span> We estimate that AI automation can handle approximately 40% of your team's workload. We multiply the automated hours by your average hourly cost to calculate potential savings.</p>
+          
+          <p><span className="font-medium">Time Savings:</span> Based on your support ticket volume, we calculate an 80% reduction in response time. If ticket volume isn't provided, we estimate 40 hours saved per employee monthly.</p>
+          
+          <p><span className="font-medium">Efficiency Improvement:</span> We factor in a 30% productivity boost across your workforce's monthly hours, as AI tools help streamline workflows and reduce repetitive tasks.</p>
+          
+          <p><span className="font-medium">Revenue Increase:</span> We project a conservative 1.5x return on your labor cost savings, as improved efficiency and faster response times typically lead to better customer satisfaction and increased sales.</p>
+        </div>
+      </div>
     </div>
   );
 };
