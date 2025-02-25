@@ -9,12 +9,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
-import { CostCalculator } from "@/components/ai-calculator/CostCalculator";
 
 const Header = () => {
   const location = useLocation();
-  const [calculatorOpen, setCalculatorOpen] = useState(false);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -54,13 +51,6 @@ const Header = () => {
             >
               Prompt Engine
             </Link>
-            <Button 
-              variant="default"
-              onClick={() => setCalculatorOpen(true)}
-              className="bg-primary text-white hover:bg-primary/90"
-            >
-              AI Calculator
-            </Button>
             <Link 
               to="/forged-sword" 
               className={cn(
@@ -106,12 +96,6 @@ const Header = () => {
                   Prompt Engine
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                className="w-full text-primary font-medium hover:bg-primary/10 hover:text-primary"
-                onSelect={() => setCalculatorOpen(true)}
-              >
-                AI Calculator
-              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/forged-sword" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50 flex items-center justify-between">
                   Forged Sword
@@ -122,11 +106,6 @@ const Header = () => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          
-          <CostCalculator 
-            open={calculatorOpen} 
-            onOpenChange={setCalculatorOpen}
-          />
         </div>
       </div>
     </header>
