@@ -34,42 +34,42 @@ const ROICalculator = () => {
     {
       id: "businessType",
       label: "Business Type",
-      tooltip: "Understanding your business type (e.g., e-commerce, agency, SaaS) helps the calculator tailor its estimations to your specific industry and typical workflows. Different industries have different support needs and operational structures, impacting the potential ROI of AI implementation.",
+      tooltip: "Understanding your business type helps us provide more accurate ROI calculations tailored to your industry's specific needs and automation opportunities.",
       value: inputs.businessType,
       type: "text"
     },
     {
       id: "totalEmployees",
       label: "Total Employees",
-      tooltip: "This helps the calculator estimate the overall impact of AI on your business's efficiency. While the focus is on customer service, AI can improve productivity across various departments.",
+      tooltip: "Your total employee count helps us understand your organization's scale and potential for AI implementation across different departments.",
       value: inputs.totalEmployees,
       type: "number"
     },
     {
       id: "customerServiceReps",
       label: "Customer Service Representatives",
-      tooltip: "The number of customer service representatives you employ directly influences the potential labor cost savings. The calculator uses this number to estimate the total hours spent on support and the portion that could be automated by AI.",
+      tooltip: "The number of support staff directly affects potential cost savings through AI automation of routine queries and tasks.",
       value: inputs.customerServiceReps,
       type: "number"
     },
     {
       id: "averageResponseTime",
       label: "Average Response Time (minutes)",
-      tooltip: "Your average response time to support tickets is a key indicator of customer satisfaction and operational efficiency. The calculator uses this to estimate the potential time savings from faster AI-powered responses.",
+      tooltip: "Current response times help calculate potential time savings through AI's instant response capabilities and automated workflows.",
       value: inputs.averageResponseTime,
       type: "number"
     },
     {
       id: "monthlyTickets",
       label: "Monthly Support Tickets",
-      tooltip: "The number of support tickets your business handles monthly is crucial for estimating time savings. The calculator uses this to project how much time AI could save by automating responses and streamlining workflows.",
+      tooltip: "Your ticket volume helps determine the scale of potential automation and the impact AI could have on handling routine inquiries.",
       value: inputs.monthlyTickets,
       type: "number"
     },
     {
       id: "averageHourlyCost",
       label: "Average Hourly Cost ($)",
-      tooltip: "This is essential for calculating potential labor cost savings. The calculator multiplies this cost by the estimated hours saved through AI automation to determine the financial benefits.",
+      tooltip: "Your staff's hourly cost helps calculate direct financial savings from reducing manual support hours through AI automation.",
       value: inputs.averageHourlyCost,
       type: "number"
     }
