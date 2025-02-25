@@ -8,7 +8,7 @@ interface SavingsResultsProps {
 const SavingsResults = ({ savings }: SavingsResultsProps) => {
   return (
     <div className="mt-8 space-y-4 p-6 bg-gray-50 rounded-lg animate-fade-in">
-      <h4 className="text-xl font-semibold mb-4">Your Potential Monthly Savings</h4>
+      <h4 className="text-xl font-semibold mb-4">Your Potential Monthly Savings When You Use AI</h4>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="p-4 bg-white rounded-lg border border-gray-200">
           <p className="text-sm text-gray-600">Labor Cost Savings</p>
@@ -32,3 +32,4 @@ const SavingsResults = ({ savings }: SavingsResultsProps) => {
 };
 
 export default SavingsResults;
+
