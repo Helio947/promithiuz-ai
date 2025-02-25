@@ -2,7 +2,7 @@
 const CalculationMethodology = () => {
   return (
     <div className="mt-8 p-6 bg-gray-50 rounded-lg border border-gray-100">
-      <h4 className="text-lg font-semibold mb-4">How We Calculate Your ROI</h4>
+      <h4 className="text-lg font-semibold mb-4">How We Calculate your AI ROI (Return On Investment)</h4>
       <div className="space-y-4 text-sm text-gray-600">
         <p>
           <span className="font-medium">Labor Cost Savings:</span> We estimate that AI automation can handle approximately 40% of your team's workload. We multiply the automated hours by your average hourly cost to calculate potential savings.
