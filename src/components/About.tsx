@@ -16,50 +16,9 @@ const About = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Brain className="w-6 h-6 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Smart Automation</h3>
-                <p className="text-gray-600">
-                  Our AI solutions automate repetitive tasks, from customer service to data entry, 
-                  letting you focus on what matters most - growing your business.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center flex-shrink-0">
-                <TrendingUp className="w-6 h-6 text-secondary" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Proven Results</h3>
-                <p className="text-gray-600">
-                  Our clients see an average of 40% cost reduction and 15+ hours saved weekly 
-                  through AI automation and optimization.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 items-start">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center flex-shrink-0">
-                <Clock className="w-6 h-6 text-green-600" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2">Quick Implementation</h3>
-                <p className="text-gray-600">
-                  Get started in minutes, not months. Our solutions integrate seamlessly 
-                  with your existing workflows and start delivering value immediately.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <div className="mb-8">
+        <div className="flex justify-center">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-2xl w-full">
+            <div className="mb-8 text-center">
               <h3 className="text-2xl font-bold mb-4">Real Business Impact</h3>
               <p className="text-gray-600">
                 See how businesses like yours are transforming with AI:
