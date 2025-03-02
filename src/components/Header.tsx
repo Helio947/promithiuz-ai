@@ -1,8 +1,10 @@
 
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +14,23 @@ import {
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    
+    checkAuth();
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+    
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -64,6 +83,24 @@ const Header = () => {
                 Premium
               </span>
             </Link>
+
+            {isAuthenticated ? (
+              <Button 
+                onClick={() => navigate("/dashboard")}
+                variant="default" 
+                size="sm"
+              >
+                Dashboard
+              </Button>
+            ) : (
+              <Button 
+                onClick={() => navigate("/auth")}
+                variant="default" 
+                size="sm"
+              >
+                Sign In
+              </Button>
+            )}
           </nav>
           
           <DropdownMenu>
@@ -104,6 +141,19 @@ const Header = () => {
                   </span>
                 </Link>
               </DropdownMenuItem>
+              {isAuthenticated ? (
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem asChild>
+                  <Link to="/auth" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                    Sign In
+                  </Link>
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
