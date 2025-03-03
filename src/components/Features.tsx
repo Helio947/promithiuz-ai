@@ -97,40 +97,6 @@ const pricingTiers = [
     ],
     cta: "Start 14-Day Trial",
     popular: true
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    period: "pricing",
-    description: "For growing businesses with advanced needs",
-    features: [
-      {
-        name: "Unlimited AI usage",
-        description: "Unrestricted access to all AI capabilities with no daily limits on queries or generations. Includes priority processing for faster results."
-      },
-      {
-        name: "Dedicated account manager",
-        description: "A specialized AI system configured specifically for your business, with quarterly optimization reviews and strategic implementation guidance."
-      },
-      {
-        name: "Custom AI training",
-        description: "Train our AI on your specific business data, industry knowledge, and company voice for truly personalized and accurate results."
-      },
-      {
-        name: "API access",
-        description: "Integrate our AI capabilities directly into your existing software, websites, and business processes through our developer-friendly API."
-      },
-      {
-        name: "Full access to Forged Sword",
-        description: "Complete access to our premium suite of specialized AI tools for text analysis, image generation, video creation, and advanced business strategy."
-      },
-      {
-        name: "White-label options",
-        description: "Rebrand our AI tools with your company name, logo, and styling to provide a seamless experience for both internal teams and clients."
-      }
-    ],
-    cta: "Contact Sales",
-    popular: false
   }
 ];
 
@@ -222,7 +188,7 @@ const Features = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 gap-8 mx-auto max-w-3xl">
               {pricingTiers.map((tier, index) => (
                 <div 
                   key={index} 
