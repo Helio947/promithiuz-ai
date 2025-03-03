@@ -17,7 +17,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: '1',
+      id: 'welcome-message',
       content: "Welcome to The Forge! How can I help you build your workflow today?",
       sender: 'prometheus',
       timestamp: new Date(),
@@ -36,7 +36,8 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   };
 
   const simulateTyping = (response: string, mentionedBlocks: Array<{ type: string; label: string }> = []) => {
-    const tempId = Date.now().toString();
+    // Generate a truly unique ID for each message using a combination of timestamp and random string
+    const tempId = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
     
     setMessages(prev => [...prev, {
       id: tempId,
@@ -46,6 +47,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
       isTyping: true,
     }]);
 
+    // Update the message content after the typing animation
     setTimeout(() => {
       setMessages(prev => prev.map(msg => 
         msg.id === tempId 
@@ -64,8 +66,11 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     e.preventDefault();
     if (!question.trim()) return;
 
+    // Create a unique ID for the user message
+    const userMessageId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+    
     const newMessage: Message = {
-      id: Date.now().toString(),
+      id: userMessageId,
       content: question,
       sender: 'user',
       timestamp: new Date(),
@@ -116,9 +121,9 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
                 <p>{message.content}</p>
                 {message.mentionedBlocks && message.mentionedBlocks.length > 0 && (
                   <div className="mt-2">
-                    {message.mentionedBlocks.map((block) => (
+                    {message.mentionedBlocks.map((block, index) => (
                       <Button
-                        key={block.type}
+                        key={`${block.type}-${index}`}
                         size="sm"
                         variant="outline"
                         onClick={() => onAddBlock(block.type)}
@@ -137,9 +142,9 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
 
       {/* Quick Tips */}
       <div className="px-3 py-2 border-t flex gap-2 overflow-x-auto no-scrollbar">
-        {quickTips.slice(0, 3).map((tip) => (
+        {quickTips.slice(0, 3).map((tip, index) => (
           <button
-            key={tip}
+            key={`tip-${index}`}
             onClick={() => handleQuickTip(tip)}
             className="text-xs whitespace-nowrap px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
           >
