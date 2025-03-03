@@ -51,7 +51,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
 
       {/* Quick Tips */}
       <QuickTips 
-        tips={quickTips.slice(0, 2)}
+        tips={quickTips}
         onTipClick={handleQuickTip}
       />
 
@@ -71,3 +71,4 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     </div>
   );
 };
+

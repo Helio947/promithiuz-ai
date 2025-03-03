@@ -9,9 +9,13 @@ export function useChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome-message',
-      content: "Welcome to The Forge! How can I help you build your workflow today?",
+      content: "👋 Welcome to The Forge! I'm your AI assistant here to help you build powerful workflows without coding. You can create automations for customer support, content creation, lead qualification, and more. What would you like to build today?",
       sender: 'prometheus',
       timestamp: new Date(),
+      mentionedBlocks: [
+        { type: 'chat-response', label: 'Chat Response' },
+        { type: 'analyze-text', label: 'Analyze Text' }
+      ]
     },
   ]);
 
