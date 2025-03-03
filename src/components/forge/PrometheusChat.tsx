@@ -18,7 +18,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      content: "Welcome to The Forge! I'm Promithiuz AI, your AI guide. How can I help you build your workflow today?",
+      content: "Welcome to The Forge! How can I help you build your workflow today?",
       sender: 'prometheus',
       timestamp: new Date(),
     },
@@ -33,13 +33,6 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  };
-
-  const formatTimestamp = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      hour: 'numeric',
-      minute: 'numeric',
-    }).format(date);
   };
 
   const simulateTyping = (response: string, mentionedBlocks: Array<{ type: string; label: string }> = []) => {
@@ -81,16 +74,10 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     setMessages(prev => [...prev, newMessage]);
     setQuestion('');
 
-    // Simulated AI response
     simulateTyping(
-      "I'll help you with that! You can start by dragging blocks from the toolbox to the canvas. Each block has a specific purpose.",
+      "I'll help you with that! You can start by adding blocks to your workflow.",
       [{ type: 'chat-response', label: 'Chat Response' }]
     );
-
-    toast({
-      title: "Message sent",
-      description: "Promithiuz AI is thinking about your question...",
-    });
   };
 
   const handleQuickTip = (tip: string) => {
@@ -98,29 +85,11 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border shadow-sm flex flex-col h-full">
+    <div className="bg-white rounded-xl border shadow-sm flex flex-col h-[400px]">
       {/* Header */}
-      <div className="p-4 border-b flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-          <MessageSquare className="h-4 w-4 text-white" />
-        </div>
-        <div>
-          <h3 className="font-semibold text-sm">Promithiuz AI</h3>
-          <p className="text-xs text-gray-500">Your AI Guide</p>
-        </div>
-      </div>
-
-      {/* Quick Tips */}
-      <div className="px-4 py-3 flex flex-wrap gap-2 border-b">
-        {quickTips.map((tip) => (
-          <button
-            key={tip}
-            onClick={() => handleQuickTip(tip)}
-            className="text-xs px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
-          >
-            {tip}
-          </button>
-        ))}
+      <div className="p-3 border-b flex items-center gap-2">
+        <MessageSquare className="h-4 w-4 text-primary" />
+        <h3 className="font-medium text-sm">Promithiuz AI</h3>
       </div>
 
       {/* Chat Container */}
@@ -132,7 +101,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
           <div
             key={message.id}
             className={cn(
-              "rounded-lg p-3 text-sm",
+              "rounded-lg p-2 text-sm",
               message.sender === 'user' 
                 ? "bg-primary/10 ml-4" 
                 : "bg-secondary/10 mr-4"
@@ -140,39 +109,42 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
           >
             {message.isTyping ? (
               <div className="flex space-x-1 items-center h-6">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.2s]" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:0.4s]" />
+                <span className="animate-pulse">...</span>
               </div>
             ) : (
               <>
-                <p className="mb-1">{message.content}</p>
+                <p>{message.content}</p>
                 {message.mentionedBlocks && message.mentionedBlocks.length > 0 && (
-                  <div className="mt-2 space-y-2">
+                  <div className="mt-2">
                     {message.mentionedBlocks.map((block) => (
-                      <div
+                      <Button
                         key={block.type}
-                        className="flex items-center justify-between bg-white rounded p-2 border text-xs"
+                        size="sm"
+                        variant="outline"
+                        onClick={() => onAddBlock(block.type)}
+                        className="mt-1 h-7 text-xs"
                       >
-                        <span>{block.label}</span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => onAddBlock(block.type)}
-                          className="h-6 px-2"
-                        >
-                          Add
-                        </Button>
-                      </div>
+                        Add {block.label}
+                      </Button>
                     ))}
                   </div>
                 )}
-                <span className="text-[10px] text-gray-500 mt-1 inline-block">
-                  {formatTimestamp(message.timestamp)}
-                </span>
               </>
             )}
           </div>
+        ))}
+      </div>
+
+      {/* Quick Tips */}
+      <div className="px-3 py-2 border-t flex gap-2 overflow-x-auto no-scrollbar">
+        {quickTips.slice(0, 3).map((tip) => (
+          <button
+            key={tip}
+            onClick={() => handleQuickTip(tip)}
+            className="text-xs whitespace-nowrap px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+          >
+            {tip}
+          </button>
         ))}
       </div>
 
@@ -182,10 +154,10 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask me anything about The Forge..."
+          placeholder="Ask me anything..."
           className="flex-1 text-sm"
         />
-        <Button type="submit" size="icon">
+        <Button type="submit" size="icon" className="shrink-0">
           <Send className="h-4 w-4" />
         </Button>
       </form>
