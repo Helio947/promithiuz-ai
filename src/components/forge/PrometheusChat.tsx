@@ -94,6 +94,17 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
       };
     }
     
+    // Handle sales related questions
+    if (lcQuestion.includes('sales') || lcQuestion.includes('customer') || lcQuestion.includes('lead')) {
+      return {
+        responseText: "I can help you build a workflow for sales automation. You might want to start with a Lead Qualification block or Email block. What specific part of your sales process are you automating?",
+        blocks: [
+          { type: 'analyze-data', label: 'Lead Qualification' },
+          { type: 'send-email', label: 'Send Email' }
+        ]
+      };
+    }
+    
     // Simple greetings
     if (lcQuestion.includes('hello') || lcQuestion.includes('hi') || lcQuestion.includes('hey')) {
       return {
@@ -108,10 +119,12 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     };
   };
 
+  // Fixed typing simulation to prevent duplicates
   const simulateTyping = (response: string, mentionedBlocks: Array<{ type: string; label: string }> = []) => {
-    // Generate a truly unique ID for each message using a combination of timestamp and random string
-    const tempId = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
+    // Generate a unique ID that won't conflict with other messages
+    const tempId = `prometheus-${Date.now()}`;
     
+    // First add a typing indicator
     setMessages(prev => [...prev, {
       id: tempId,
       content: '',
@@ -120,10 +133,12 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
       isTyping: true,
     }]);
 
-    // Update the message content after the typing animation
+    // Then replace the typing indicator with the actual message after a delay
     setTimeout(() => {
-      setMessages(prev => prev.map(msg => 
-        msg.id === tempId 
+      setMessages(prev => {
+        // Find and replace the typing indicator message
+        return prev.map(msg => 
+          msg.id === tempId 
           ? {
               ...msg,
               content: response,
@@ -131,30 +146,32 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
               mentionedBlocks,
             }
           : msg
-      ));
-    }, 1500);
+        );
+      });
+    }, 800); // Shorter typing delay for better UX
   };
 
   const handleQuestionSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!question.trim()) return;
 
-    // Create a unique ID for the user message
-    const userMessageId = `user-${Date.now()}-${Math.random().toString(36).substring(2, 10)}`;
-    
-    const newMessage: Message = {
-      id: userMessageId,
+    // Add user message with unique ID
+    const userMessage: Message = {
+      id: `user-${Date.now()}`,
       content: question,
       sender: 'user',
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, newMessage]);
+    setMessages(prev => [...prev, userMessage]);
     
     // Get contextual response based on user question
     const { responseText, blocks } = getResponseForQuestion(question);
     
+    // Clear input field first
     setQuestion('');
+    
+    // Then show the AI response
     simulateTyping(responseText, blocks);
   };
 
@@ -193,7 +210,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
               <>
                 <p>{message.content}</p>
                 {message.mentionedBlocks && message.mentionedBlocks.length > 0 && (
-                  <div className="mt-2">
+                  <div className="mt-2 flex flex-wrap gap-2">
                     {message.mentionedBlocks.map((block, index) => (
                       <Button
                         key={`${block.type}-${index}`}
@@ -215,7 +232,7 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
 
       {/* Quick Tips */}
       <div className="px-3 py-2 border-t flex gap-2 overflow-x-auto no-scrollbar">
-        {quickTips.slice(0, 3).map((tip, index) => (
+        {quickTips.slice(0, 2).map((tip, index) => (
           <button
             key={`tip-${index}`}
             onClick={() => handleQuickTip(tip)}
