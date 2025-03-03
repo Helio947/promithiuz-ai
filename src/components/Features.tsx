@@ -1,4 +1,3 @@
-
 import { Brain, Sparkles, MessageSquare, Sword, Clock, DollarSign, TrendingUp, InfoIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -248,7 +247,7 @@ const Features = () => {
             </div>
             
             <div className="text-center mt-8 text-gray-500 text-sm">
-              All plans include a 14-day money-back guarantee
+              All plans include a 30-day money-back guarantee
             </div>
           </div>
         </div>
