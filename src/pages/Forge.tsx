@@ -1,3 +1,4 @@
+
 import { useCallback, useRef, useState } from 'react';
 import Header from "@/components/Header";
 import {
@@ -201,7 +202,7 @@ const Forge = () => {
                 The Forge
               </h1>
               <p className="text-gray-600 mt-2">
-                Build powerful AI workflows with drag-and-drop simplicity
+                Build powerful AI workflows to automate business tasks and gain insights
               </p>
             </div>
             <div className="flex gap-4">
@@ -224,7 +225,20 @@ const Forge = () => {
           </div>
 
           <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-9">
+            <div className="col-span-3">
+              <AIBlocksToolbox onDragStart={onDragStart} />
+              {isTestMode ? (
+                <TestSimulator 
+                  nodes={nodes}
+                  edges={edges}
+                  onTestComplete={handleTestComplete}
+                />
+              ) : (
+                <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
+              )}
+            </div>
+            
+            <div className="col-span-6">
               <div 
                 className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" 
                 ref={reactFlowWrapper}
@@ -245,21 +259,14 @@ const Forge = () => {
                   <Controls />
                   <MiniMap />
                 </ReactFlow>
+                <div className="absolute top-4 right-4 bg-white/80 text-xs text-gray-500 p-2 rounded-md backdrop-blur-sm">
+                  Drag blocks from the left panel to create your workflow
+                </div>
               </div>
-              <AIBlocksToolbox onDragStart={onDragStart} />
             </div>
 
             <div className="col-span-3 space-y-6">
               <PrometheusChat onAddBlock={addBlockToCanvas} />
-              {isTestMode ? (
-                <TestSimulator 
-                  nodes={nodes}
-                  edges={edges}
-                  onTestComplete={handleTestComplete}
-                />
-              ) : (
-                <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
-              )}
             </div>
           </div>
         </div>

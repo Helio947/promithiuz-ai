@@ -59,7 +59,7 @@ export const DraggableBlock = ({ type, label, onDragStart }: DraggableBlockProps
   const handleDragStart = (event: React.DragEvent) => {
     // Make sure to clear any previous data
     event.dataTransfer.clearData();
-    // Set the data with a specific format
+    // Set the data with the node type
     event.dataTransfer.setData('application/reactflow', type);
     event.dataTransfer.effectAllowed = 'move';
     // Call the provided onDragStart handler
