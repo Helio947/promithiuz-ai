@@ -29,7 +29,14 @@ const colorMap = {
   'database': 'bg-emerald-100 border-emerald-300 text-emerald-500',
 };
 
-export const AIBlockNode = ({ data, id }: { data: { label: string; type: keyof typeof iconMap }; id: string }) => {
+// Define the interface for the node data including the onNodeDelete function
+interface AIBlockData {
+  label: string;
+  type: keyof typeof iconMap;
+  onNodeDelete?: (id: string) => void;
+}
+
+export const AIBlockNode = ({ data, id }: { data: AIBlockData; id: string }) => {
   const Icon = iconMap[data.type];
 
   const handleDelete = (event: React.MouseEvent, deleteId: string) => {
