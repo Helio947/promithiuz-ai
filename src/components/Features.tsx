@@ -34,7 +34,7 @@ const features = [
 const pricingTiers = [
   {
     name: "Basic",
-    price: "$29",
+    price: "$5",
     period: "per month",
     description: "Perfect for solopreneurs and freelancers",
     features: [
@@ -49,7 +49,7 @@ const pricingTiers = [
   },
   {
     name: "Business",
-    price: "$79",
+    price: "$20",
     period: "per month",
     description: "Ideal for small businesses with up to 5 team members",
     features: [
