@@ -146,8 +146,8 @@ const Documentation = () => {
             <div className="space-y-2">
               <h4 className="font-medium">How can I upgrade my subscription?</h4>
               <p className="text-gray-600">
-                You can upgrade your subscription anytime from your dashboard. Go to Settings > 
-                Subscription to view available plans.
+                You can upgrade your subscription anytime from your dashboard. Go to Settings 
+                {'>>'} Subscription to view available plans.
               </p>
             </div>
             
