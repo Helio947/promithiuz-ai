@@ -71,4 +71,3 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     </div>
   );
 };
-

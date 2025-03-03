@@ -12,10 +12,6 @@ export function useChat() {
       content: "👋 Hi there! I'm your AI assistant in The Forge! Think of me as your creative partner for building powerful workflows without any coding. You can create all sorts of automations - from customer support to content creation to lead qualification - just by connecting blocks together! What would you like to build today? Feel free to ask me anything!",
       sender: 'prometheus',
       timestamp: new Date(),
-      mentionedBlocks: [
-        { type: 'chat-response', label: 'Chat Response' },
-        { type: 'analyze-text', label: 'Analyze Text' }
-      ]
     },
   ]);
 
@@ -30,7 +26,7 @@ export function useChat() {
   };
 
   // Fixed typing simulation to prevent duplicates
-  const simulateTyping = (response: string, mentionedBlocks: Array<{ type: string; label: string }> = []) => {
+  const simulateTyping = (response: string) => {
     // Generate a unique ID that won't conflict with other messages
     const tempId = `prometheus-${Date.now()}`;
     
@@ -53,7 +49,6 @@ export function useChat() {
               ...msg,
               content: response,
               isTyping: false,
-              mentionedBlocks,
             }
           : msg
         );
@@ -76,13 +71,13 @@ export function useChat() {
     setMessages(prev => [...prev, userMessage]);
     
     // Get contextual response based on user question
-    const { responseText, blocks } = getResponseForQuestion(question);
+    const { responseText } = getResponseForQuestion(question);
     
     // Clear input field first
     setQuestion('');
     
     // Then show the AI response
-    simulateTyping(responseText, blocks);
+    simulateTyping(responseText);
   };
 
   return {

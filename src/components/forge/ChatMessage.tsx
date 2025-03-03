@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Message } from "@/types/forge";
 
@@ -9,7 +8,7 @@ interface ChatMessageProps {
   onAddBlock: (blockType: string) => void;
 }
 
-export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onAddBlock }) => {
+export const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
   return (
     <div
       className={cn(
@@ -24,24 +23,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ message, onAddBlock })
           <span className="animate-pulse">...</span>
         </div>
       ) : (
-        <>
-          <p>{message.content}</p>
-          {message.mentionedBlocks && message.mentionedBlocks.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-2">
-              {message.mentionedBlocks.map((block, index) => (
-                <Button
-                  key={`${block.type}-${index}`}
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onAddBlock(block.type)}
-                  className="mt-1 h-7 text-xs"
-                >
-                  Add {block.label}
-                </Button>
-              ))}
-            </div>
-          )}
-        </>
+        <p>{message.content}</p>
       )}
     </div>
   );
