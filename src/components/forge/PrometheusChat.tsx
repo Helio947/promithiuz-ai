@@ -1,7 +1,8 @@
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { MessageSquare, Send } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Message } from "@/types/forge";
 import { quickTips } from "@/constants/forge";
@@ -23,6 +24,10 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
     },
   ]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -59,7 +64,6 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
             }
           : msg
       ));
-      scrollToBottom();
     }, 1500);
   };
 
@@ -76,8 +80,8 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
 
     setMessages(prev => [...prev, newMessage]);
     setQuestion('');
-    scrollToBottom();
 
+    // Simulated AI response
     simulateTyping(
       "I'll help you with that! You can start by dragging blocks from the toolbox to the canvas. Each block has a specific purpose.",
       [{ type: 'chat-response', label: 'Chat Response' }]
@@ -94,32 +98,35 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
   };
 
   return (
-    <div className="bg-white rounded-xl border p-4 shadow-sm">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-          <MessageSquare className="h-5 w-5 text-white" />
+    <div className="bg-white rounded-xl border shadow-sm flex flex-col h-full">
+      {/* Header */}
+      <div className="p-4 border-b flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+          <MessageSquare className="h-4 w-4 text-white" />
         </div>
         <div>
-          <h3 className="font-semibold">Promithiuz AI</h3>
-          <p className="text-sm text-gray-500">Your AI Guide</p>
+          <h3 className="font-semibold text-sm">Promithiuz AI</h3>
+          <p className="text-xs text-gray-500">Your AI Guide</p>
         </div>
       </div>
 
-      <div className="mb-4 flex flex-wrap gap-2">
+      {/* Quick Tips */}
+      <div className="px-4 py-3 flex flex-wrap gap-2 border-b">
         {quickTips.map((tip) => (
           <button
             key={tip}
             onClick={() => handleQuickTip(tip)}
-            className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
+            className="text-xs px-2.5 py-1 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors"
           >
             {tip}
           </button>
         ))}
       </div>
 
+      {/* Chat Container */}
       <div 
         ref={chatContainerRef}
-        className="mb-4 h-[200px] overflow-y-auto space-y-3 border rounded-lg p-3"
+        className="flex-1 overflow-y-auto p-3 space-y-3"
       >
         {messages.map((message) => (
           <div
@@ -154,7 +161,6 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
                           onClick={() => onAddBlock(block.type)}
                           className="h-6 px-2"
                         >
-                          <Plus className="h-3 w-3" />
                           Add
                         </Button>
                       </div>
@@ -170,15 +176,18 @@ export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
         ))}
       </div>
 
-      <form onSubmit={handleQuestionSubmit} className="flex gap-2">
-        <input
+      {/* Input Area */}
+      <form onSubmit={handleQuestionSubmit} className="p-3 border-t flex gap-2">
+        <Input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Ask me anything about The Forge..."
-          className="flex-1 px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20"
+          className="flex-1 text-sm"
         />
-        <Button type="submit" size="sm">Ask</Button>
+        <Button type="submit" size="icon">
+          <Send className="h-4 w-4" />
+        </Button>
       </form>
     </div>
   );
