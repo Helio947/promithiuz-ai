@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Clock, CreditCard, Settings, Sparkles, MessageSquare, Brain, Sword } from "lucide-react";
+import { Clock, CreditCard, Settings, Sparkles, MessageSquare, Brain, Sword, TrendingUp } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Dashboard = () => {
