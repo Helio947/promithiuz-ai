@@ -1,6 +1,6 @@
 
-import { Handle, Position } from '@xyflow/react';
-import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database } from 'lucide-react';
+import { Handle, Position, useReactFlow } from '@xyflow/react';
+import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const iconMap = {
@@ -29,8 +29,22 @@ const colorMap = {
   'database': 'bg-emerald-100 border-emerald-300 text-emerald-500',
 };
 
-export const AIBlockNode = ({ data }: { data: { label: string; type: keyof typeof iconMap } }) => {
+export const AIBlockNode = ({ data, id }: { data: { label: string; type: keyof typeof iconMap }; id: string }) => {
   const Icon = iconMap[data.type];
+  const { setNodes, setEdges } = useReactFlow();
+
+  const handleDelete = (event: React.MouseEvent) => {
+    // Stop event propagation to prevent node selection
+    event.stopPropagation();
+    
+    // Remove the node
+    setNodes((nodes) => nodes.filter((node) => node.id !== id));
+    
+    // Remove any connected edges
+    setEdges((edges) => edges.filter(
+      (edge) => edge.source !== id && edge.target !== id
+    ));
+  };
 
   return (
     <div className="relative group">
@@ -53,6 +67,15 @@ export const AIBlockNode = ({ data }: { data: { label: string; type: keyof typeo
         position={Position.Right} 
         className="w-2 h-2 rounded-full bg-gray-400 -right-1" 
       />
+      
+      {/* Delete button that appears on hover */}
+      <button
+        onClick={handleDelete}
+        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+        aria-label="Delete node"
+      >
+        <X className="h-3 w-3" />
+      </button>
       
       {/* Label tooltip that appears on hover */}
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">

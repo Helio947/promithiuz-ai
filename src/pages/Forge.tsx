@@ -13,9 +13,10 @@ import {
   Edge,
   Node,
   XYPosition,
+  useReactFlow,
 } from '@xyflow/react';
 import { Button } from "@/components/ui/button";
-import { Play, PlayCircle } from "lucide-react";
+import { Play, PlayCircle, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { AIBlockNode } from '@/components/forge/AIBlockNode';
 import { PrometheusChat } from '@/components/forge/PrometheusChat';
@@ -35,6 +36,40 @@ const Forge = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isTestMode, setIsTestMode] = useState(false);
   const { toast } = useToast();
+  const reactFlowInstance = useReactFlow();
+
+  // Function to remove a specific node
+  const onNodeDelete = useCallback((nodeId: string) => {
+    setNodes((nds) => nds.filter((node) => node.id !== nodeId));
+    // Also remove any connected edges
+    setEdges((eds) => eds.filter(
+      (edge) => edge.source !== nodeId && edge.target !== nodeId
+    ));
+    
+    toast({
+      title: "Block Removed",
+      description: "The block has been removed from your workflow.",
+    });
+  }, [setNodes, setEdges, toast]);
+
+  // Function to clear all nodes and edges
+  const clearWorkflow = useCallback(() => {
+    if (nodes.length === 0 && edges.length === 0) {
+      toast({
+        title: "Workflow Already Empty",
+        description: "There are no blocks to clear.",
+      });
+      return;
+    }
+    
+    setNodes([]);
+    setEdges([]);
+    
+    toast({
+      title: "Workflow Cleared",
+      description: "All blocks and connections have been removed.",
+    });
+  }, [nodes, edges, setNodes, setEdges, toast]);
 
   const addBlockToCanvas = (blockType: string) => {
     if (!reactFlowWrapper.current) return;
@@ -208,6 +243,14 @@ const Forge = () => {
             <div className="flex gap-4">
               <Button
                 variant="outline"
+                className="flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50"
+                onClick={clearWorkflow}
+              >
+                <Trash2 className="h-4 w-4" />
+                Clear All
+              </Button>
+              <Button
+                variant="outline"
                 className="flex items-center gap-2"
                 onClick={handleTestRun}
               >
@@ -252,6 +295,7 @@ const Forge = () => {
                   onDragOver={onDragOver}
                   onDrop={onDrop}
                   nodeTypes={nodeTypes}
+                  deleteKeyCode="Delete"
                   fitView
                   className="bg-dots"
                 >
@@ -260,7 +304,7 @@ const Forge = () => {
                   <MiniMap />
                 </ReactFlow>
                 <div className="absolute top-4 right-4 bg-white/80 text-xs text-gray-500 p-2 rounded-md backdrop-blur-sm">
-                  Drag blocks from the left panel to create your workflow
+                  Drag blocks from the left panel • Press Delete key to remove selected blocks
                 </div>
               </div>
             </div>
