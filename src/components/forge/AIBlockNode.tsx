@@ -17,35 +17,47 @@ const iconMap = {
 };
 
 const colorMap = {
-  'analyze-text': 'bg-purple-100 border-purple-200 hover:border-purple-300',
-  'send-email': 'bg-blue-100 border-blue-200 hover:border-blue-300',
-  'generate-image': 'bg-pink-100 border-pink-200 hover:border-pink-300',
-  'chat-response': 'bg-green-100 border-green-200 hover:border-green-300',
-  'analyze-data': 'bg-orange-100 border-orange-200 hover:border-orange-300',
-  'social-post': 'bg-indigo-100 border-indigo-200 hover:border-indigo-300',
-  'document': 'bg-yellow-100 border-yellow-200 hover:border-yellow-300',
-  'web-action': 'bg-sky-100 border-sky-200 hover:border-sky-300',
-  'notification': 'bg-red-100 border-red-200 hover:border-red-300',
-  'database': 'bg-emerald-100 border-emerald-200 hover:border-emerald-300',
+  'analyze-text': 'bg-purple-100 border-purple-300 text-purple-500',
+  'send-email': 'bg-blue-100 border-blue-300 text-blue-500',
+  'generate-image': 'bg-pink-100 border-pink-300 text-pink-500',
+  'chat-response': 'bg-green-100 border-green-300 text-green-500',
+  'analyze-data': 'bg-orange-100 border-orange-300 text-orange-500',
+  'social-post': 'bg-indigo-100 border-indigo-300 text-indigo-500',
+  'document': 'bg-yellow-100 border-yellow-300 text-yellow-500',
+  'web-action': 'bg-sky-100 border-sky-300 text-sky-500',
+  'notification': 'bg-red-100 border-red-300 text-red-500',
+  'database': 'bg-emerald-100 border-emerald-300 text-emerald-500',
 };
 
 export const AIBlockNode = ({ data }: { data: { label: string; type: keyof typeof iconMap } }) => {
   const Icon = iconMap[data.type];
 
   return (
-    <div
-      className={cn(
-        "px-4 py-2 rounded-lg shadow-sm border-2 min-w-[140px]",
-        "transition-colors duration-200",
-        colorMap[data.type]
-      )}
-    >
-      <Handle type="target" position={Position.Left} className="w-3 h-3 rounded-full bg-gray-400" />
-      <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4" />
-        <span className="text-sm font-medium">{data.label}</span>
+    <div className="relative group">
+      <Handle 
+        type="target" 
+        position={Position.Left} 
+        className="w-2 h-2 rounded-full bg-gray-400 -left-1" 
+      />
+      <div
+        className={cn(
+          "w-14 h-14 flex flex-col items-center justify-center rounded-lg shadow-sm border-2",
+          "transition-all duration-200 hover:scale-105",
+          colorMap[data.type]
+        )}
+      >
+        <Icon className="h-6 w-6" />
       </div>
-      <Handle type="source" position={Position.Right} className="w-3 h-3 rounded-full bg-gray-400" />
+      <Handle 
+        type="source" 
+        position={Position.Right} 
+        className="w-2 h-2 rounded-full bg-gray-400 -right-1" 
+      />
+      
+      {/* Label tooltip that appears on hover */}
+      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+        {data.label}
+      </div>
     </div>
   );
 };

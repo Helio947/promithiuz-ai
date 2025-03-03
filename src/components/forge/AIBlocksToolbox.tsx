@@ -16,7 +16,7 @@ export const AIBlocksToolbox = ({ onDragStart }: AIBlocksToolboxProps) => {
           AI Blocks
         </h3>
       </div>
-      <div className="p-4 space-y-3">
+      <div className="p-4 grid grid-cols-2 gap-4">
         {aiBlocks.map((block) => (
           <DraggableBlock
             key={block.type}
