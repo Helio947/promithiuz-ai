@@ -4,11 +4,10 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import About from "@/components/About";
-import Testimonials from "@/components/Testimonials";
-import Onboarding from "@/components/Onboarding";
 import Documentation from "@/components/Documentation";
 import analytics from "@/utils/analytics";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import Onboarding from "@/components/Onboarding";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -42,7 +41,6 @@ const Index = () => {
         <Hero />
         <Features />
         <About />
-        <Testimonials />
         <Documentation />
         <Onboarding open={showOnboarding} setOpen={setShowOnboarding} />
       </div>
