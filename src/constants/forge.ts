@@ -1,4 +1,6 @@
+
 import { Node } from '@xyflow/react';
+import { AITools } from '@/types/forge';
 
 export const quickTips = [
   "How do I connect blocks?",
@@ -7,6 +9,8 @@ export const quickTips = [
   "Show me example workflows",
   "Help me get started",
   "How do I remove a block?",
+  "Create a customer support workflow",
+  "Build a marketing content pipeline",
 ];
 
 export const initialNodes: Node[] = [
@@ -30,6 +34,124 @@ export const aiBlocks = [
   { type: 'notification' as const, label: 'Send Notification' },
   { type: 'database' as const, label: 'Database Action' },
 ];
+
+export const aiBlocksTools: Record<string, AITools[]> = {
+  'analyze-text': [
+    {
+      name: 'GPT-4',
+      description: 'Advanced natural language understanding for text analysis',
+      provider: 'OpenAI',
+    },
+    {
+      name: 'Llama 3',
+      description: 'Open source LLM for text classification and sentiment analysis',
+      provider: 'Meta AI',
+    }
+  ],
+  'send-email': [
+    {
+      name: 'SendGrid API',
+      description: 'Reliable email delivery service',
+      provider: 'Twilio',
+    }
+  ],
+  'generate-image': [
+    {
+      name: 'DALL-E 3',
+      description: 'Advanced image generation from text prompts',
+      provider: 'OpenAI',
+    },
+    {
+      name: 'Stable Diffusion XL',
+      description: 'Open source image generation model',
+      provider: 'Stability AI',
+    }
+  ],
+  'chat-response': [
+    {
+      name: 'Claude 3',
+      description: 'Conversational AI with nuanced understanding',
+      provider: 'Anthropic',
+    },
+    {
+      name: 'GPT-4o',
+      description: 'Fast, context-aware conversational responses',
+      provider: 'OpenAI',
+    }
+  ],
+  'analyze-data': [
+    {
+      name: 'Python Analytics',
+      description: 'Data processing with pandas and numpy',
+      provider: 'Python',
+    },
+    {
+      name: 'TensorFlow',
+      description: 'ML-based data analysis and prediction',
+      provider: 'Google',
+    }
+  ],
+  'social-post': [
+    {
+      name: 'Twitter API',
+      description: 'Programmatic access to Twitter features',
+      provider: 'Twitter/X',
+    },
+    {
+      name: 'Meta Graph API',
+      description: 'Facebook and Instagram integration',
+      provider: 'Meta',
+    }
+  ],
+  'document': [
+    {
+      name: 'DocuGen AI',
+      description: 'Automated document creation and transformation',
+      provider: 'Promithiuz',
+    },
+    {
+      name: 'PDF Processing',
+      description: 'Extract and manipulate PDF content',
+      provider: 'Adobe',
+    }
+  ],
+  'web-action': [
+    {
+      name: 'Puppeteer',
+      description: 'Browser automation for web interactions',
+      provider: 'Google',
+    },
+    {
+      name: 'REST API Client',
+      description: 'Make API calls to external services',
+      provider: 'Promithiuz',
+    }
+  ],
+  'notification': [
+    {
+      name: 'Twilio SMS',
+      description: 'Send text messages programmatically',
+      provider: 'Twilio',
+    },
+    {
+      name: 'Push Notifications',
+      description: 'Send alerts to mobile devices',
+      provider: 'Firebase',
+    }
+  ],
+  'database': [
+    {
+      name: 'Supabase',
+      description: 'Open source Firebase alternative',
+      provider: 'Supabase',
+    },
+    {
+      name: 'MongoDB Atlas',
+      description: 'Document database for flexible schemas',
+      provider: 'MongoDB',
+    }
+  ]
+};
 
 export const workflowTemplates = [
   {

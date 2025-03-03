@@ -1,4 +1,3 @@
-
 import { useCallback, useRef, useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { aiBlocks, initialNodes } from '@/constants/forge';
@@ -212,6 +211,25 @@ export const ForgeWorkflowContainer = () => {
     setEdges(templateEdges);
   };
 
+  const handleCreateWorkflow = useCallback((workflowNodes: Node[], workflowEdges: Edge[]) => {
+    // Update node data to include the onNodeDelete handler
+    const nodesWithDeleteHandler = workflowNodes.map(node => ({
+      ...node,
+      data: {
+        ...node.data,
+        onNodeDelete,
+      }
+    }));
+    
+    setNodes(nodesWithDeleteHandler);
+    setEdges(workflowEdges);
+    
+    toast({
+      title: "Workflow Created",
+      description: "A new workflow has been created based on your request!",
+    });
+  }, [setNodes, setEdges, toast]);
+
   return (
     <>
       <ForgeHeader 
@@ -247,7 +265,10 @@ export const ForgeWorkflowContainer = () => {
         </div>
 
         <div className="col-span-3 space-y-6">
-          <PrometheusChat onAddBlock={addBlockToCanvas} />
+          <PrometheusChat 
+            onAddBlock={addBlockToCanvas} 
+            onCreateWorkflow={handleCreateWorkflow}
+          />
         </div>
       </div>
     </>

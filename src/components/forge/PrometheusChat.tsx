@@ -10,16 +10,17 @@ import { useChat } from "@/hooks/use-chat";
 
 interface PrometheusChatProps {
   onAddBlock: (blockType: string) => void;
+  onCreateWorkflow: (nodes: any[], edges: any[]) => void;
 }
 
-export const PrometheusChat = ({ onAddBlock }: PrometheusChatProps) => {
+export const PrometheusChat = ({ onAddBlock, onCreateWorkflow }: PrometheusChatProps) => {
   const { 
     chatContainerRef, 
     question, 
     setQuestion, 
     messages, 
     handleQuestionSubmit 
-  } = useChat();
+  } = useChat(onCreateWorkflow);
   
   const { toast } = useToast();
 

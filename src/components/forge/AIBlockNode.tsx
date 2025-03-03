@@ -2,6 +2,7 @@
 import { Handle, Position } from '@xyflow/react';
 import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AIToolInfo } from './AIToolInfo';
 
 const iconMap = {
   'analyze-text': Brain,
@@ -83,6 +84,11 @@ export const AIBlockNode = ({ data, id }: { data: AIBlockData; id: string }) => 
       {/* Label tooltip that appears on hover */}
       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
         {data.label}
+      </div>
+
+      {/* AI Tool Information */}
+      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-48 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+        <AIToolInfo blockType={data.type} />
       </div>
     </div>
   );
