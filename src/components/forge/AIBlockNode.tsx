@@ -1,5 +1,5 @@
 
-import { Handle, Position, useReactFlow } from '@xyflow/react';
+import { Handle, Position } from '@xyflow/react';
 import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -31,19 +31,15 @@ const colorMap = {
 
 export const AIBlockNode = ({ data, id }: { data: { label: string; type: keyof typeof iconMap }; id: string }) => {
   const Icon = iconMap[data.type];
-  const { setNodes, setEdges } = useReactFlow();
 
-  const handleDelete = (event: React.MouseEvent) => {
+  const handleDelete = (event: React.MouseEvent, deleteId: string) => {
     // Stop event propagation to prevent node selection
     event.stopPropagation();
     
-    // Remove the node
-    setNodes((nodes) => nodes.filter((node) => node.id !== id));
-    
-    // Remove any connected edges
-    setEdges((edges) => edges.filter(
-      (edge) => edge.source !== id && edge.target !== id
-    ));
+    // Use the onNodeDelete callback passed via data
+    if (data.onNodeDelete) {
+      data.onNodeDelete(deleteId);
+    }
   };
 
   return (
@@ -70,7 +66,7 @@ export const AIBlockNode = ({ data, id }: { data: { label: string; type: keyof t
       
       {/* Delete button that appears on hover */}
       <button
-        onClick={handleDelete}
+        onClick={(e) => handleDelete(e, id)}
         className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
         aria-label="Delete node"
       >

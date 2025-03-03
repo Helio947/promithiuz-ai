@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import Header from "@/components/Header";
 import {
   ReactFlow,
+  ReactFlowProvider,
   MiniMap,
   Controls,
   Background,
@@ -13,7 +14,6 @@ import {
   Edge,
   Node,
   XYPosition,
-  useReactFlow,
 } from '@xyflow/react';
 import { Button } from "@/components/ui/button";
 import { Play, PlayCircle, Trash2 } from "lucide-react";
@@ -30,13 +30,13 @@ const nodeTypes = {
   aiBlock: AIBlockNode,
 };
 
-const Forge = () => {
+// This is the inner component that uses the ReactFlow hooks
+const ForgeWorkflow = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [isTestMode, setIsTestMode] = useState(false);
   const { toast } = useToast();
-  const reactFlowInstance = useReactFlow();
 
   // Function to remove a specific node
   const onNodeDelete = useCallback((nodeId: string) => {
@@ -83,7 +83,11 @@ const Forge = () => {
       id: `${blockType}-${Date.now()}`,
       type: 'aiBlock',
       position,
-      data: { label: aiBlocks.find(block => block.type === blockType)?.label || 'New Block', type: blockType },
+      data: { 
+        label: aiBlocks.find(block => block.type === blockType)?.label || 'New Block', 
+        type: blockType,
+        onNodeDelete, // Pass the delete handler to the node data
+      },
     };
 
     setNodes(nds => nds.concat(newNode));
@@ -122,26 +126,20 @@ const Forge = () => {
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
-    console.log('Dragging over ReactFlow area');
   }, []);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-      console.log('Drop event triggered');
 
       if (!reactFlowWrapper.current) {
-        console.log('ReactFlow wrapper not available');
         return;
       }
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
 
-      console.log('Drop detected with type:', type);
-
       if (typeof type === 'undefined' || !type) {
-        console.log('No valid type data in the drop event');
         return;
       }
 
@@ -150,13 +148,15 @@ const Forge = () => {
         y: event.clientY - reactFlowBounds.top,
       };
 
-      console.log('Creating node at position:', position);
-
       const newNode = {
         id: `${type}-${Date.now()}`,
         type: 'aiBlock',
         position,
-        data: { label: aiBlocks.find(block => block.type === type)?.label || 'New Block', type },
+        data: { 
+          label: aiBlocks.find(block => block.type === type)?.label || 'New Block', 
+          type,
+          onNodeDelete, // Pass the delete handler to the node data
+        },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -166,13 +166,12 @@ const Forge = () => {
         description: "New AI block has been added to your workflow!",
       });
     },
-    [setNodes, toast]
+    [setNodes, toast, onNodeDelete]
   );
 
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
     event.dataTransfer.effectAllowed = 'move';
-    console.log('Drag started with type:', nodeType);
   };
 
   const handleTestRun = () => {
@@ -221,98 +220,118 @@ const Forge = () => {
   };
 
   const handleTemplateSelect = (templateNodes: Node[], templateEdges: Edge[]) => {
-    setNodes(templateNodes);
+    // Update node data to include the onNodeDelete handler
+    const nodesWithDeleteHandler = templateNodes.map(node => ({
+      ...node,
+      data: {
+        ...node.data,
+        onNodeDelete,
+      }
+    }));
+    
+    setNodes(nodesWithDeleteHandler);
     setEdges(templateEdges);
   };
 
+  return (
+    <>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            The Forge
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Build powerful AI workflows to automate business tasks and gain insights
+          </p>
+        </div>
+        <div className="flex gap-4">
+          <Button
+            variant="outline"
+            className="flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50"
+            onClick={clearWorkflow}
+          >
+            <Trash2 className="h-4 w-4" />
+            Clear All
+          </Button>
+          <Button
+            variant="outline"
+            className="flex items-center gap-2"
+            onClick={handleTestRun}
+          >
+            <PlayCircle className="h-4 w-4" />
+            Test Run
+          </Button>
+          <Button
+            className="flex items-center gap-2"
+            onClick={handleRun}
+          >
+            <Play className="h-4 w-4" />
+            Run Workflow
+          </Button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-12 gap-6">
+        <div className="col-span-3">
+          <AIBlocksToolbox onDragStart={onDragStart} />
+          {isTestMode ? (
+            <TestSimulator 
+              nodes={nodes}
+              edges={edges}
+              onTestComplete={handleTestComplete}
+            />
+          ) : (
+            <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
+          )}
+        </div>
+        
+        <div className="col-span-6">
+          <div 
+            className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" 
+            ref={reactFlowWrapper}
+          >
+            <ReactFlow
+              nodes={nodes}
+              edges={edges}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
+              nodeTypes={nodeTypes}
+              deleteKeyCode="Delete"
+              fitView
+              className="bg-dots"
+            >
+              <Background />
+              <Controls />
+              <MiniMap />
+            </ReactFlow>
+            <div className="absolute top-4 right-4 bg-white/80 text-xs text-gray-500 p-2 rounded-md backdrop-blur-sm">
+              Drag blocks from the left panel • Press Delete key to remove selected blocks
+            </div>
+          </div>
+        </div>
+
+        <div className="col-span-3 space-y-6">
+          <PrometheusChat onAddBlock={addBlockToCanvas} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+// Main component that wraps the ForgeWorkflow with ReactFlowProvider
+const Forge = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="pt-24">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                The Forge
-              </h1>
-              <p className="text-gray-600 mt-2">
-                Build powerful AI workflows to automate business tasks and gain insights
-              </p>
-            </div>
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                className="flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-50"
-                onClick={clearWorkflow}
-              >
-                <Trash2 className="h-4 w-4" />
-                Clear All
-              </Button>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={handleTestRun}
-              >
-                <PlayCircle className="h-4 w-4" />
-                Test Run
-              </Button>
-              <Button
-                className="flex items-center gap-2"
-                onClick={handleRun}
-              >
-                <Play className="h-4 w-4" />
-                Run Workflow
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-3">
-              <AIBlocksToolbox onDragStart={onDragStart} />
-              {isTestMode ? (
-                <TestSimulator 
-                  nodes={nodes}
-                  edges={edges}
-                  onTestComplete={handleTestComplete}
-                />
-              ) : (
-                <TemplatesLibrary onTemplateSelect={handleTemplateSelect} />
-              )}
-            </div>
-            
-            <div className="col-span-6">
-              <div 
-                className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" 
-                ref={reactFlowWrapper}
-              >
-                <ReactFlow
-                  nodes={nodes}
-                  edges={edges}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onConnect={onConnect}
-                  onDragOver={onDragOver}
-                  onDrop={onDrop}
-                  nodeTypes={nodeTypes}
-                  deleteKeyCode="Delete"
-                  fitView
-                  className="bg-dots"
-                >
-                  <Background />
-                  <Controls />
-                  <MiniMap />
-                </ReactFlow>
-                <div className="absolute top-4 right-4 bg-white/80 text-xs text-gray-500 p-2 rounded-md backdrop-blur-sm">
-                  Drag blocks from the left panel • Press Delete key to remove selected blocks
-                </div>
-              </div>
-            </div>
-
-            <div className="col-span-3 space-y-6">
-              <PrometheusChat onAddBlock={addBlockToCanvas} />
-            </div>
-          </div>
+          <ReactFlowProvider>
+            <ForgeWorkflow />
+          </ReactFlowProvider>
         </div>
       </main>
     </div>
