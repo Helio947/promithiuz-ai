@@ -1,4 +1,3 @@
-
 import { Node } from '@xyflow/react';
 
 export const quickTips = [
@@ -6,6 +5,8 @@ export const quickTips = [
   "What does each color mean?",
   "How do I test my workflow?",
   "Show me example workflows",
+  "Help me get started",
+  "How do I remove a block?",
 ];
 
 export const initialNodes: Node[] = [

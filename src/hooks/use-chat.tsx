@@ -9,7 +9,7 @@ export function useChat() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome-message',
-      content: "👋 Welcome to The Forge! I'm your AI assistant here to help you build powerful workflows without coding. You can create automations for customer support, content creation, lead qualification, and more. What would you like to build today?",
+      content: "👋 Hi there! I'm your AI assistant in The Forge! Think of me as your creative partner for building powerful workflows without any coding. You can create all sorts of automations - from customer support to content creation to lead qualification - just by connecting blocks together! What would you like to build today? Feel free to ask me anything!",
       sender: 'prometheus',
       timestamp: new Date(),
       mentionedBlocks: [
@@ -58,7 +58,7 @@ export function useChat() {
           : msg
         );
       });
-    }, 800); // Shorter typing delay for better UX
+    }, 500); // Even shorter typing delay for better UX
   };
 
   const handleQuestionSubmit = (e: React.FormEvent) => {
