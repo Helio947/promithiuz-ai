@@ -5,6 +5,12 @@ export interface Prompt {
   description: string;
   category: string;
   prompt: string;
+  structure?: {
+    goal?: string;
+    returnFormat?: string;
+    warnings?: string;
+    contextDump?: string;
+  };
   saves: number;
   likes: number;
   isFavorited?: boolean;
@@ -24,3 +30,26 @@ export const categories = [
   "General Business",
   "Social Media"
 ] as const;
+
+export const promptStructureSections = [
+  "goal",
+  "returnFormat",
+  "warnings",
+  "contextDump"
+] as const;
+
+export type PromptSection = typeof promptStructureSections[number];
+
+export const sectionLabels: Record<PromptSection, string> = {
+  goal: "Goal",
+  returnFormat: "Return Format",
+  warnings: "Warnings",
+  contextDump: "Context"
+};
+
+export const sectionColors: Record<PromptSection, string> = {
+  goal: "bg-green-500",
+  returnFormat: "bg-blue-500",
+  warnings: "bg-orange-500",
+  contextDump: "bg-purple-500"
+};

@@ -1,3 +1,4 @@
+
 import { Prompt } from "@/types/prompt-engine";
 
 export const samplePrompts: Prompt[] = [
@@ -6,50 +7,19 @@ export const samplePrompts: Prompt[] = [
     title: "Universal Business Content Generator",
     description: "Create engaging content for any business type or industry.",
     category: "Content Creation",
-    prompt: `Generate professional business content following this framework:
+    prompt: `Goal: Generate professional business content.
 
-1. Business Context:
-   [Replace with your business type: retail/service/B2B/etc.]
-   [Replace with your target audience: consumers/professionals/businesses]
-   [Replace with your industry: tech/healthcare/retail/etc.]
+Return Format: Provide the content with clear headings, bullet points where appropriate, and with proper formatting.
 
-2. Content Type Selection:
-   Choose content type:
-   - Blog post
-   - Social media update
-   - Newsletter
-   - Website copy
-   - Product description
-   - Case study
-   
-3. Key Message Framework:
-   - Main value proposition: [What makes your offering unique?]
-   - Target audience pain points: [List 3-5 key challenges]
-   - Solutions offered: [How your product/service helps]
-   - Call to action: [Desired audience response]
+Warnings: Avoid generic statements. Make sure content is accurate and appropriate for the specified industry.
 
-4. Tone and Style Guide:
-   - Brand voice: [professional/friendly/expert/casual]
-   - Technical level: [beginner/intermediate/expert]
-   - Industry-specific terminology: [list key terms]
-   - Cultural considerations: [any specific cultural context]
-
-5. Content Structure:
-   - Attention-grabbing headline
-   - Engaging introduction
-   - Main points (3-5)
-   - Supporting evidence
-   - Practical examples
-   - Clear conclusion
-   - Call to action
-
-6. SEO Elements:
-   - Primary keyword: [main topic]
-   - Secondary keywords: [3-5 related terms]
-   - Meta description
-   - Header structure
-
-[Replace placeholders with your specific details]`,
+Context: This is for a business that needs professional content for various purposes. The content should reflect the business's brand voice and target audience.`,
+    structure: {
+      goal: "Generate professional business content following this framework for a specific business type, audience, and industry.",
+      returnFormat: "Deliver the content with a compelling headline, engaging introduction, well-structured body with subheadings, and clear call-to-action. Include SEO elements where applicable.",
+      warnings: "Avoid using generic business jargon. Make sure all industry-specific terminology is accurate. Don't include vague claims without supporting points.",
+      contextDump: "The business operates in a competitive environment and needs to differentiate itself through professional, high-quality content that speaks directly to customer pain points and offers clear solutions."
+    },
     saves: 1234,
     likes: 1567
   },
@@ -58,54 +28,19 @@ export const samplePrompts: Prompt[] = [
     title: "Universal Customer Service Response Template",
     description: "Professional response templates for any customer interaction.",
     category: "Customer Service",
-    prompt: `Create customer service responses using this comprehensive template:
+    prompt: `Goal: Create professional, empathetic customer service responses.
 
-1. Situation Assessment:
-   [Customer Issue Type: complaint/inquiry/feedback/request]
-   [Urgency Level: routine/urgent/critical]
-   [Communication Channel: email/chat/social/phone]
+Return Format: Provide a complete response with greeting, body, and closing. Include placeholders for customization.
 
-2. Response Structure:
-   
-   Opening:
-   - Personalized greeting
-   - Acknowledgment of issue
-   - Empathy statement
-   - Thank you for [specific action/feedback]
+Warnings: Avoid overly formal language. Ensure all promised solutions are realistic.
 
-   Body:
-   - Clear understanding confirmation
-   - Specific solution/answer
-   - Step-by-step instructions (if needed)
-   - Alternative options (if applicable)
-   - Timeline expectations
-   
-   Closing:
-   - Next steps summary
-   - Additional assistance offer
-   - Contact information
-   - Professional sign-off
-
-3. Tone Guidelines:
-   - Professional yet approachable
-   - Clear and concise
-   - Positive language focus
-   - Solution-oriented
-   
-4. Resolution Elements:
-   - Immediate solution
-   - Long-term prevention
-   - Follow-up plan
-   - Documentation needs
-
-5. Quality Checklist:
-   - Grammar and spelling
-   - Tone appropriateness
-   - Complete information
-   - Clear next steps
-   - Brand voice alignment
-
-[Customize each section based on your specific situation]`,
+Context: For customer service teams handling various types of inquiries, complaints, and feedback across different channels.`,
+    structure: {
+      goal: "Create customer service responses that are professional, empathetic, and solution-oriented for a specific issue type and urgency level.",
+      returnFormat: "Deliver a structured response with personalized greeting, acknowledgment of the issue, detailed solution, timeline expectations, and professional closing. Include placeholders for customer-specific information.",
+      warnings: "Avoid generic platitudes or making promises that can't be kept. Never use dismissive language. Ensure all technical instructions are accurate and clear.",
+      contextDump: "The customer service team handles various channels including email, chat, and social media. They need templates that can be quickly personalized while maintaining brand voice and ensuring compliance with company policies."
+    },
     saves: 945,
     likes: 1289
   },
@@ -114,60 +49,19 @@ export const samplePrompts: Prompt[] = [
     title: "Universal Marketing Campaign Generator",
     description: "Create comprehensive marketing campaigns for any business type.",
     category: "Marketing",
-    prompt: `Design a complete marketing campaign using this adaptable framework:
+    prompt: `Goal: Design a complete, integrated marketing campaign.
 
-1. Campaign Foundation:
-   Business Type: [retail/service/B2B/etc.]
-   Target Audience: [demographics/psychographics]
-   Campaign Objective: [awareness/leads/sales/loyalty]
-   Budget Range: [small/medium/large]
-   Timeline: [duration and key dates]
+Return Format: Provide a comprehensive campaign plan with digital and traditional components, content strategy, channel strategy, and success metrics.
 
-2. Market Analysis:
-   - Target market size
-   - Competitor activities
-   - Market trends
-   - Seasonal factors
-   - Geographic considerations
+Warnings: Ensure campaign elements are aligned with the specified budget. Avoid suggesting platforms inappropriate for the target audience.
 
-3. Campaign Elements:
-   
-   Digital Marketing:
-   - Social media strategy
-   - Email marketing plan
-   - Content marketing
-   - SEO optimization
-   - PPC advertising
-
-   Traditional Marketing:
-   - Print materials
-   - Direct mail
-   - Event marketing
-   - Local advertising
-   - PR activities
-
-4. Content Strategy:
-   - Key messages
-   - Content themes
-   - Brand voice guidelines
-   - Visual elements
-   - Call-to-action variations
-
-5. Channel Strategy:
-   - Primary channels
-   - Secondary channels
-   - Timing for each
-   - Cross-channel integration
-   - Budget allocation
-
-6. Success Metrics:
-   - KPI definitions
-   - Tracking methods
-   - ROI calculations
-   - Reporting schedule
-   - Optimization points
-
-[Replace placeholders with your specific campaign details]`,
+Context: For marketing teams planning campaigns with specific objectives, target audiences, and budgets.`,
+    structure: {
+      goal: "Design a complete, integrated marketing campaign for a specific business type, target audience, campaign objective, budget range, and timeline.",
+      returnFormat: "Deliver a comprehensive campaign plan with digital and traditional marketing elements, content strategy, channel strategy, timeline, budget allocation, and success metrics.",
+      warnings: "Ensure all campaign elements align with the specified budget. Avoid suggesting platforms that don't reach the target demographic. Don't neglect measurement and ROI tracking methods.",
+      contextDump: "The marketing team needs to maximize impact with limited resources. They need a campaign that integrates across channels, delivers measurable results, and can be executed with existing team capabilities."
+    },
     saves: 878,
     likes: 1432
   },
@@ -176,67 +70,19 @@ export const samplePrompts: Prompt[] = [
     title: "Business Analytics Report Generator",
     description: "Create comprehensive business analytics reports for any industry.",
     category: "Data Analysis",
-    prompt: `Generate detailed business analytics reports using this template:
+    prompt: `Goal: Generate a detailed business analytics report.
 
-1. Report Overview:
-   Business Type: [your industry]
-   Time Period: [analysis timeframe]
-   Report Focus: [specific metrics/KPIs]
-   Audience: [stakeholders/team/board]
+Return Format: Provide a complete report structure with executive summary, data analysis sections, visualizations recommendations, and actionable insights.
 
-2. Data Collection Framework:
-   
-   Performance Metrics:
-   - Revenue metrics
-   - Cost analysis
-   - Profit margins
-   - Growth rates
-   - Market share
+Warnings: Ensure KPIs are appropriate for the industry and business type. Avoid suggesting metrics that require data the business likely doesn't have.
 
-   Operational Metrics:
-   - Efficiency indicators
-   - Resource utilization
-   - Process metrics
-   - Quality measures
-   - Timeline analysis
-
-   Customer Metrics:
-   - Satisfaction scores
-   - Retention rates
-   - Lifetime value
-   - Acquisition costs
-   - Engagement levels
-
-3. Analysis Structure:
-   - Executive summary
-   - Key findings
-   - Detailed analysis
-   - Trend identification
-   - Comparative analysis
-   - Future projections
-
-4. Visualization Requirements:
-   - Charts/graphs types
-   - Data tables
-   - Key metrics dashboard
-   - Trend lines
-   - Comparative views
-
-5. Recommendations:
-   - Action items
-   - Priority levels
-   - Resource needs
-   - Implementation timeline
-   - Expected outcomes
-
-6. Implementation Guide:
-   - Step-by-step plan
-   - Resource allocation
-   - Timeline
-   - Success metrics
-   - Review points
-
-[Customize metrics and focus areas for your business]`,
+Context: For business analysts preparing reports for stakeholders across different departments.`,
+    structure: {
+      goal: "Generate a detailed business analytics report for a specific industry, time period, and target audience that provides actionable insights.",
+      returnFormat: "Deliver a structured report with executive summary, key findings, detailed analysis by performance category, visualization specifications, and prioritized recommendations with implementation steps.",
+      warnings: "Ensure KPIs are appropriate for the specified industry. Don't suggest collecting data that would be unreasonable to obtain. Avoid vanity metrics that don't connect to business outcomes.",
+      contextDump: "The analytics team needs to communicate complex data in a way that different stakeholders can understand and act upon. The report should identify trends, provide context for the numbers, and connect analysis to business decisions."
+    },
     saves: 756,
     likes: 989
   },
@@ -245,52 +91,19 @@ export const samplePrompts: Prompt[] = [
     title: "Universal AI Image Generation Template",
     description: "Create professional visuals for any business purpose.",
     category: "Image Generation",
-    prompt: `Generate professional business visuals using this comprehensive prompt structure:
+    prompt: `Goal: Generate professional business visuals.
 
-1. Image Purpose:
-   [Select: marketing/product/social media/website]
-   [Define: primary message/emotion to convey]
-   [Specify: intended platform/usage]
+Return Format: Provide a detailed image generation prompt with all necessary parameters.
 
-2. Visual Elements:
+Warnings: Specify all unwanted elements to avoid in the negative prompt section. Ensure image style matches brand guidelines.
 
-   Subject Matter:
-   - Main focus: [product/person/scene/concept]
-   - Supporting elements: [list key components]
-   - Background: [setting/environment]
-   - Composition: [layout/arrangement]
-
-   Style Guidelines:
-   - Art style: [realistic/illustrated/minimal/etc.]
-   - Color scheme: [brand colors/mood colors]
-   - Lighting: [natural/studio/dramatic]
-   - Texture: [smooth/rough/glossy/matte]
-
-3. Technical Specifications:
-   - Resolution: [dimensions]
-   - Format: [aspect ratio]
-   - File type: [PNG/JPG/etc.]
-   - Quality level: [standard/high/ultra]
-
-4. Brand Integration:
-   - Logo placement
-   - Brand colors
-   - Typography
-   - Visual identity elements
-
-5. Optimization For:
-   - Platform requirements
-   - Device display
-   - Loading speed
-   - Accessibility
-
-Negative Prompt Elements:
-- Unwanted elements
-- Style exclusions
-- Technical restrictions
-- Brand misalignments
-
-[Replace all bracketed sections with your specific requirements]`,
+Context: For marketing and design teams creating visuals for various business purposes and platforms.`,
+    structure: {
+      goal: "Generate professional business visuals for a specific purpose (marketing/product/social/website) that convey a specific message or emotion.",
+      returnFormat: "Provide a detailed prompt with subject matter specifications, style guidelines, technical parameters, brand integration elements, and platform optimization details.",
+      warnings: "Include a 'negative prompt' section specifying unwanted elements, styles to avoid, and technical restrictions. Ensure the prompt doesn't result in generic stock-photo-like images.",
+      contextDump: "The marketing team needs unique, professional visuals that align with brand identity across different platforms. The images need to be distinctive while maintaining brand consistency and technical quality."
+    },
     saves: 689,
     likes: 934
   },
@@ -299,53 +112,19 @@ Negative Prompt Elements:
     title: "Universal HR Policy Generator",
     description: "Create comprehensive HR policies for any organization.",
     category: "HR",
-    prompt: `Generate professional HR policies using this framework:
+    prompt: `Goal: Generate comprehensive HR policies.
 
-1. Policy Foundation:
-   Organization Type: [corporate/startup/nonprofit/etc.]
-   Employee Count: [team size range]
-   Work Model: [office/remote/hybrid]
-   Jurisdiction: [location/legal framework]
+Return Format: Provide structured policy documents with purpose, definitions, procedures, responsibilities, and compliance requirements.
 
-2. Policy Structure:
-   - Purpose and scope
-   - Definitions of terms
-   - Policy statement
-   - Procedures and guidelines
-   - Responsibilities
-   - Compliance requirements
+Warnings: Ensure policies comply with relevant regulations. Don't include legally questionable provisions.
 
-3. Key Policy Areas:
-   
-   Employment Basics:
-   - Hiring process
-   - Probation period
-   - Working hours
-   - Compensation
-   - Benefits
-
-   Workplace Conduct:
-   - Code of conduct
-   - Dress code
-   - Communication guidelines
-   - Conflict resolution
-   - Ethics policy
-
-   Performance Management:
-   - Review process
-   - Goal setting
-   - Career development
-   - Training programs
-   - Promotion criteria
-
-4. Implementation Plan:
-   - Communication strategy
-   - Training requirements
-   - Documentation needs
-   - Review schedule
-   - Update procedures
-
-[Customize sections based on your organization's needs]`,
+Context: For HR teams developing or updating policies for organizations of different sizes and work models.`,
+    structure: {
+      goal: "Generate comprehensive HR policies for a specific organization type, size, work model, and jurisdiction that are legally compliant and effective.",
+      returnFormat: "Deliver structured policy documents with purpose and scope, clear definitions, detailed procedures, responsibility assignments, and compliance requirements.",
+      warnings: "Ensure all policies comply with relevant regulations for the specified jurisdiction. Don't include legally questionable provisions. Avoid overly rigid policies that limit flexibility when needed.",
+      contextDump: "The HR team needs policies that balance organizational needs with employee experience. Policies should be clear enough for consistent application but adaptable to different situations. They'll be used for onboarding, reference, and compliance purposes."
+    },
     saves: 567,
     likes: 823
   },
@@ -354,55 +133,19 @@ Negative Prompt Elements:
     title: "Universal Sales Script Generator",
     description: "Create effective sales scripts for any product or service.",
     category: "Sales",
-    prompt: `Generate professional sales scripts using this template:
+    prompt: `Goal: Generate effective sales scripts.
 
-1. Pre-Call Planning:
-   Product/Service: [your offering]
-   Target Customer: [ideal customer profile]
-   Industry: [customer's sector]
-   Pain Points: [key challenges]
+Return Format: Provide a structured script with sections for opening, discovery, presentation, objection handling, and closing.
 
-2. Script Structure:
+Warnings: Avoid manipulative tactics. Ensure ethical sales approaches that build trust.
 
-   Opening:
-   - Introduction (15 seconds)
-   - Rapport building
-   - Purpose statement
-   - Permission to proceed
-
-   Discovery:
-   - Qualification questions
-   - Need assessment
-   - Current situation
-   - Pain point exploration
-   - Budget discussion
-
-   Solution Presentation:
-   - Value proposition
-   - Features and benefits
-   - Use case examples
-   - ROI demonstration
-   - Competitive advantages
-
-   Objection Handling:
-   - Common objections
-   - Response templates
-   - Follow-up questions
-   - Alternative solutions
-
-   Closing:
-   - Trial close techniques
-   - Final offer
-   - Next steps
-   - Follow-up plan
-
-3. Customization Points:
-   - Industry terminology
-   - Pain point specifics
-   - Success stories
-   - Pricing options
-
-[Replace sections with your specific details]`,
+Context: For sales teams selling products or services across different industries and customer types.`,
+    structure: {
+      goal: "Generate effective sales scripts for a specific product/service, target customer, and industry that address key pain points and drive conversions.",
+      returnFormat: "Provide a structured script with sections for opening, discovery questions, solution presentation, objection handling, and various closing techniques with follow-up plans.",
+      warnings: "Avoid manipulative or high-pressure tactics. Don't include unrealistic claims or promises. Ensure the language builds trust rather than creating suspicion.",
+      contextDump: "The sales team needs scripts that feel natural and conversational while effectively guiding prospects through the sales process. Scripts should be adaptable to different prospect responses and buying signals."
+    },
     saves: 789,
     likes: 1045
   },
@@ -411,49 +154,19 @@ Negative Prompt Elements:
     title: "Universal Social Media Strategy Generator",
     description: "Create effective social media strategies for any business.",
     category: "Social Media",
-    prompt: `Generate a comprehensive social media strategy using this framework:
+    prompt: `Goal: Generate a comprehensive social media strategy.
 
-1. Platform Strategy:
-   [List relevant platforms]
-   [Define primary/secondary platforms]
-   [Platform-specific goals]
-   [Audience presence analysis]
+Return Format: Provide a complete strategy with platform selection, content framework, posting schedule, engagement tactics, and performance tracking.
 
-2. Content Framework:
+Warnings: Don't recommend unrealistic posting frequencies. Ensure strategy matches business resources and capabilities.
 
-   Content Types:
-   - Educational posts
-   - Behind-the-scenes
-   - Customer spotlights
-   - Product showcases
-   - Industry news
-   - Interactive content
-
-   Content Mix:
-   - 30% Educational
-   - 25% Promotional
-   - 25% Engagement
-   - 20% Entertainment
-
-3. Posting Schedule:
-   - Optimal times
-   - Frequency by platform
-   - Content calendar
-   - Seasonal adjustments
-
-4. Engagement Strategy:
-   - Response templates
-   - Community guidelines
-   - Crisis management
-   - Influencer collaboration
-
-5. Performance Tracking:
-   - Key metrics
-   - Analytics tools
-   - Report templates
-   - Optimization process
-
-[Customize based on your business needs]`,
+Context: For marketing teams developing social media approaches across different platforms and business types.`,
+    structure: {
+      goal: "Generate a comprehensive social media strategy for a specific business that maximizes engagement and achieves business objectives.",
+      returnFormat: "Deliver a complete strategy with platform prioritization, content mix recommendations, detailed posting schedule, engagement guidelines, and performance tracking methods.",
+      warnings: "Don't recommend unrealistic posting frequencies or content types that require excessive resources. Avoid one-size-fits-all approaches that ignore platform differences.",
+      contextDump: "The marketing team needs a strategic approach to social media that integrates with broader marketing goals. They have limited resources and need to focus efforts where they'll have the most impact, while maintaining a consistent brand voice."
+    },
     saves: 678,
     likes: 934
   },
@@ -462,43 +175,19 @@ Negative Prompt Elements:
     title: "Universal Translation Prompt",
     description: "Create accurate translations while maintaining context and tone.",
     category: "Translation",
-    prompt: `Generate accurate translations using this comprehensive framework:
+    prompt: `Goal: Generate accurate, culturally appropriate translations.
 
-1. Content Analysis:
-   Source Language: [specify language]
-   Target Language: [specify language]
-   Content Type: [marketing/technical/legal/etc.]
-   Audience: [target readers]
+Return Format: Provide translated text with notes on cultural adaptations or challenging phrases.
 
-2. Translation Requirements:
-   
-   Context Preservation:
-   - Industry context
-   - Cultural nuances
-   - Brand voice
-   - Technical terminology
+Warnings: Be aware of idioms, slang, and cultural references that may not translate directly. Maintain the original tone and intent.
 
-   Style Guidelines:
-   - Tone of voice
-   - Formality level
-   - Local idioms
-   - Cultural adaptations
-
-3. Quality Checks:
-   - Grammar accuracy
-   - Cultural appropriateness
-   - Technical accuracy
-   - Brand consistency
-
-4. Localization Elements:
-   - Date formats
-   - Number formats
-   - Currency
-   - Units of measurement
-   - Color associations
-   - Cultural references
-
-[Add your specific content for translation]`,
+Context: For translating various content types between different languages while preserving meaning and cultural context.`,
+    structure: {
+      goal: "Generate accurate, culturally appropriate translations between specific languages for a particular content type and target audience.",
+      returnFormat: "Provide translated text with notes on cultural adaptations made, alternative translations for challenging phrases, and explanations for any significant departures from literal translation.",
+      warnings: "Be careful with idioms, slang, and cultural references that may not translate directly. Watch for false cognates. Ensure dates, numbers, measurements, and currencies are properly localized.",
+      contextDump: "The translation needs to preserve not just the words but the meaning, tone, and impact of the original. The target audience may have different cultural references and expectations that should be considered in the translation."
+    },
     saves: 456,
     likes: 678
   },
@@ -507,41 +196,19 @@ Negative Prompt Elements:
     title: "Universal AI Training Data Generator",
     description: "Create high-quality training data for AI models.",
     category: "AI Training",
-    prompt: `Generate AI training data using this structured framework:
+    prompt: `Goal: Generate high-quality AI training data.
 
-1. Data Requirements:
-   AI Model Type: [classification/recognition/generation]
-   Data Type: [text/image/audio/video]
-   Volume Needed: [dataset size]
-   Quality Level: [basic/standard/premium]
+Return Format: Provide formatted data matching requested volumes and formats with clear annotations.
 
-2. Data Structure:
-   
-   Input Format:
-   - Data fields
-   - File formats
-   - Size limits
-   - Quality parameters
+Warnings: Ensure diversity in the data. Avoid biases and stereotypes that could be learned by the AI.
 
-   Annotation Guidelines:
-   - Label definitions
-   - Classification rules
-   - Edge cases
-   - Quality criteria
-
-3. Diversity Requirements:
-   - Demographic variation
-   - Use case coverage
-   - Edge case inclusion
-   - Bias prevention
-
-4. Quality Control:
-   - Validation process
-   - Error checking
-   - Consistency rules
-   - Review guidelines
-
-[Customize based on your AI project needs]`,
+Context: For AI development teams creating training datasets for different model types and applications.`,
+    structure: {
+      goal: "Generate high-quality training data for a specific AI model type, data format, and volume that is diverse and balanced.",
+      returnFormat: "Provide formatted data matching requested structure with clear annotations, classifications, and metadata according to the specified quality parameters.",
+      warnings: "Ensure diversity across all relevant dimensions in the data. Explicitly avoid introducing biases or stereotypes that could be learned by the AI. Balance edge cases with common cases.",
+      contextDump: "The AI development team needs training data that will result in a model that performs well across different contexts and user groups. The data needs to be representative of real-world usage while covering important edge cases."
+    },
     saves: 345,
     likes: 567
   }

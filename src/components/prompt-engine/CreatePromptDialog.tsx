@@ -11,9 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { categories } from "@/types/prompt-engine";
+import { categories, promptStructureSections, sectionLabels, PromptSection } from "@/types/prompt-engine";
 import { toast } from "@/components/ui/use-toast";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Info } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface CreatePromptDialogProps {
   onPromptCreated: (prompt: any) => void;
@@ -25,6 +27,13 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<string>(categories[0]);
   const [prompt, setPrompt] = useState("");
+  const [promptMode, setPromptMode] = useState<"simple" | "structured">("structured");
+  const [structuredSections, setStructuredSections] = useState<Record<PromptSection, string>>({
+    goal: "",
+    returnFormat: "",
+    warnings: "",
+    contextDump: ""
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +43,8 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
       title,
       description,
       category,
-      prompt,
+      prompt: promptMode === "simple" ? prompt : generateStructuredPrompt(),
+      structure: promptMode === "structured" ? structuredSections : undefined,
       saves: 0,
       likes: 0
     };
@@ -49,17 +59,39 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
     });
   };
 
+  const generateStructuredPrompt = () => {
+    return Object.entries(structuredSections)
+      .filter(([_, value]) => value.trim().length > 0)
+      .map(([key, value]) => `${sectionLabels[key as PromptSection]}:\n${value}`)
+      .join('\n\n');
+  };
+
   const resetForm = () => {
     setTitle("");
     setDescription("");
     setCategory(categories[0]);
     setPrompt("");
+    setPromptMode("structured");
+    setStructuredSections({
+      goal: "",
+      returnFormat: "",
+      warnings: "",
+      contextDump: ""
+    });
   };
 
-  const examplePrompts = {
-    Marketing: "Write a compelling social media post about [product] that highlights its unique value proposition...",
-    Sales: "Create a follow-up email template for prospects who attended our product demo...",
-    "Content Creation": "Generate an engaging blog post outline about [topic] that includes key statistics and case studies..."
+  const handleSectionChange = (section: PromptSection, value: string) => {
+    setStructuredSections(prev => ({
+      ...prev,
+      [section]: value
+    }));
+  };
+
+  const sectionDescriptions: Record<PromptSection, string> = {
+    goal: "What you want to achieve with this prompt. Be specific and direct.",
+    returnFormat: "How you want the AI to structure its response. Define the exact format.",
+    warnings: "Important caveats, instructions, or things to avoid. Help the AI avoid mistakes.",
+    contextDump: "Additional background information to help the AI understand your situation better."
   };
 
   return (
@@ -125,20 +157,57 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
             </p>
           </div>
           
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Prompt Content</label>
-            <Textarea
-              required
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder={examplePrompts[category as keyof typeof examplePrompts] || "Enter your prompt here..."}
-              className="min-h-[200px] text-base leading-relaxed"
-            />
-            <p className="text-xs text-muted-foreground">
-              Write your prompt template. Use [brackets] for variables that users should replace.
-              Make it detailed and specific for better results.
-            </p>
-          </div>
+          <Tabs defaultValue="structured" value={promptMode} onValueChange={(v) => setPromptMode(v as "simple" | "structured")}>
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">Prompt Content</label>
+              <TabsList>
+                <TabsTrigger value="structured">Structured</TabsTrigger>
+                <TabsTrigger value="simple">Simple</TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="structured" className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-md border border-gray-200 mb-2">
+                <p className="text-sm text-gray-700">Structured prompts are more effective because they clearly separate different aspects of your request.</p>
+              </div>
+              
+              <TooltipProvider>
+                {promptStructureSections.map((section) => (
+                  <div key={section} className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <label className="text-sm font-medium">{sectionLabels[section]}</label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Info className="h-4 w-4 text-gray-400" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="max-w-xs">{sectionDescriptions[section]}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <Textarea
+                      value={structuredSections[section]}
+                      onChange={(e) => handleSectionChange(section, e.target.value)}
+                      placeholder={`Enter ${sectionLabels[section].toLowerCase()} here...`}
+                      className={section === "contextDump" ? "min-h-[150px]" : "min-h-[100px]"}
+                    />
+                  </div>
+                ))}
+              </TooltipProvider>
+            </TabsContent>
+
+            <TabsContent value="simple">
+              <Textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder="Enter your prompt here..."
+                className="min-h-[300px] text-base leading-relaxed"
+              />
+              <p className="text-xs text-muted-foreground mt-2">
+                For better results, consider using the structured format instead.
+              </p>
+            </TabsContent>
+          </Tabs>
           
           <div className="flex justify-end gap-3 pt-4">
             <Button 
