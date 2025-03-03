@@ -56,13 +56,24 @@ interface DraggableBlockProps {
 export const DraggableBlock = ({ type, label, onDragStart }: DraggableBlockProps) => {
   const Icon = iconMap[type];
 
+  const handleDragStart = (event: React.DragEvent) => {
+    // Make sure to clear any previous data
+    event.dataTransfer.clearData();
+    // Set the data with a specific format
+    event.dataTransfer.setData('application/reactflow', type);
+    event.dataTransfer.effectAllowed = 'move';
+    // Call the provided onDragStart handler
+    onDragStart(event, type);
+    console.log('Drag started with type:', type);
+  };
+
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <div
             className="flex items-center gap-3 group"
-            onDragStart={(event) => onDragStart(event, type)}
+            onDragStart={handleDragStart}
             draggable
           >
             <div

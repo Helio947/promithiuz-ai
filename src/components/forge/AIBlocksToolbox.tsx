@@ -15,6 +15,7 @@ export const AIBlocksToolbox = ({ onDragStart }: AIBlocksToolboxProps) => {
           <Settings className="h-4 w-4" />
           AI Blocks
         </h3>
+        <p className="text-xs text-gray-500 mt-1">Drag blocks to the workflow area above</p>
       </div>
       <div className="p-4 grid grid-cols-2 gap-4">
         {aiBlocks.map((block) => (

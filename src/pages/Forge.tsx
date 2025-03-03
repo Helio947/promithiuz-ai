@@ -1,4 +1,3 @@
-
 import { useCallback, useRef, useState } from 'react';
 import Header from "@/components/Header";
 import {
@@ -87,18 +86,26 @@ const Forge = () => {
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
+    console.log('Dragging over ReactFlow area');
   }, []);
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
+      console.log('Drop event triggered');
 
-      if (!reactFlowWrapper.current) return;
+      if (!reactFlowWrapper.current) {
+        console.log('ReactFlow wrapper not available');
+        return;
+      }
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
       const type = event.dataTransfer.getData('application/reactflow');
 
+      console.log('Drop detected with type:', type);
+
       if (typeof type === 'undefined' || !type) {
+        console.log('No valid type data in the drop event');
         return;
       }
 
@@ -106,6 +113,8 @@ const Forge = () => {
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       };
+
+      console.log('Creating node at position:', position);
 
       const newNode = {
         id: `${type}-${Date.now()}`,
@@ -127,6 +136,7 @@ const Forge = () => {
   const onDragStart = (event: React.DragEvent, nodeType: string) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
     event.dataTransfer.effectAllowed = 'move';
+    console.log('Drag started with type:', nodeType);
   };
 
   const handleTestRun = () => {
@@ -215,7 +225,10 @@ const Forge = () => {
 
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-9">
-              <div className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" ref={reactFlowWrapper}>
+              <div 
+                className="bg-white rounded-xl border shadow-sm h-[600px] relative mb-6" 
+                ref={reactFlowWrapper}
+              >
                 <ReactFlow
                   nodes={nodes}
                   edges={edges}
