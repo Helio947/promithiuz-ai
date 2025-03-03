@@ -1,4 +1,3 @@
-
 import { cn } from '@/lib/utils';
 import { Brain, Mail, Image, MessageSquare, BarChart, Share2, FileText, Globe, BellRing, Database } from 'lucide-react';
 import {
@@ -22,16 +21,29 @@ const iconMap = {
 } as const;
 
 const colorMap = {
-  'analyze-text': 'bg-purple-100 border-purple-300 text-purple-500',
-  'send-email': 'bg-blue-100 border-blue-300 text-blue-500',
-  'generate-image': 'bg-pink-100 border-pink-300 text-pink-500',
-  'chat-response': 'bg-green-100 border-green-300 text-green-500',
-  'analyze-data': 'bg-orange-100 border-orange-300 text-orange-500',
-  'social-post': 'bg-indigo-100 border-indigo-300 text-indigo-500',
-  'document': 'bg-yellow-100 border-yellow-300 text-yellow-500',
-  'web-action': 'bg-sky-100 border-sky-300 text-sky-500',
-  'notification': 'bg-red-100 border-red-300 text-red-500',
-  'database': 'bg-emerald-100 border-emerald-300 text-emerald-500',
+  'analyze-text': 'text-purple-500',
+  'send-email': 'text-blue-500',
+  'generate-image': 'text-pink-500',
+  'chat-response': 'text-green-500',
+  'analyze-data': 'text-orange-500',
+  'social-post': 'text-indigo-500',
+  'document': 'text-yellow-500',
+  'web-action': 'text-sky-500',
+  'notification': 'text-red-500',
+  'database': 'text-emerald-500',
+} as const;
+
+const bgColorMap = {
+  'analyze-text': 'bg-purple-100',
+  'send-email': 'bg-blue-100',
+  'generate-image': 'bg-pink-100',
+  'chat-response': 'bg-green-100',
+  'analyze-data': 'bg-orange-100',
+  'social-post': 'bg-indigo-100',
+  'document': 'bg-yellow-100',
+  'web-action': 'bg-sky-100',
+  'notification': 'bg-red-100',
+  'database': 'bg-emerald-100',
 } as const;
 
 const tooltipDescriptions = {
@@ -78,12 +90,12 @@ export const DraggableBlock = ({ type, label, onDragStart }: DraggableBlockProps
           >
             <div
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg border-2 cursor-move",
-                "transition-all duration-200 hover:scale-105 hover:shadow-md",
-                colorMap[type]
+                "w-10 h-10 flex items-center justify-center rounded-xl cursor-move",
+                "transition-all duration-200 hover:scale-105",
+                bgColorMap[type]
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className={cn("h-5 w-5", colorMap[type])} />
             </div>
             <span className="text-sm font-medium">{label}</span>
           </div>

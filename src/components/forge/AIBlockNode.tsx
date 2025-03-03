@@ -18,16 +18,29 @@ const iconMap = {
 };
 
 const colorMap = {
-  'analyze-text': 'bg-purple-100 border-purple-300 text-purple-500',
-  'send-email': 'bg-blue-100 border-blue-300 text-blue-500',
-  'generate-image': 'bg-pink-100 border-pink-300 text-pink-500',
-  'chat-response': 'bg-green-100 border-green-300 text-green-500',
-  'analyze-data': 'bg-orange-100 border-orange-300 text-orange-500',
-  'social-post': 'bg-indigo-100 border-indigo-300 text-indigo-500',
-  'document': 'bg-yellow-100 border-yellow-300 text-yellow-500',
-  'web-action': 'bg-sky-100 border-sky-300 text-sky-500',
-  'notification': 'bg-red-100 border-red-300 text-red-500',
-  'database': 'bg-emerald-100 border-emerald-300 text-emerald-500',
+  'analyze-text': 'text-purple-500',
+  'send-email': 'text-blue-500',
+  'generate-image': 'text-pink-500',
+  'chat-response': 'text-green-500',
+  'analyze-data': 'text-orange-500',
+  'social-post': 'text-indigo-500',
+  'document': 'text-yellow-500',
+  'web-action': 'text-sky-500',
+  'notification': 'text-red-500',
+  'database': 'text-emerald-500',
+};
+
+const bgColorMap = {
+  'analyze-text': 'bg-purple-100',
+  'send-email': 'bg-blue-100',
+  'generate-image': 'bg-pink-100',
+  'chat-response': 'bg-green-100',
+  'analyze-data': 'bg-orange-100',
+  'social-post': 'bg-indigo-100',
+  'document': 'bg-yellow-100',
+  'web-action': 'bg-sky-100',
+  'notification': 'bg-red-100',
+  'database': 'bg-emerald-100',
 };
 
 // Define the interface for the node data including the onNodeDelete function
@@ -59,12 +72,12 @@ export const AIBlockNode = ({ data, id }: { data: AIBlockData; id: string }) => 
       />
       <div
         className={cn(
-          "w-14 h-14 flex flex-col items-center justify-center rounded-lg shadow-sm border-2",
+          "w-14 h-14 flex flex-col items-center justify-center rounded-xl shadow-sm",
           "transition-all duration-200 hover:scale-105",
-          colorMap[data.type]
+          bgColorMap[data.type]
         )}
       >
-        <Icon className="h-6 w-6" />
+        <Icon className={cn("h-6 w-6", colorMap[data.type])} />
       </div>
       <Handle 
         type="source" 
