@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Copy, Wand2, Sparkles } from "lucide-react";
 import { promptStructureSections, sectionLabels, sectionColors } from "@/types/prompt-engine";
 
-const PromptGenieContent = () => {
+const PromptCodexContent = () => {
   const [userGoal, setUserGoal] = useState("");
   const [generating, setGenerating] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState<Record<string, string> | null>(null);
@@ -19,7 +19,7 @@ const PromptGenieContent = () => {
     if (!userGoal.trim()) {
       toast({
         title: "Please describe your goal",
-        description: "Tell Prompt Genie what you're trying to accomplish",
+        description: "Tell Prompt Codex what you're trying to accomplish",
         variant: "destructive",
       });
       return;
@@ -69,7 +69,7 @@ const PromptGenieContent = () => {
                 <Sparkles className="h-6 w-6 text-amber-400 absolute -top-1 -right-1" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2">Prompt Genie</h1>
+            <h1 className="text-3xl font-bold mb-2">Prompt Codex</h1>
             <p className="text-muted-foreground max-w-md mx-auto">
               Instantly create perfect AI prompts for any goal using our proven framework
             </p>
@@ -77,7 +77,7 @@ const PromptGenieContent = () => {
           
           <div className="bg-white rounded-lg border shadow-sm p-6 mb-8">
             <p className="text-sm mb-6">
-              Prompt Genie creates universal prompts with four simple parts that help AI tools understand exactly what you need:
+              Prompt Codex creates universal prompts with four simple parts that help AI tools understand exactly what you need:
             </p>
             <div className="grid grid-cols-2 gap-4">
               {promptStructureSections.map((section) => (
@@ -179,12 +179,12 @@ const PromptGenieContent = () => {
   );
 };
 
-const PromptGenie = () => {
+const PromptCodex = () => {
   return (
     <UserPromptsProvider>
-      <PromptGenieContent />
+      <PromptCodexContent />
     </UserPromptsProvider>
   );
 };
 
-export default PromptGenie;
+export default PromptCodex;

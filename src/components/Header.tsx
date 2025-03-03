@@ -62,13 +62,13 @@ const Header = () => {
               The Forge
             </Link>
             <Link 
-              to="/prompt-engine" 
+              to="/prompt-codex" 
               className={cn(
                 "text-gray-600 hover:text-primary transition-colors",
-                location.pathname === "/prompt-engine" && "text-primary"
+                (location.pathname === "/prompt-codex" || location.pathname === "/prompt-engine" || location.pathname === "/prompt-genie") && "text-primary"
               )}
             >
-              Prompt Engine
+              Prompt Codex
             </Link>
             <Link 
               to="/forged-sword" 
@@ -129,8 +129,8 @@ const Header = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/prompt-engine" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
-                  Prompt Engine
+                <Link to="/prompt-codex" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                  Prompt Codex
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
