@@ -28,9 +28,9 @@ export const features: Feature[] = [
   },
   {
     icon: MessageSquare,
-    title: "Prompt Library",
-    description: "Access 500+ ready-to-use AI prompts with simple Goal, Format, Warnings, and Context sections for better results.",
-    route: "/prompt-engine",
+    title: "Prompt Genie",
+    description: "Generate perfect AI prompts in seconds with our simple Goal, Format, Warnings, and Context framework.",
+    route: "/prompt-genie",
     businessImpact: "80% faster content creation"
   },
   {

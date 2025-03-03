@@ -8,7 +8,7 @@ const Index = lazy(() => import("@/pages/Index"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const PrometheusVision = lazy(() => import("@/pages/PrometheusVision"));
 const Forge = lazy(() => import("@/pages/Forge"));
-const PromptEngine = lazy(() => import("@/pages/PromptEngine"));
+const PromptGenie = lazy(() => import("@/pages/PromptGenie"));
 const ForgedSword = lazy(() => import("@/pages/ForgedSword"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
@@ -49,10 +49,18 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/prompt-genie",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <PromptGenie />
+      </Suspense>
+    ),
+  },
+  {
     path: "/prompt-engine",
     element: (
       <Suspense fallback={<LoadingFallback />}>
-        <PromptEngine />
+        <PromptGenie />
       </Suspense>
     ),
   },
