@@ -32,6 +32,32 @@ const Index = () => {
       
       return () => clearTimeout(timer);
     }
+    
+    // Pre-load PayPal SDK for faster checkout experience
+    const loadPayPalScript = () => {
+      const script = document.createElement('script');
+      script.src = 'https://www.paypal.com/sdk/js?client-id=test&currency=USD';
+      script.async = true;
+      document.head.appendChild(script);
+    };
+    
+    // Load PayPal script when user scrolls to pricing section
+    const handleScroll = () => {
+      const pricingSection = document.getElementById('pricing');
+      if (pricingSection) {
+        const rect = pricingSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight + 200) {
+          loadPayPalScript();
+          window.removeEventListener('scroll', handleScroll);
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (

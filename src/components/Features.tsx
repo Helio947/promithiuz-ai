@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Brain, Sparkles, MessageSquare, Sword, Clock, DollarSign, TrendingUp, InfoIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PayPalCheckout from "@/components/PayPalCheckout";
 
 const features = [
   {
@@ -100,6 +102,24 @@ const pricingTiers = [
 ];
 
 const Features = () => {
+  const [showPayPal, setShowPayPal] = useState<{[key: string]: boolean}>({});
+  
+  const handleButtonClick = (planName: string) => {
+    setShowPayPal(prev => ({
+      ...prev,
+      [planName]: !prev[planName]
+    }));
+  };
+  
+  const handlePaymentSuccess = (planName: string, details: any) => {
+    console.log(`Payment successful for ${planName}:`, details);
+    setShowPayPal(prev => ({
+      ...prev,
+      [planName]: false
+    }));
+    // Here you would typically update the user's subscription status in your database
+  };
+
   return (
     <TooltipProvider>
       <section id="features" className="py-20 bg-white">
@@ -142,7 +162,6 @@ const Features = () => {
             ))}
           </div>
 
-          {/* ROI Stats */}
           <div className="max-w-4xl mx-auto mb-24">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Real Results for Small Businesses</h2>
@@ -178,7 +197,6 @@ const Features = () => {
             </div>
           </div>
 
-          {/* Pricing Tiers */}
           <div id="pricing" className="max-w-5xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
@@ -233,14 +251,31 @@ const Features = () => {
                       ))}
                     </ul>
                     
-                    <Link to="/auth">
+                    {!showPayPal[tier.name] ? (
                       <Button 
                         className={`w-full ${tier.popular ? "bg-primary" : ""}`}
                         variant={tier.popular ? "default" : "outline"}
+                        onClick={() => handleButtonClick(tier.name)}
                       >
                         {tier.cta}
                       </Button>
-                    </Link>
+                    ) : (
+                      <div className="space-y-3">
+                        <PayPalCheckout 
+                          amount={tier.price} 
+                          planName={tier.name}
+                          onSuccess={(details) => handlePaymentSuccess(tier.name, details)}
+                          onError={() => setShowPayPal(prev => ({...prev, [tier.name]: false}))}
+                        />
+                        <Button 
+                          variant="ghost" 
+                          className="w-full text-sm" 
+                          onClick={() => handleButtonClick(tier.name)}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
