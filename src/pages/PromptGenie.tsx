@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { Copy, MagicWand, Sparkles } from "lucide-react";
+import { Copy, Wand2, Sparkles } from "lucide-react";
 import { promptStructureSections, sectionLabels, sectionColors } from "@/types/prompt-engine";
 
 const PromptGenieContent = () => {
@@ -65,7 +65,7 @@ const PromptGenieContent = () => {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-2">
               <div className="relative">
-                <MagicWand className="h-12 w-12 text-primary" />
+                <Wand2 className="h-12 w-12 text-primary" />
                 <Sparkles className="h-6 w-6 text-amber-400 absolute -top-1 -right-1" />
               </div>
             </div>
@@ -120,7 +120,7 @@ const PromptGenieContent = () => {
                   </>
                 ) : (
                   <>
-                    <MagicWand className="mr-2 h-4 w-4" />
+                    <Wand2 className="mr-2 h-4 w-4" />
                     Generate Perfect Prompt
                   </>
                 )}
