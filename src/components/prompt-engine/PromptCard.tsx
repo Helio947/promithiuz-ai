@@ -1,6 +1,6 @@
 
-import { Bookmark, Code2, EditIcon, MessageSquare, Share2, Zap, Copy } from "lucide-react";
-import { Prompt, sectionLabels, sectionColors, PromptSection, promptStructureSections } from "@/types/prompt-engine";
+import { Bookmark, MessageSquare, Copy } from "lucide-react";
+import { Prompt, sectionLabels, sectionColors, promptStructureSections } from "@/types/prompt-engine";
 import { useUserPrompts } from "@/contexts/UserPromptsContext";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -9,10 +9,18 @@ interface PromptCardProps {
 }
 
 const categoryIcons: Record<string, JSX.Element> = {
-  "Code Generation": <Code2 className="w-4 h-4" />,
-  "Content Creation": <EditIcon className="w-4 h-4" />,
-  "Chat & Dialogue": <MessageSquare className="w-4 h-4" />,
-  "Automation": <Zap className="w-4 h-4" />,
+  "Marketing": <MessageSquare className="w-4 h-4" />,
+  "Sales": <MessageSquare className="w-4 h-4" />,
+  "Customer Service": <MessageSquare className="w-4 h-4" />,
+  "Content Creation": <MessageSquare className="w-4 h-4" />,
+  "Product Development": <MessageSquare className="w-4 h-4" />,
+  "HR": <MessageSquare className="w-4 h-4" />,
+  "Data Analysis": <MessageSquare className="w-4 h-4" />,
+  "AI Training": <MessageSquare className="w-4 h-4" />,
+  "Image Generation": <MessageSquare className="w-4 h-4" />,
+  "Translation": <MessageSquare className="w-4 h-4" />,
+  "General Business": <MessageSquare className="w-4 h-4" />,
+  "Social Media": <MessageSquare className="w-4 h-4" />,
 };
 
 const PromptCard = ({ prompt }: PromptCardProps) => {
@@ -23,8 +31,8 @@ const PromptCard = ({ prompt }: PromptCardProps) => {
   const copyPrompt = () => {
     navigator.clipboard.writeText(prompt.prompt);
     toast({
-      title: "Copied to clipboard",
-      description: "Prompt copied to your clipboard",
+      title: "Copied",
+      description: "Prompt copied to clipboard",
     });
   };
 
@@ -32,20 +40,20 @@ const PromptCard = ({ prompt }: PromptCardProps) => {
   const hasStructure = prompt.structure && Object.values(prompt.structure).some(section => section);
 
   return (
-    <div className="group bg-card rounded-xl border dark:border-white/10 p-5 card-hover">
+    <div className="bg-white rounded-lg border shadow-sm hover:shadow p-4">
       <div className="space-y-3">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-base font-semibold tracking-tight mb-1 group-hover:text-primary transition-colors">
+            <h3 className="text-base font-medium mb-1">
               {prompt.title}
             </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-sm text-gray-500 line-clamp-2">
               {prompt.description}
             </p>
           </div>
           <button 
             className={`text-xs transition-colors ${
-              isFavorite ? "text-primary" : "text-muted-foreground hover:text-primary"
+              isFavorite ? "text-primary" : "text-gray-400 hover:text-primary"
             }`}
             onClick={() => toggleFavorite(prompt.id)}
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
@@ -58,14 +66,14 @@ const PromptCard = ({ prompt }: PromptCardProps) => {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-            {categoryIcons[prompt.category] || <MessageSquare className="w-4 h-4" />}
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+            {categoryIcons[prompt.category] || <MessageSquare className="w-3 h-3" />}
             {prompt.category}
           </span>
         </div>
       </div>
       
-      <div className="mt-4 bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground max-h-[250px] overflow-y-auto">
+      <div className="mt-4 bg-gray-50 rounded-lg p-3 text-sm text-gray-600 max-h-[200px] overflow-y-auto">
         {hasStructure ? (
           <div className="space-y-3">
             {promptStructureSections.map((section) => {
@@ -75,30 +83,26 @@ const PromptCard = ({ prompt }: PromptCardProps) => {
               return (
                 <div key={section} className="space-y-1">
                   <div className="flex items-center">
-                    <div className={`w-1.5 h-8 ${sectionColors[section]} rounded-sm mr-2`}></div>
-                    <h4 className="text-sm font-medium">{sectionLabels[section]}</h4>
+                    <div className={`w-1.5 h-6 ${sectionColors[section]} rounded-sm mr-2`}></div>
+                    <h4 className="text-xs font-medium">{sectionLabels[section]}</h4>
                   </div>
-                  <p className="whitespace-pre-wrap font-mono text-xs pl-3.5">{content}</p>
+                  <p className="whitespace-pre-wrap text-xs pl-3.5">{content}</p>
                 </div>
               );
             })}
           </div>
         ) : (
-          <p className="whitespace-pre-wrap font-mono text-xs">{prompt.prompt}</p>
+          <p className="whitespace-pre-wrap text-xs">{prompt.prompt}</p>
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t dark:border-white/10 flex justify-between">
+      <div className="mt-3 pt-2 border-t flex justify-end">
         <button 
-          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors"
+          className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
           onClick={copyPrompt}
         >
-          <Copy className="w-4 h-4" />
-          Copy
-        </button>
-        <button className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors">
-          <Share2 className="w-4 h-4" />
-          Share
+          <Copy className="w-3.5 h-3.5" />
+          Copy prompt
         </button>
       </div>
     </div>

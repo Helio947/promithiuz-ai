@@ -8,7 +8,7 @@ import CreatePromptDialog from "@/components/prompt-engine/CreatePromptDialog";
 import { samplePrompts } from "@/data/prompts";
 import { UserPromptsProvider, useUserPrompts } from "@/contexts/UserPromptsContext";
 import { Button } from "@/components/ui/button";
-import { BookmarkIcon, Upload, Info } from "lucide-react";
+import { BookmarkIcon, Upload, Lightbulb } from "lucide-react";
 import { Prompt } from "@/types/prompt-engine";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -46,46 +46,46 @@ const PromptEngineContent = () => {
       <Header />
       
       <main className="container mx-auto px-4 pt-24 pb-12">
-        {/* Enhanced header */}
+        {/* Simplified header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-semibold mb-2">
-            Prompt Engine
+            Prompt Library
           </h1>
           <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
-            Discover and use structured AI prompts with clear goals, return formats, warnings, and context sections for better results
+            Ready-to-use AI prompts that get better results
           </p>
         </div>
 
         <div className="bg-white border rounded-lg p-4 mb-8 max-w-2xl mx-auto">
           <div className="flex items-start gap-4">
             <div className="bg-primary/10 p-3 rounded-full">
-              <Info className="h-5 w-5 text-primary" />
+              <Lightbulb className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-medium text-sm">The Anatomy of an Effective Prompt</h3>
+              <h3 className="font-medium text-sm">How to use these prompts</h3>
               <p className="text-sm text-gray-600 mt-1">
-                Our structured prompts follow proven patterns to get the best AI responses:
+                Each prompt has four simple parts that help AI understand exactly what you need:
               </p>
               <ul className="mt-2 space-y-1">
                 <li className="text-xs flex items-center">
                   <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
                   <span className="font-medium">Goal</span>
-                  <span className="text-gray-500 ml-2">What you want to achieve</span>
+                  <span className="text-gray-500 ml-2">What you want</span>
                 </li>
                 <li className="text-xs flex items-center">
                   <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Return Format</span>
-                  <span className="text-gray-500 ml-2">How you want the response structured</span>
+                  <span className="font-medium">Format</span>
+                  <span className="text-gray-500 ml-2">How you want it</span>
                 </li>
                 <li className="text-xs flex items-center">
                   <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mr-2"></div>
                   <span className="font-medium">Warnings</span>
-                  <span className="text-gray-500 ml-2">Important caveats and things to avoid</span>
+                  <span className="text-gray-500 ml-2">Things to avoid</span>
                 </li>
                 <li className="text-xs flex items-center">
                   <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2"></div>
                   <span className="font-medium">Context</span>
-                  <span className="text-gray-500 ml-2">Background information for better understanding</span>
+                  <span className="text-gray-500 ml-2">Background info</span>
                 </li>
               </ul>
             </div>
@@ -117,7 +117,7 @@ const PromptEngineContent = () => {
                     </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p className="text-xs">Coming soon! Import prompts from other sources</p>
+                    <p className="text-xs">Coming soon</p>
                   </TooltipContent>
                 </Tooltip>
               

@@ -28,8 +28,8 @@ export const features: Feature[] = [
   },
   {
     icon: MessageSquare,
-    title: "Prompt Engine",
-    description: "Access 500+ structured AI prompts with goal, format, warnings, and context sections for consistent, quality results.",
+    title: "Prompt Library",
+    description: "Access 500+ ready-to-use AI prompts with simple Goal, Format, Warnings, and Context sections for better results.",
     route: "/prompt-engine",
     businessImpact: "80% faster content creation"
   },

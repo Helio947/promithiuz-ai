@@ -42,7 +42,7 @@ export type PromptSection = typeof promptStructureSections[number];
 
 export const sectionLabels: Record<PromptSection, string> = {
   goal: "Goal",
-  returnFormat: "Return Format",
+  returnFormat: "Format",
   warnings: "Warnings",
   contextDump: "Context"
 };
