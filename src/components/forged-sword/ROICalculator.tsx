@@ -23,6 +23,10 @@ const ROICalculator = () => {
     setResults(savings);
   };
 
+  const handleReset = () => {
+    setResults(null);
+  };
+
   const handleInputChange = (field: keyof CalculatorInputs, value: string) => {
     setInputs(prev => ({
       ...prev,
@@ -119,7 +123,7 @@ const ROICalculator = () => {
         Calculate Savings
       </Button>
 
-      {results && <SavingsResults savings={results} />}
+      {results && <SavingsResults savings={results} onReset={handleReset} />}
       
       <CalculationMethodology />
     </div>

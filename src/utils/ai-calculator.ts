@@ -27,6 +27,10 @@ export interface CalculatedSavings {
   totalBenefit: number;
   roi: number;
   paybackPeriod: number;
+  // Adding these properties to support existing components
+  laborCostSavings: number;
+  timeSavings: number;
+  efficiencyImprovement: number;
 }
 
 export const calculateAISavings = (inputs: CalculatorInputs): CalculatedSavings => {
@@ -51,7 +55,7 @@ export const calculateAISavings = (inputs: CalculatorInputs): CalculatedSavings 
   const yearlyHoursSaved = automatedHours * 12; // Monthly to yearly
 
   // Calculate time savings based on ticket volume or workforce size
-  const timeSavingsHours = monthlyTickets 
+  const timeSavings = monthlyTickets 
     ? (averageResponseTime * monthlyTickets * 0.8) / 60 // 80% reduction in response time
     : workforceSize * 40; // Default to 40 hours saved per employee
   
@@ -99,6 +103,10 @@ export const calculateAISavings = (inputs: CalculatorInputs): CalculatedSavings 
     },
     totalBenefit: Math.round(totalBenefit),
     roi: Math.round(roi),
-    paybackPeriod: Math.round(paybackPeriod)
+    paybackPeriod: Math.round(paybackPeriod),
+    // Add the new properties to the return object
+    laborCostSavings: Math.round(laborCostSavings),
+    timeSavings: Math.round(timeSavings),
+    efficiencyImprovement: Math.round(efficiencyImprovement)
   };
 };
