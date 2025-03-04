@@ -51,25 +51,30 @@ const Hero = () => {
               </Button>
             </div>
 
-            {/* Business Stats Banner */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 shadow-sm p-4 mb-12">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-2">
-                  <p className="text-3xl font-bold text-primary">97%</p>
-                  <p className="text-sm text-gray-600">Customer Satisfaction</p>
+            {/* Key Business Impact Metrics - Using the new design from the uploaded image */}
+            <div className="grid grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transform hover:scale-105 transition-transform">
+                <div className="w-12 h-12 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                  <Clock className="h-6 w-6 text-purple-600" />
                 </div>
-                <div className="text-center p-2">
-                  <p className="text-3xl font-bold text-primary">30 Days</p>
-                  <p className="text-sm text-gray-600">Average ROI Timeline</p>
+                <h3 className="text-4xl font-bold mb-2">15+</h3>
+                <p className="text-gray-600">Hours saved weekly</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transform hover:scale-105 transition-transform">
+                <div className="w-12 h-12 mx-auto rounded-full bg-orange-100 flex items-center justify-center mb-4">
+                  <DollarSign className="h-6 w-6 text-orange-500" />
                 </div>
-                <div className="text-center p-2">
-                  <p className="text-3xl font-bold text-primary">500+</p>
-                  <p className="text-sm text-gray-600">Businesses Empowered</p>
+                <h3 className="text-4xl font-bold mb-2">40%</h3>
+                <p className="text-gray-600">Cost reduction</p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm transform hover:scale-105 transition-transform">
+                <div className="w-12 h-12 mx-auto rounded-full bg-green-100 flex items-center justify-center mb-4">
+                  <TrendingUp className="h-6 w-6 text-green-600" />
                 </div>
-                <div className="text-center p-2">
-                  <p className="text-3xl font-bold text-primary">4.8/5</p>
-                  <p className="text-sm text-gray-600">Average Rating</p>
-                </div>
+                <h3 className="text-4xl font-bold mb-2">30%</h3>
+                <p className="text-gray-600">Revenue growth</p>
               </div>
             </div>
 
