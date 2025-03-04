@@ -19,6 +19,7 @@ const Profile = lazy(() => import("@/pages/Profile"));
 
 // Add an import for our new HuggingFaceDemo
 import { HuggingFaceDemo } from './components/HuggingFaceDemo';
+import Logo from "./components/ui/Logo";
 
 // Loading fallback component
 const LoadingFallback = () => (

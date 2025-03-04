@@ -8,6 +8,7 @@ import Documentation from "@/components/Documentation";
 import analytics from "@/utils/analytics";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Onboarding from "@/components/Onboarding";
+import Logo from "@/components/ui/Logo";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -63,7 +64,12 @@ const Index = () => {
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-white">
-        <Header />
+        <div className="relative">
+          <Header />
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+            <Logo size="lg" />
+          </div>
+        </div>
         <Hero />
         <Features />
         <About />
