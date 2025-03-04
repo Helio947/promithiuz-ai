@@ -42,7 +42,15 @@ const Header = () => {
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#about" className="text-gray-600 hover:text-primary transition-colors">Who We Are</a>
+            <Link 
+              to="/who-we-are" 
+              className={cn(
+                "text-gray-600 hover:text-primary transition-colors",
+                location.pathname === "/who-we-are" && "text-primary"
+              )}
+            >
+              Who We Are
+            </Link>
             <Link 
               to="/prometheus-vision" 
               className={cn(
@@ -114,9 +122,9 @@ const Header = () => {
               className="w-[200px] bg-white shadow-lg rounded-lg border border-gray-200"
             >
               <DropdownMenuItem asChild>
-                <a href="#about" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
+                <Link to="/who-we-are" className="w-full cursor-pointer text-gray-600 hover:text-primary hover:bg-gray-50">
                   Who We Are
-                </a>
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link to="/prometheus-vision" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">

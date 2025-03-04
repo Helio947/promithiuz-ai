@@ -12,6 +12,7 @@ const PromptCodex = lazy(() => import("@/pages/PromptGenie"));
 const ForgedSword = lazy(() => import("@/pages/ForgedSword"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -29,6 +30,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Index />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/who-we-are",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <WhoWeAre />
       </Suspense>
     ),
   },
