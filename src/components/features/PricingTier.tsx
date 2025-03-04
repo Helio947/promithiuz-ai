@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import PayPalCheckout from "@/components/PayPalCheckout";
 import PricingFeatureItem from "./PricingFeatureItem";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface PricingFeature {
   name: string;
@@ -29,15 +31,54 @@ const PricingTier = ({
   popular 
 }: PricingTierProps) => {
   const [showPayPal, setShowPayPal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [session, setSession] = useState<any>(null);
   
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
+    setIsProcessing(true);
+    
+    // Check if user is logged in
+    const { data } = await supabase.auth.getSession();
+    setSession(data.session);
+    
+    if (!data.session) {
+      toast.error("Please log in to subscribe to a plan");
+      setIsProcessing(false);
+      // Redirect to login page
+      window.location.href = '/auth?redirect=pricing';
+      return;
+    }
+    
+    setIsProcessing(false);
     setShowPayPal(!showPayPal);
   };
   
-  const handlePaymentSuccess = (details: any) => {
+  const handlePaymentSuccess = async (details: any) => {
     console.log(`Payment successful for ${name}:`, details);
-    setShowPayPal(false);
-    // Here you would typically update the user's subscription status in your database
+    
+    try {
+      // Send the details to your backend to verify and record the payment
+      const { error } = await supabase.functions.invoke('verify-subscription', {
+        body: { 
+          planName: name,
+          subscriptionId: details.subscriptionID,
+          userId: session?.user?.id
+        }
+      });
+      
+      if (error) throw error;
+      
+      toast.success(`You've successfully subscribed to the ${name} plan!`);
+      setShowPayPal(false);
+      
+      // Refresh the page to update UI with new subscription status
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    } catch (error) {
+      console.error('Error verifying subscription:', error);
+      toast.error('There was a problem activating your subscription. Please contact support.');
+    }
   };
 
   return (
@@ -74,21 +115,23 @@ const PricingTier = ({
             className={`w-full ${popular ? "bg-primary" : ""}`}
             variant={popular ? "default" : "outline"}
             onClick={handleButtonClick}
+            disabled={isProcessing}
           >
-            {cta}
+            {isProcessing ? "Please wait..." : cta}
           </Button>
         ) : (
           <div className="space-y-3">
             <PayPalCheckout 
               amount={price} 
               planName={name}
+              planPeriod={period}
               onSuccess={(details) => handlePaymentSuccess(details)}
               onError={() => setShowPayPal(false)}
             />
             <Button 
               variant="ghost" 
               className="w-full text-sm" 
-              onClick={handleButtonClick}
+              onClick={() => setShowPayPal(false)}
             >
               Cancel
             </Button>

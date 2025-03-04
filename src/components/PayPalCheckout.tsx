@@ -2,10 +2,13 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { Profile } from "@/types/profile";
 
 interface PayPalCheckoutProps {
   amount: string;
   planName: string;
+  planPeriod: string;
   onSuccess?: (details: any) => void;
   onError?: (error: any) => void;
 }
@@ -16,15 +19,26 @@ declare global {
   }
 }
 
-const PayPalCheckout = ({ amount, planName, onSuccess, onError }: PayPalCheckoutProps) => {
+const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: PayPalCheckoutProps) => {
   const [loaded, setLoaded] = useState(false);
   const [paypalButtonsRendered, setPaypalButtonsRendered] = useState(false);
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+    };
+    
+    getSession();
+  }, []);
 
   useEffect(() => {
     // Load the PayPal JS SDK if it's not already loaded
     if (!window.paypal) {
+      const clientID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test';
       const script = document.createElement('script');
-      script.src = 'https://www.paypal.com/sdk/js?client-id=test&currency=USD';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientID}&currency=USD&intent=subscription`;
       script.async = true;
       script.onload = () => setLoaded(true);
       document.body.appendChild(script);
@@ -39,7 +53,7 @@ const PayPalCheckout = ({ amount, planName, onSuccess, onError }: PayPalCheckout
 
   useEffect(() => {
     // Render PayPal buttons once the SDK is loaded
-    if (loaded && !paypalButtonsRendered && window.paypal) {
+    if (loaded && !paypalButtonsRendered && window.paypal && session) {
       const paypalButtonsContainer = document.getElementById('paypal-buttons');
       
       if (paypalButtonsContainer) {
@@ -48,24 +62,48 @@ const PayPalCheckout = ({ amount, planName, onSuccess, onError }: PayPalCheckout
         
         try {
           window.paypal.Buttons({
-            createOrder: (data: any, actions: any) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    description: `${planName} Subscription`,
-                    amount: {
-                      currency_code: 'USD',
-                      value: amount.replace('$', '')
-                    }
-                  }
-                ]
+            style: {
+              layout: 'vertical',
+              color: 'blue',
+              shape: 'rect',
+              label: 'subscribe'
+            },
+            createSubscription: (data: any, actions: any) => {
+              const cleanAmount = amount.replace('$', '');
+              return actions.subscription.create({
+                plan_id: import.meta.env.VITE_PAYPAL_PLAN_ID || 'P-TEST',
+                custom_id: session?.user?.id || 'anonymous'
               });
             },
             onApprove: async (data: any, actions: any) => {
-              const order = await actions.order.capture();
-              toast.success(`Payment completed! Transaction ID: ${order.id}`);
-              if (onSuccess) {
-                onSuccess(order);
+              try {
+                // Update subscription in database
+                const subscriptionEnd = new Date();
+                subscriptionEnd.setMonth(subscriptionEnd.getMonth() + (planPeriod === 'per month' ? 1 : 12));
+                
+                const { error } = await supabase
+                  .from('profiles')
+                  .update({
+                    subscription_tier: planName.toLowerCase(),
+                    subscription_status: 'active',
+                    subscription_start_date: new Date().toISOString(),
+                    subscription_end_date: subscriptionEnd.toISOString(),
+                  })
+                  .eq('id', session?.user?.id);
+                
+                if (error) throw error;
+                
+                toast.success(`Successfully subscribed to ${planName} plan!`);
+                if (onSuccess) {
+                  onSuccess({
+                    subscriptionID: data.subscriptionID,
+                    planName,
+                    planPeriod
+                  });
+                }
+              } catch (err) {
+                console.error('Error updating subscription:', err);
+                toast.error('Payment completed but we had trouble updating your account. Please contact support.');
               }
             },
             onError: (err: any) => {
@@ -83,7 +121,33 @@ const PayPalCheckout = ({ amount, planName, onSuccess, onError }: PayPalCheckout
         }
       }
     }
-  }, [loaded, paypalButtonsRendered, amount, planName, onSuccess, onError]);
+  }, [loaded, paypalButtonsRendered, amount, planName, planPeriod, onSuccess, onError, session]);
+
+  const handleUpdateProfileAfterPayment = async (userId: string, planDetails: {
+    tier: string;
+    status: string;
+    startDate: string;
+    endDate: string;
+  }) => {
+    if (!userId) return;
+    
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          subscription_tier: planDetails.tier,
+          subscription_status: planDetails.status,
+          subscription_start_date: planDetails.startDate,
+          subscription_end_date: planDetails.endDate
+        })
+        .eq('id', userId);
+      
+      if (error) throw error;
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      throw err;
+    }
+  };
 
   return (
     <div className="w-full space-y-4">

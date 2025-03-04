@@ -123,6 +123,36 @@ const ProfilePage = () => {
     });
   };
 
+  const handleCancelSubscription = async () => {
+    if (!session) return;
+    
+    if (confirm("Are you sure you want to cancel your subscription? This will take effect at the end of your billing period.")) {
+      try {
+        const { error } = await supabase
+          .from('profiles')
+          .update({ subscription_status: 'canceled' })
+          .eq('id', session.user.id);
+        
+        if (error) throw error;
+        
+        toast({
+          title: 'Subscription Canceled',
+          description: 'Your subscription has been canceled and will end on your next billing date.',
+        });
+        
+        // Update local profile state
+        setProfile(prev => prev ? { ...prev, subscription_status: 'canceled' } : null);
+      } catch (error) {
+        console.error('Error canceling subscription:', error);
+        toast({
+          title: 'Error',
+          description: 'Failed to cancel subscription.',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -223,11 +253,14 @@ const ProfilePage = () => {
                   <div>
                     <h3 className="font-medium">Current Plan</h3>
                     <p className="text-sm text-gray-500">
-                      {profile?.subscription_tier === 'free' ? 'Free Tier' : 'Premium Plan'}
+                      {profile?.subscription_tier === 'free' ? 'Free Tier' : 
+                       profile?.subscription_tier === 'basic' ? 'Basic Plan' : 'Business Plan'}
                     </p>
                   </div>
-                  <Badge variant={profile?.subscription_tier === 'free' ? 'outline' : 'default'}>
-                    {profile?.subscription_tier === 'free' ? 'Free' : 'Premium'}
+                  <Badge variant={profile?.subscription_tier === 'free' ? 'outline' : 'default'} 
+                    className={profile?.subscription_tier === 'business' ? 'bg-primary' : ''}>
+                    {profile?.subscription_tier === 'free' ? 'Free' : 
+                     profile?.subscription_tier === 'basic' ? 'Basic' : 'Business'}
                   </Badge>
                 </div>
                 
@@ -235,7 +268,8 @@ const ProfilePage = () => {
                 
                 <div className="space-y-2">
                   <h3 className="font-medium">Subscription Status</h3>
-                  <Badge variant={profile?.subscription_status === 'active' ? 'success' : 'destructive'}>
+                  <Badge variant={profile?.subscription_status === 'active' ? 'default' : 'destructive'}
+                    className={profile?.subscription_status === 'active' ? 'bg-green-600' : ''}>
                     {profile?.subscription_status || 'Inactive'}
                   </Badge>
                 </div>
@@ -251,15 +285,35 @@ const ProfilePage = () => {
                   </div>
                 </div>
                 
-                {profile?.subscription_tier === 'free' && (
+                {profile?.subscription_status === 'active' && profile?.subscription_tier !== 'free' && (
+                  <div className="pt-2">
+                    <Button variant="outline" onClick={handleCancelSubscription}>
+                      Cancel Subscription
+                    </Button>
+                  </div>
+                )}
+                
+                {(profile?.subscription_tier === 'free' || profile?.subscription_status === 'canceled') && (
                   <div className="bg-primary/5 p-4 rounded-lg">
-                    <h3 className="font-medium mb-2">Upgrade to Premium</h3>
+                    <h3 className="font-medium mb-2">Upgrade Your Plan</h3>
                     <p className="text-sm text-gray-600 mb-4">
                       Get unlimited AI queries, advanced analytics, and priority support.
                     </p>
-                    <Button>Upgrade Now</Button>
+                    <Button onClick={() => window.location.href = '/#pricing'}>View Plans</Button>
                   </div>
                 )}
+                
+                <div className="bg-gray-50 p-4 rounded-lg mt-4">
+                  <h3 className="font-medium mb-2">Payment History</h3>
+                  {profile?.subscription_tier !== 'free' ? (
+                    <div className="text-sm">
+                      <p className="mb-2">Last payment: {formatDate(profile?.subscription_start_date)}</p>
+                      <p>Next billing date: {formatDate(profile?.subscription_end_date)}</p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500">No payment history available</p>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
