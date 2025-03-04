@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 
 interface ResetPasswordFormProps {
   onBack: () => void;
-  onSubmit: (email: string) => Promise<void>;
+  onSubmit: (email: string) => Promise<{ success: boolean; error?: string }>;
 }
 
 const ResetPasswordForm = ({ onBack, onSubmit }: ResetPasswordFormProps) => {
@@ -27,8 +27,13 @@ const ResetPasswordForm = ({ onBack, onSubmit }: ResetPasswordFormProps) => {
       setLoading(true);
       setError("");
       
-      await onSubmit(email);
-      setSuccess("Check your email for a password reset link!");
+      const result = await onSubmit(email);
+      
+      if (result.success) {
+        setSuccess("Check your email for a password reset link!");
+      } else if (result.error) {
+        setError(result.error);
+      }
     } catch (error: any) {
       setError(error.message || "Something went wrong. Please try again.");
     } finally {

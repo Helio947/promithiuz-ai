@@ -28,7 +28,7 @@ const Auth = () => {
     setLoading(false);
   }, [isAuthenticated, authLoading, navigate, from]);
 
-  const handlePasswordReset = async (email: string) => {
+  const handlePasswordReset = async (email: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
