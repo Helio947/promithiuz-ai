@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Profile } from "@/types/profile";
 
 const Header = () => {
   const location = useLocation();
@@ -25,14 +26,21 @@ const Header = () => {
       setIsAuthenticated(!!session);
       
       if (session) {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("profiles")
-          .select("full_name")
+          .select("*")
           .eq("id", session.user.id)
           .single();
         
-        if (data && data.full_name) {
-          setUserName(data.full_name);
+        if (error) {
+          console.error("Error fetching profile:", error);
+          setUserName(session.user.email || "User");
+          return;
+        }
+        
+        const profile = data as Profile;
+        if (profile && profile.full_name) {
+          setUserName(profile.full_name);
         } else {
           setUserName(session.user.email || "User");
         }
@@ -45,14 +53,21 @@ const Header = () => {
       setIsAuthenticated(!!session);
       
       if (session) {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("profiles")
-          .select("full_name")
+          .select("*")
           .eq("id", session.user.id)
           .single();
         
-        if (data && data.full_name) {
-          setUserName(data.full_name);
+        if (error) {
+          console.error("Error fetching profile:", error);
+          setUserName(session.user.email || "User");
+          return;
+        }
+        
+        const profile = data as Profile;
+        if (profile && profile.full_name) {
+          setUserName(profile.full_name);
         } else {
           setUserName(session.user.email || "User");
         }

@@ -12,14 +12,25 @@ interface ChatInterfaceProps {
   setMessages: (messages: Message[]) => void;
   isTyping: boolean;
   setIsTyping: (isTyping: boolean) => void;
+  onSendMessage?: (content: string) => Promise<void>;
 }
 
-const ChatInterface = ({ messages, setMessages, isTyping, setIsTyping }: ChatInterfaceProps) => {
+const ChatInterface = ({ 
+  messages, 
+  setMessages, 
+  isTyping, 
+  setIsTyping, 
+  onSendMessage: externalSendMessage 
+}: ChatInterfaceProps) => {
   const [input, setInput] = useState("");
 
   const handleSendMessage = (content: string) => {
     if (content.trim()) {
-      onSendMessage(content);
+      if (externalSendMessage) {
+        externalSendMessage(content);
+      } else {
+        onSendMessage(content);
+      }
       setInput("");
     }
   };

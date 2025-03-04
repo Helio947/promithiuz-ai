@@ -47,22 +47,55 @@ export type Database = {
       }
       profiles: {
         Row: {
+          ai_generations_used: number | null
+          ai_queries_used: number | null
+          company_name: string | null
           created_at: string
+          email: string | null
+          full_name: string | null
           id: string
+          job_title: string | null
           selected_path: string | null
+          subscription_end_date: string | null
+          subscription_start_date: string | null
+          subscription_status: string | null
+          subscription_tier: string | null
           username: string
+          workflows_created: number | null
         }
         Insert: {
+          ai_generations_used?: number | null
+          ai_queries_used?: number | null
+          company_name?: string | null
           created_at?: string
+          email?: string | null
+          full_name?: string | null
           id: string
+          job_title?: string | null
           selected_path?: string | null
+          subscription_end_date?: string | null
+          subscription_start_date?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
           username: string
+          workflows_created?: number | null
         }
         Update: {
+          ai_generations_used?: number | null
+          ai_queries_used?: number | null
+          company_name?: string | null
           created_at?: string
+          email?: string | null
+          full_name?: string | null
           id?: string
+          job_title?: string | null
           selected_path?: string | null
+          subscription_end_date?: string | null
+          subscription_start_date?: string | null
+          subscription_status?: string | null
+          subscription_tier?: string | null
           username?: string
+          workflows_created?: number | null
         }
         Relationships: []
       }
