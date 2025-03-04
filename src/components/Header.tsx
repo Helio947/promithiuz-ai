@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -33,7 +32,6 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <Logo className="h-8 w-auto" />
-          <span className="ml-2 text-xl font-bold text-primary">Promithiuz AI</span>
         </Link>
 
         {/* Desktop Navigation */}
