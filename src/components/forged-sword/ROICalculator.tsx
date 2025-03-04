@@ -92,7 +92,10 @@ const ROICalculator = () => {
             <li>Click "Calculate Savings" to see your potential AI ROI</li>
             <li>Review the detailed breakdown of potential savings below the results</li>
           </ol>
-          <p className="mt-3 italic">
+          <p className="mt-3">
+            <span className="font-medium">Note:</span> You are not required to fill in every input field, but providing complete information will result in more accurate calculations.
+          </p>
+          <p className="mt-2 italic">
             Hover over each field's <span className="inline-flex items-center">ℹ️</span> icon for more information about what each input means.
           </p>
         </div>
