@@ -129,7 +129,7 @@ const ROICalculator = () => {
 
       {results && <SavingsResults savings={results} onReset={handleReset} />}
       
-      {showBusinessInsights && inputs.businessType && <BusinessInsights inputs={inputs} />}
+      {showBusinessInsights && <BusinessInsights inputs={inputs} />}
       
       <CalculationMethodology />
     </div>

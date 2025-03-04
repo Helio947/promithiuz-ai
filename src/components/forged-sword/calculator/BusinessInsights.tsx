@@ -39,6 +39,11 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
     setError(null);
     
     try {
+      // Only proceed if we have at least some basic business information
+      if (!inputs.businessType || inputs.businessType.trim() === "") {
+        throw new Error("Please provide your business type before generating insights");
+      }
+      
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/business-insights`, {
         method: 'POST',
         headers: {
@@ -57,12 +62,24 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
         }),
       });
 
+      const data = await response.json();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate business insights');
+        throw new Error(data.error || `Error ${response.status}: Failed to generate business insights`);
+      }
+      
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      
+      // Validate the response structure
+      if (!data.opportunities || !Array.isArray(data.opportunities) || 
+          !data.roadmap || !Array.isArray(data.roadmap) || 
+          !data.summary) {
+        console.error("Invalid response structure:", data);
+        throw new Error("Invalid insights data structure received");
       }
 
-      const data = await response.json();
       setInsights(data);
       toast.success("Business insights generated successfully!");
     } catch (err) {
@@ -76,11 +93,12 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
 
   if (loading) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4 mt-6">
         <h3 className="text-xl font-semibold">Analyzing Your Business</h3>
-        <div className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          <p className="ml-2 text-gray-600">Generating business insights...</p>
+        <div className="flex flex-col items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+          <p className="text-gray-600">Generating business insights...</p>
+          <p className="text-gray-500 text-sm mt-2">This may take up to 30 seconds</p>
         </div>
       </div>
     );
@@ -88,7 +106,7 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
 
   if (error) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4 mt-6">
         <h3 className="text-xl font-semibold">Business Insights Analysis</h3>
         <div className="bg-red-50 p-4 rounded-md border border-red-100">
           <p className="text-red-600">{error}</p>
@@ -102,7 +120,7 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
 
   if (!insights) {
     return (
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4 mt-6">
         <h3 className="text-xl font-semibold">Business Insights Analysis</h3>
         <p className="text-gray-600">
           Get a personalized AI-powered analysis of your business based on the information you provided. 
@@ -116,7 +134,7 @@ export const BusinessInsights = ({ inputs }: BusinessInsightsProps) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-6">
+    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-6 mt-6">
       <h3 className="text-xl font-semibold">AI-Powered Business Insights</h3>
       
       <div className="bg-blue-50 p-4 rounded-md border border-blue-100">
