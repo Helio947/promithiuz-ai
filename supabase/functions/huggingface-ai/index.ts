@@ -17,7 +17,7 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, task, model } = await req.json();
+    const { prompt, task, model, parameters } = await req.json();
 
     if (!huggingFaceToken) {
       console.error('Hugging Face token is not configured');
@@ -39,16 +39,19 @@ serve(async (req) => {
     
     // Default task and model
     const selectedTask = task || 'text-generation';
-    const selectedModel = model || 'gpt2';
-    
+    let selectedModel = model;
     let result;
+    
+    console.log(`Processing ${selectedTask} task with prompt: ${prompt.substring(0, 50)}...`);
     
     switch (selectedTask) {
       case 'text-generation':
+        selectedModel = selectedModel || 'gpt2';
+        console.log(`Using model: ${selectedModel}`);
         result = await hf.textGeneration({
           model: selectedModel,
           inputs: prompt,
-          parameters: {
+          parameters: parameters || {
             max_new_tokens: 250,
             temperature: 0.7,
             top_p: 0.95,
@@ -57,10 +60,12 @@ serve(async (req) => {
         break;
         
       case 'summarization':
+        selectedModel = selectedModel || 'facebook/bart-large-cnn';
+        console.log(`Using model: ${selectedModel}`);
         result = await hf.summarization({
-          model: selectedModel || 'facebook/bart-large-cnn',
+          model: selectedModel,
           inputs: prompt,
-          parameters: {
+          parameters: parameters || {
             max_length: 100,
             min_length: 30,
           }
@@ -68,24 +73,30 @@ serve(async (req) => {
         break;
         
       case 'text-classification':
+        selectedModel = selectedModel || 'distilbert-base-uncased-finetuned-sst-2-english';
+        console.log(`Using model: ${selectedModel}`);
         result = await hf.textClassification({
-          model: selectedModel || 'distilbert-base-uncased-finetuned-sst-2-english',
+          model: selectedModel,
           inputs: prompt
         });
         break;
         
       case 'image-to-text':
+        selectedModel = selectedModel || 'Salesforce/blip-image-captioning-base';
+        console.log(`Using model: ${selectedModel}`);
         result = await hf.imageToText({
-          model: selectedModel || 'Salesforce/blip-image-captioning-base',
+          model: selectedModel,
           data: prompt // In this case, prompt should be a URL or base64 image
         });
         break;
         
       default:
+        selectedModel = selectedModel || 'gpt2';
+        console.log(`Using default model: ${selectedModel}`);
         result = await hf.textGeneration({
-          model: 'gpt2',
+          model: selectedModel,
           inputs: prompt,
-          parameters: {
+          parameters: parameters || {
             max_new_tokens: 250,
             temperature: 0.7,
             top_p: 0.95,
@@ -93,6 +104,8 @@ serve(async (req) => {
         });
     }
 
+    console.log('Processing complete');
+    
     return new Response(
       JSON.stringify({ result }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
