@@ -5,11 +5,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { Auth as SupabaseAuth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import Header from "@/components/Header";
-import { Brain, TrendingUp, Clock } from "lucide-react";
+import { Brain, TrendingUp, Clock, ArrowLeft } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 const Auth = () => {
   const navigate = useNavigate();
   const [session, setSession] = useState(null);
+  const [isResetPassword, setIsResetPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -18,14 +26,45 @@ const Auth = () => {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (event, session) => {
         setSession(session);
-        if (session) navigate("/dashboard");
+        if (session) {
+          toast.success("Signed in successfully!");
+          navigate("/dashboard");
+        }
       }
     );
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    
+    if (!email) {
+      setError("Please enter your email address");
+      return;
+    }
+    
+    try {
+      setLoading(true);
+      setError("");
+      
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      setSuccess("Check your email for a password reset link!");
+    } catch (error) {
+      setError(error.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-purple-50">
@@ -82,22 +121,88 @@ const Auth = () => {
           </div>
 
           <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100">
-            <h2 className="text-2xl font-bold mb-6">Get Started Today</h2>
-            <SupabaseAuth
-              supabaseClient={supabase}
-              appearance={{ 
-                theme: ThemeSupa,
-                variables: {
-                  default: {
-                    colors: {
-                      brand: 'rgb(var(--color-primary))',
-                      brandAccent: 'rgb(var(--color-secondary))'
+            {isResetPassword ? (
+              <div className="space-y-6">
+                <div className="flex items-center">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => {
+                      setIsResetPassword(false);
+                      setError("");
+                      setSuccess("");
+                    }}
+                    className="mr-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                  <h2 className="text-2xl font-bold">Reset Password</h2>
+                </div>
+                
+                {error && (
+                  <div className="bg-red-50 text-red-600 p-4 rounded-md text-sm">
+                    {error}
+                  </div>
+                )}
+                
+                {success && (
+                  <div className="bg-green-50 text-green-600 p-4 rounded-md text-sm">
+                    {success}
+                  </div>
+                )}
+                
+                <form onSubmit={handlePasswordReset} className="space-y-4">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
+                    </label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={loading}
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={loading}
+                  >
+                    {loading ? "Sending..." : "Send Reset Instructions"}
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Get Started Today</h2>
+                <SupabaseAuth
+                  supabaseClient={supabase}
+                  appearance={{ 
+                    theme: ThemeSupa,
+                    variables: {
+                      default: {
+                        colors: {
+                          brand: 'rgb(var(--color-primary))',
+                          brandAccent: 'rgb(var(--color-secondary))'
+                        }
+                      }
                     }
-                  }
-                }
-              }}
-              providers={[]}
-            />
+                  }}
+                  providers={[]}
+                />
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={() => setIsResetPassword(true)}
+                    className="text-primary text-sm hover:underline"
+                  >
+                    Forgot your password?
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ const Forge = lazy(() => import("@/pages/Forge"));
 const PromptCodex = lazy(() => import("@/pages/PromptGenie"));
 const ForgedSword = lazy(() => import("@/pages/ForgedSword"));
 const Auth = lazy(() => import("@/pages/Auth"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
 const Profile = lazy(() => import("@/pages/Profile"));
@@ -95,6 +96,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Auth />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/reset-password",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <ResetPassword />
       </Suspense>
     ),
   },
