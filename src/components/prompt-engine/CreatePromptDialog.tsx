@@ -1,74 +1,80 @@
 
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import { Plus } from "lucide-react";
+import { allCategories } from "@/data/prompts";
 
-export interface CreatePromptDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onCreatePrompt: (prompt: {
-    title: string;
-    description: string;
-    content: string;
-    category: string;
-  }) => void;
-  categories: string[];
+export interface Prompt {
+  id: number;
+  title: string;
+  description: string;
+  content: string;
+  category: string;
+  likes: number;
+  userId: string;
+  createdAt: string;
 }
 
-const CreatePromptDialog = ({ 
-  isOpen, 
-  onClose, 
-  onCreatePrompt, 
-  categories 
-}: CreatePromptDialogProps) => {
+export interface CreatePromptDialogProps {
+  onPromptCreated: (newPrompt: Prompt) => void;
+}
+
+const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(allCategories[0]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Basic validation
-    if (!title.trim() || !content.trim() || !category) {
-      return;
-    }
-    
-    onCreatePrompt({
+    const newPrompt: Prompt = {
+      id: Date.now(),
       title,
       description,
       content,
-      category
-    });
+      category,
+      likes: 0,
+      userId: "currentUser", // In a real app, this would come from authentication
+      createdAt: new Date().toISOString(),
+    };
+    
+    onPromptCreated(newPrompt);
+    setOpen(false);
     
     // Reset form
     setTitle("");
     setDescription("");
     setContent("");
-    setCategory("");
-    
-    onClose();
+    setCategory(allCategories[0]);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[550px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="gap-1">
+          <Plus className="h-4 w-4" />
+          Create Prompt
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Create New Prompt</DialogTitle>
         </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div className="space-y-2">
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter a title for your prompt"
+              placeholder="Enter prompt title"
               required
             />
           </div>
@@ -79,7 +85,8 @@ const CreatePromptDialog = ({
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Short description of what this prompt does"
+              placeholder="Brief description of what this prompt does"
+              required
             />
           </div>
           
@@ -89,20 +96,20 @@ const CreatePromptDialog = ({
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
-              placeholder="Enter the actual prompt content here"
-              className="min-h-[120px]"
+              placeholder="Enter the actual prompt template..."
+              rows={5}
               required
             />
           </div>
           
           <div className="space-y-2">
             <Label htmlFor="category">Category</Label>
-            <Select value={category} onValueChange={setCategory} required>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger id="category">
+                <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {categories.filter(cat => cat !== 'All').map((cat) => (
+                {allCategories.filter(cat => cat !== 'All').map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
                   </SelectItem>
@@ -111,12 +118,12 @@ const CreatePromptDialog = ({
             </Select>
           </div>
           
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>
+          <div className="flex justify-end gap-2">
+            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button type="submit">Create Prompt</Button>
-          </DialogFooter>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

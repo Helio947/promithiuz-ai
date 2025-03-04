@@ -1,158 +1,158 @@
 
-import { useState } from "react";
-import Header from "@/components/Header";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Plus, Search } from "lucide-react";
 import SearchBar from "@/components/prompt-engine/SearchBar";
 import CategoryFilter from "@/components/prompt-engine/CategoryFilter";
 import PromptCard from "@/components/prompt-engine/PromptCard";
-import CreatePromptDialog from "@/components/prompt-engine/CreatePromptDialog";
-import { samplePrompts } from "@/data/prompts";
-import { UserPromptsProvider, useUserPrompts } from "@/contexts/UserPromptsContext";
-import { Button } from "@/components/ui/button";
-import { BookmarkIcon, Upload, Lightbulb } from "lucide-react";
-import { Prompt } from "@/types/prompt-engine";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
-const PromptEngineContent = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [showFavorites, setShowFavorites] = useState(false);
-  const { isFavorited } = useUserPrompts();
-  const [userPrompts, setUserPrompts] = useState<Prompt[]>(() => {
-    const saved = localStorage.getItem("userPrompts");
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  // Combine sample and user prompts
-  const allPrompts = [...samplePrompts, ...userPrompts];
-
-  const filteredPrompts = allPrompts.filter(prompt => {
-    const matchesSearch = prompt.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prompt.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || prompt.category === selectedCategory;
-    const matchesFavorites = !showFavorites || isFavorited(prompt.id);
-    return matchesSearch && matchesCategory && matchesFavorites;
-  });
-
-  const handlePromptCreated = (newPrompt: Prompt) => {
-    setUserPrompts(prev => {
-      const updated = [...prev, newPrompt];
-      localStorage.setItem("userPrompts", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
-  return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <main className="container mx-auto px-4 pt-24 pb-12">
-        {/* Simplified header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-3xl font-semibold mb-2">
-            Prompt Library
-          </h1>
-          <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
-            Ready-to-use AI prompts that get better results
-          </p>
-        </div>
-
-        <div className="bg-white border rounded-lg p-4 mb-8 max-w-2xl mx-auto">
-          <div className="flex items-start gap-4">
-            <div className="bg-primary/10 p-3 rounded-full">
-              <Lightbulb className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h3 className="font-medium text-sm">How to use these prompts</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Each prompt has four simple parts that help AI understand exactly what you need:
-              </p>
-              <ul className="mt-2 space-y-1">
-                <li className="text-xs flex items-center">
-                  <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Goal</span>
-                  <span className="text-gray-500 ml-2">What you want</span>
-                </li>
-                <li className="text-xs flex items-center">
-                  <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Format</span>
-                  <span className="text-gray-500 ml-2">How you want it</span>
-                </li>
-                <li className="text-xs flex items-center">
-                  <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Warnings</span>
-                  <span className="text-gray-500 ml-2">Things to avoid</span>
-                </li>
-                <li className="text-xs flex items-center">
-                  <div className="w-1.5 h-1.5 bg-purple-500 rounded-full mr-2"></div>
-                  <span className="font-medium">Context</span>
-                  <span className="text-gray-500 ml-2">Background info</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Search and filters */}
-        <div className="max-w-2xl mx-auto space-y-4 mb-8">
-          <SearchBar 
-            value={searchQuery}
-            onChange={setSearchQuery}
-          />
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
-            <TooltipProvider>
-              <div className="flex items-center gap-2">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="shrink-0"
-                    >
-                      <Upload className="w-4 h-4 mr-2" />
-                      Import
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="text-xs">Coming soon</p>
-                  </TooltipContent>
-                </Tooltip>
-              
-                <Button
-                  variant={showFavorites ? "default" : "outline"}
-                  onClick={() => setShowFavorites(!showFavorites)}
-                  size="sm"
-                  className="shrink-0"
-                >
-                  <BookmarkIcon className="w-4 h-4 mr-2" />
-                  {showFavorites ? "All Prompts" : "Favorites"}
-                </Button>
-              </div>
-            </TooltipProvider>
-          </div>
-        </div>
-
-        {/* Results grid with larger cards on mobile */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredPrompts.map((prompt) => (
-            <PromptCard key={prompt.id} prompt={prompt} />
-          ))}
-        </div>
-
-        <CreatePromptDialog onPromptCreated={handlePromptCreated} />
-      </main>
-    </div>
-  );
-};
+import CreatePromptDialog, { Prompt } from "@/components/prompt-engine/CreatePromptDialog";
+import { samplePrompts, allCategories } from "@/data/prompts";
+import { toast } from "sonner";
 
 const PromptEngine = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [activeTab, setActiveTab] = useState("all");
+  const [prompts, setPrompts] = useState<Prompt[]>(samplePrompts);
+  const [userPrompts, setUserPrompts] = useState<Prompt[]>([]);
+  
+  // Simulate logged-in user
+  const currentUserId = "user123";
+  
+  // Filter prompts based on search term and category
+  const filterPrompts = (promptList: Prompt[]) => {
+    return promptList.filter((prompt) => {
+      const matchesSearch = 
+        prompt.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        prompt.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        prompt.content.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesCategory = 
+        selectedCategory === "All" || prompt.category === selectedCategory;
+      
+      return matchesSearch && matchesCategory;
+    });
+  };
+  
+  const filteredAllPrompts = filterPrompts(prompts);
+  const filteredUserPrompts = filterPrompts(userPrompts);
+  
+  // Handle creating a new prompt
+  const handlePromptCreated = (newPrompt: Prompt) => {
+    // In a real app, this would make an API call to save the prompt
+    setPrompts([newPrompt, ...prompts]);
+    setUserPrompts([newPrompt, ...userPrompts]);
+    toast.success("Prompt created successfully!");
+  };
+  
+  // Handle deleting a prompt
+  const handleDeletePrompt = (id: number) => {
+    // In a real app, this would make an API call to delete the prompt
+    setPrompts(prompts.filter(p => p.id !== id));
+    setUserPrompts(userPrompts.filter(p => p.id !== id));
+    toast.success("Prompt deleted successfully!");
+  };
+  
+  // Handle liking a prompt
+  const handleLikePrompt = (id: number) => {
+    // In a real app, this would make an API call to like the prompt
+    setPrompts(prompts.map(p => 
+      p.id === id ? { ...p, likes: p.likes + 1 } : p
+    ));
+    toast.success("Prompt liked!");
+  };
+  
+  useEffect(() => {
+    // In a real app, this would fetch prompts from an API
+    // and set user-specific prompts
+    setUserPrompts(prompts.filter(p => p.userId === currentUserId));
+  }, []);
+  
   return (
-    <UserPromptsProvider>
-      <PromptEngineContent />
-    </UserPromptsProvider>
+    <div className="container mx-auto py-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Prompt Engine</h1>
+          <p className="text-muted-foreground">
+            Discover, create, and share AI prompts for various use cases
+          </p>
+        </div>
+        <CreatePromptDialog onPromptCreated={handlePromptCreated} />
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Search</h2>
+            <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+          </div>
+          
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold">Categories</h2>
+            <CategoryFilter 
+              categories={allCategories} 
+              selectedCategory={selectedCategory} 
+              onSelectCategory={setSelectedCategory} 
+            />
+          </div>
+        </div>
+        
+        <div>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="mb-6">
+              <TabsTrigger value="all">All Prompts</TabsTrigger>
+              <TabsTrigger value="my">My Prompts</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="all" className="space-y-6">
+              {filteredAllPrompts.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No prompts found. Try adjusting your search or filters.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredAllPrompts.map((prompt) => (
+                    <PromptCard 
+                      key={prompt.id} 
+                      prompt={prompt}
+                      isOwner={prompt.userId === currentUserId}
+                      onDelete={handleDeletePrompt}
+                      onLike={handleLikePrompt}
+                    />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+            
+            <TabsContent value="my" className="space-y-6">
+              {filteredUserPrompts.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">You haven't created any prompts yet.</p>
+                  <Button className="mt-4" onClick={() => document.querySelector<HTMLButtonElement>('[aria-label="Create Prompt"]')?.click()}>
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Your First Prompt
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredUserPrompts.map((prompt) => (
+                    <PromptCard 
+                      key={prompt.id} 
+                      prompt={prompt}
+                      isOwner={true}
+                      onDelete={handleDeletePrompt}
+                      onLike={handleLikePrompt}
+                    />
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -33,3 +33,6 @@ export const promptsData = [
 ];
 
 export const allCategories = ['All', 'Marketing', 'Content', 'Customer Service', 'Sales', 'Product', 'Technical'];
+
+// Alias for promptsData to fix import issues
+export const samplePrompts = promptsData;
