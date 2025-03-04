@@ -2,28 +2,66 @@
 import { Button } from "@/components/ui/button";
 
 export interface SavingsResultsProps {
-  timeSaved: {
+  timeSaved?: {
     weekly: number;
     yearly: number;
     value: number;
   };
-  costReduction: {
+  costReduction?: {
     monthly: number;
     yearly: number;
     percentage: number;
   };
-  revenueIncrease: {
+  revenueIncrease?: {
     monthly: number;
     yearly: number;
     percentage: number;
   };
-  totalBenefit: number;
-  roi: number;
-  paybackPeriod: number;
+  totalBenefit?: number;
+  roi?: number;
+  paybackPeriod?: number;
   onReset: () => void;
-  // Add these optional properties to support both usage patterns
-  savings?: any;
-  results?: any;
+  // Add these properties to support both usage patterns
+  savings?: {
+    timeSaved?: {
+      weekly: number;
+      yearly: number;
+      value: number;
+    };
+    costReduction?: {
+      monthly: number;
+      yearly: number;
+      percentage: number;
+    };
+    revenueIncrease?: {
+      monthly: number;
+      yearly: number;
+      percentage: number;
+    };
+    totalBenefit?: number;
+    roi?: number;
+    paybackPeriod?: number;
+  };
+  results?: {
+    timeSaved: {
+      weekly: number;
+      yearly: number;
+      value: number;
+    };
+    costReduction: {
+      monthly: number;
+      yearly: number;
+      percentage: number;
+    };
+    revenueIncrease: {
+      monthly: number;
+      yearly: number;
+      percentage: number;
+    };
+    totalBenefit: number;
+    roi: number;
+    paybackPeriod: number;
+  };
 }
 
 export const SavingsResults = ({
@@ -38,12 +76,27 @@ export const SavingsResults = ({
   results
 }: SavingsResultsProps) => {
   // If savings or results is provided, use those values instead
-  const finalTimeSaved = savings?.timeSaved || results?.timeSaved || timeSaved;
-  const finalCostReduction = savings?.costReduction || results?.costReduction || costReduction;
-  const finalRevenueIncrease = savings?.revenueIncrease || results?.revenueIncrease || revenueIncrease;
-  const finalTotalBenefit = savings?.totalBenefit || results?.totalBenefit || totalBenefit;
-  const finalRoi = savings?.roi || results?.roi || roi;
-  const finalPaybackPeriod = savings?.paybackPeriod || results?.paybackPeriod || paybackPeriod;
+  const finalTimeSaved = savings?.timeSaved || results?.timeSaved || timeSaved || {
+    weekly: 0,
+    yearly: 0,
+    value: 0
+  };
+  
+  const finalCostReduction = savings?.costReduction || results?.costReduction || costReduction || {
+    monthly: 0,
+    yearly: 0,
+    percentage: 0
+  };
+  
+  const finalRevenueIncrease = savings?.revenueIncrease || results?.revenueIncrease || revenueIncrease || {
+    monthly: 0,
+    yearly: 0,
+    percentage: 0
+  };
+  
+  const finalTotalBenefit = savings?.totalBenefit || results?.totalBenefit || totalBenefit || 0;
+  const finalRoi = savings?.roi || results?.roi || roi || 0;
+  const finalPaybackPeriod = savings?.paybackPeriod || results?.paybackPeriod || paybackPeriod || 0;
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
