@@ -1,46 +1,63 @@
 
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Header from "@/components/Header";
 import { toast } from "sonner";
 import BenefitsSection from "@/components/auth/BenefitsSection";
 import LoginForm from "@/components/auth/LoginForm";
 import ResetPasswordForm from "@/components/auth/ResetPasswordForm";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Auth = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useState(null);
+  const location = useLocation();
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [isResetPassword, setIsResetPassword] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Get the intended redirect URL from location state, or default to dashboard
+  const from = location.state?.from?.pathname || "/dashboard";
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) navigate("/dashboard");
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        if (session) {
-          toast.success("Signed in successfully!");
-          navigate("/dashboard");
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+    // If user is already authenticated, redirect them
+    if (isAuthenticated && !authLoading) {
+      navigate(from, { replace: true });
+    }
+    
+    setLoading(false);
+  }, [isAuthenticated, authLoading, navigate, from]);
 
   const handlePasswordReset = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
-    });
-    
-    if (error) {
-      throw error;
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      return { success: true };
+    } catch (error: any) {
+      console.error("Password reset error:", error);
+      return { 
+        success: false, 
+        error: error.message || "Failed to send reset instructions" 
+      };
     }
   };
+
+  if (loading || authLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-white to-purple-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-12 w-12 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-purple-50">

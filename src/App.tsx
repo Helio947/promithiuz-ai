@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("@/pages/Index"));
@@ -32,12 +33,18 @@ const LoadingFallback = () => (
 );
 
 // Create routes with AuthProvider wrapped around the elements
-const createRouteWithAuth = (Component) => {
+const createRouteWithAuth = (Component, requireAuth = false) => {
   return {
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <AuthProvider>
-          <Component />
+          {requireAuth ? (
+            <ProtectedRoute>
+              <Component />
+            </ProtectedRoute>
+          ) : (
+            <Component />
+          )}
         </AuthProvider>
       </Suspense>
     ),
@@ -55,27 +62,27 @@ const router = createBrowserRouter([
   },
   {
     path: "/prometheus-vision",
-    ...createRouteWithAuth(PrometheusVision),
+    ...createRouteWithAuth(PrometheusVision, true),
   },
   {
     path: "/forge",
-    ...createRouteWithAuth(Forge),
+    ...createRouteWithAuth(Forge, true),
   },
   {
     path: "/prompt-codex",
-    ...createRouteWithAuth(PromptCodex),
+    ...createRouteWithAuth(PromptCodex, true),
   },
   {
     path: "/prompt-engine",
-    ...createRouteWithAuth(PromptCodex),
+    ...createRouteWithAuth(PromptCodex, true),
   },
   {
     path: "/prompt-genie",
-    ...createRouteWithAuth(PromptCodex),
+    ...createRouteWithAuth(PromptCodex, true),
   },
   {
     path: "/forged-sword",
-    ...createRouteWithAuth(ForgedSword),
+    ...createRouteWithAuth(ForgedSword, true),
   },
   {
     path: "/auth",
@@ -87,18 +94,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    ...createRouteWithAuth(Dashboard),
+    ...createRouteWithAuth(Dashboard, true),
   },
   {
     path: "/profile",
-    ...createRouteWithAuth(Profile),
+    ...createRouteWithAuth(Profile, true),
   },
   {
     path: "/huggingface-demo",
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <AuthProvider>
-          <HuggingFaceDemo />
+          <ProtectedRoute>
+            <HuggingFaceDemo />
+          </ProtectedRoute>
         </AuthProvider>
       </Suspense>
     ),
