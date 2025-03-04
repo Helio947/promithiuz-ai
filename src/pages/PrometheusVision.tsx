@@ -1,161 +1,179 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
-import { Message } from "@/types/prometheus-vision";
 import ChatInterface from "@/components/prometheus-vision/ChatInterface";
-import { cn } from "@/lib/utils";
+import BusinessMetricsGrid from "@/components/prometheus-vision/BusinessMetricsGrid";
+import SuggestedQueries from "@/components/prometheus-vision/SuggestedQueries";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { Loader2 } from "lucide-react";
+
+interface BusinessContext {
+  industry: string;
+  size: string;
+  goal: string;
+}
+
+interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: Date;
+}
 
 const PrometheusVision = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isTyping, setIsTyping] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number | null>(null);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [authChecking, setAuthChecking] = useState(true);
+  const [businessContext, setBusinessContext] = useState<BusinessContext>({
+    industry: "Tech",
+    size: "Small",
+    goal: "Growth"
+  });
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: "welcome-message",
+      role: "assistant",
+      content: "Hello! I'm your Promithiuz Vision AI assistant. How can I help your business today?",
+      timestamp: new Date()
+    }
+  ]);
 
-  // Particle system setup
   useEffect(() => {
-    if (!canvasRef.current) return;
-
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Make canvas responsive
-    const resize = () => {
-      const size = Math.min(window.innerWidth * 0.8, 600);
-      canvas.width = size;
-      canvas.height = size;
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast.error("Please sign in to access Promithiuz Vision", {
+          description: "You'll be redirected to the login page."
+        });
+        
+        // Delay redirect to allow toast to be seen
+        setTimeout(() => {
+          navigate("/auth");
+        }, 2000);
+      }
+      
+      setAuthChecking(false);
     };
     
-    window.addEventListener('resize', resize);
-    resize();
+    checkAuth();
+  }, [navigate]);
 
-    // Create particles
-    const particles: {
-      x: number;
-      y: number;
-      size: number;
-      opacity: number;
-      speed: number;
-      angle: number;
-      distance: number;
-    }[] = [];
-
-    const particleCount = 800;
-    const radius = canvas.width / 2 - 20;
-    const center = { x: canvas.width / 2, y: canvas.height / 2 };
-
-    for (let i = 0; i < particleCount; i++) {
-      // Place particles on a sphere surface
-      const angle1 = Math.random() * Math.PI * 2; // around the circle
-      const angle2 = Math.random() * Math.PI * 2; // for 3D effect
-
-      // Use spherical coordinates to place points on sphere
-      const distance = radius * 0.8 + (Math.random() * radius * 0.2);
+  const handleSendMessage = async (content: string) => {
+    if (!content.trim()) return;
+    
+    // Add user message
+    const userMessage: ChatMessage = {
+      id: `user-${Date.now()}`,
+      role: 'user',
+      content,
+      timestamp: new Date()
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    setLoading(true);
+    
+    try {
+      // Format previous messages for the API
+      const previousMessages = messages
+        .filter(msg => msg.id !== "welcome-message") // Exclude welcome message
+        .map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }));
       
-      // Project 3D point to 2D
-      const x = center.x + Math.cos(angle1) * Math.sin(angle2) * distance;
-      const y = center.y + Math.sin(angle1) * Math.sin(angle2) * distance;
+      // Get session for auth token
+      const { data: { session } } = await supabase.auth.getSession();
       
-      particles.push({
-        x,
-        y,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.1,
-        speed: Math.random() * 0.0005 + 0.0002,
-        angle: Math.random() * Math.PI * 2,
-        distance: Math.sqrt(Math.pow(x - center.x, 2) + Math.pow(y - center.y, 2)) / radius
-      });
-    }
-
-    // Animation function
-    const animate = () => {
-      if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw particles
-      particles.forEach(particle => {
-        // Update particle position for slight movement
-        particle.angle += particle.speed;
-        
-        const distanceFromCenter = Math.sqrt(
-          Math.pow(particle.x - center.x, 2) + 
-          Math.pow(particle.y - center.y, 2)
-        );
-        
-        // Only draw if the particle is within the sphere bounds
-        if (distanceFromCenter <= radius) {
-          ctx.beginPath();
-          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(80, 80, 80, ${particle.opacity})`;
-          
-          // Particles closer to typing state have higher opacity
-          if (isTyping) {
-            const boost = Math.random() * 0.3;
-            ctx.fillStyle = `rgba(80, 80, 80, ${particle.opacity + boost})`;
-          }
-          
-          ctx.fill();
+      if (!session) {
+        throw new Error("Authentication required");
+      }
+      
+      // Call the business-insights edge function
+      const { data, error } = await supabase.functions.invoke('business-insights', {
+        body: {
+          query: content,
+          businessContext,
+          previousMessages: previousMessages.slice(-4) // Send last 4 messages for context
         }
       });
       
-      // Draw a subtle glow effect when typing
-      if (isTyping) {
-        const gradient = ctx.createRadialGradient(
-          center.x, center.y, radius * 0.5,
-          center.x, center.y, radius
-        );
-        gradient.addColorStop(0, 'rgba(126, 105, 171, 0.05)');
-        gradient.addColorStop(1, 'rgba(249, 115, 22, 0)');
-        
-        ctx.beginPath();
-        ctx.arc(center.x, center.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
-        ctx.fill();
+      if (error) {
+        throw error;
       }
+      
+      // Add AI response to messages
+      const aiMessage: ChatMessage = {
+        id: `assistant-${Date.now()}`,
+        role: 'assistant',
+        content: data.response,
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, aiMessage]);
+      
+      // Update AI queries used count
+      await supabase
+        .from('profiles')
+        .update({ 
+          ai_queries_used: supabase.rpc('increment', { x: 1 }) 
+        })
+        .eq('id', session.user.id);
+      
+    } catch (error) {
+      console.error("Error sending message:", error);
+      toast.error("Failed to get AI response", {
+        description: "Please try again later."
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      animationRef.current = requestAnimationFrame(animate);
-    };
+  const handleQueryClick = (query: string) => {
+    handleSendMessage(query);
+  };
 
-    // Start animation
-    animate();
-
-    // Cleanup function
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-      window.removeEventListener('resize', resize);
-    };
-  }, [isTyping]);
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-white to-purple-50">
+        <Header />
+        <div className="pt-24 container mx-auto px-4 flex items-center justify-center h-[80vh]">
+          <div className="flex flex-col items-center">
+            <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+            <span>Checking authentication...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-white to-purple-50">
       <Header />
-      
-      <main className="pt-24 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-12 relative">
-            {/* Canvas for particle system */}
-            <div className="flex justify-center items-center mx-auto mb-4">
-              <canvas 
-                ref={canvasRef} 
-                className="max-w-full touch-none"
-                style={{ maxWidth: '80vw', maxHeight: '80vw' }}
-              />
-            </div>
-            
-            <p className="text-gray-600 max-w-2xl mx-auto mt-4">
-              Your business insights hub powered by AI
+      <main className="pt-24 pb-12 container mx-auto px-4">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              Promithiuz Vision
+            </h1>
+            <p className="text-gray-600">
+              Analyze your business data, discover insights, and get AI-powered recommendations to grow your business.
             </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
+            
             <ChatInterface 
-              messages={messages}
-              setMessages={setMessages}
-              isTyping={isTyping}
-              setIsTyping={setIsTyping}
+              messages={messages} 
+              onSendMessage={handleSendMessage} 
+              loading={loading}
             />
+          </div>
+          
+          <div className="space-y-6">
+            <BusinessMetricsGrid />
+            
+            <SuggestedQueries onQueryClick={handleQueryClick} />
           </div>
         </div>
       </main>

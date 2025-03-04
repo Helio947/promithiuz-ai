@@ -1,5 +1,5 @@
 
-import { Menu } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -9,6 +9,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -16,21 +17,55 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session);
+      
+      if (session) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (data && data.full_name) {
+          setUserName(data.full_name);
+        } else {
+          setUserName(session.user.email || "User");
+        }
+      }
     };
     
     checkAuth();
     
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setIsAuthenticated(!!session);
+      
+      if (session) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("full_name")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (data && data.full_name) {
+          setUserName(data.full_name);
+        } else {
+          setUserName(session.user.email || "User");
+        }
+      }
     });
     
     return () => subscription.unsubscribe();
   }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    navigate("/");
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
@@ -93,13 +128,26 @@ const Header = () => {
             </Link>
 
             {isAuthenticated ? (
-              <Button 
-                onClick={() => navigate("/dashboard")}
-                variant="default" 
-                size="sm"
-              >
-                Dashboard
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <User className="h-4 w-4" />
+                    {userName}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/profile")}>
+                    Profile Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut}>
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <Button 
                 onClick={() => navigate("/auth")}
@@ -150,11 +198,22 @@ const Header = () => {
                 </Link>
               </DropdownMenuItem>
               {isAuthenticated ? (
-                <DropdownMenuItem asChild>
-                  <Link to="/dashboard" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
-                    Dashboard
-                  </Link>
-                </DropdownMenuItem>
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                      Profile Settings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleSignOut} className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">
+                    Sign Out
+                  </DropdownMenuItem>
+                </>
               ) : (
                 <DropdownMenuItem asChild>
                   <Link to="/auth" className="w-full text-gray-600 hover:text-primary hover:bg-gray-50">

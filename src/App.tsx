@@ -13,6 +13,7 @@ const ForgedSword = lazy(() => import("@/pages/ForgedSword"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<LoadingFallback />}>
         <Dashboard />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <Profile />
       </Suspense>
     ),
   },
