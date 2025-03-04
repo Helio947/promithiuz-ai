@@ -1,143 +1,119 @@
 
-import { type CalculatedSavings } from "@/utils/ai-calculator";
+import { Button } from "@/components/ui/button";
 
-interface SavingsResultsProps {
-  savings: CalculatedSavings;
+export interface SavingsResultsProps {
+  timeSaved: {
+    weekly: number;
+    yearly: number;
+    value: number;
+  };
+  costReduction: {
+    monthly: number;
+    yearly: number;
+    percentage: number;
+  };
+  revenueIncrease: {
+    monthly: number;
+    yearly: number;
+    percentage: number;
+  };
+  totalBenefit: number;
+  roi: number;
+  paybackPeriod: number;
+  onReset: () => void;
 }
 
-const SavingsResults = ({ savings }: SavingsResultsProps) => {
+export const SavingsResults = ({
+  timeSaved,
+  costReduction,
+  revenueIncrease,
+  totalBenefit,
+  roi,
+  paybackPeriod,
+  onReset
+}: SavingsResultsProps) => {
   return (
-    <div className="mt-8 space-y-8 p-6 bg-gray-50 rounded-lg animate-fade-in">
-      <div className="space-y-4">
-        <h4 className="text-xl font-semibold mb-4">Your Potential Monthly Savings When You Use AI</h4>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600">Labor Cost Savings</p>
-            <p className="text-2xl font-semibold text-primary">${savings.laborCostSavings.toFixed(2)}</p>
-          </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600">Time Savings (Hours)</p>
-            <p className="text-2xl font-semibold text-primary">{savings.timeSavings.toFixed(1)}</p>
-          </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600">Efficiency Improvement (Hours)</p>
-            <p className="text-2xl font-semibold text-primary">{savings.efficiencyImprovement.toFixed(1)}</p>
-          </div>
-          <div className="p-4 bg-white rounded-lg border border-gray-200">
-            <p className="text-sm text-gray-600">Potential Revenue Increase</p>
-            <p className="text-2xl font-semibold text-primary">${savings.revenueIncrease.toFixed(2)}</p>
+    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <h3 className="text-xl font-semibold mb-4">Your Estimated ROI Results</h3>
+
+      <div className="space-y-6">
+        <div className="space-y-3">
+          <h4 className="font-medium text-gray-700">Time Saved</h4>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="p-3 bg-green-50 rounded-md">
+              <p className="text-sm text-gray-500">Weekly</p>
+              <p className="text-xl font-bold text-green-600">{timeSaved.weekly} hrs</p>
+            </div>
+            <div className="p-3 bg-green-50 rounded-md">
+              <p className="text-sm text-gray-500">Yearly</p>
+              <p className="text-xl font-bold text-green-600">{timeSaved.yearly} hrs</p>
+            </div>
+            <div className="p-3 bg-green-50 rounded-md">
+              <p className="text-sm text-gray-500">Value</p>
+              <p className="text-xl font-bold text-green-600">${timeSaved.value.toLocaleString()}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="p-6 bg-white rounded-lg border border-gray-200">
-        <h5 className="text-lg font-semibold mb-4">Personalized AI Implementation Plan</h5>
-        <div className="space-y-6">
-          <div>
-            <h6 className="font-medium text-primary mb-2">Immediate Actions</h6>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Implement AI chatbots to handle {Math.round(savings.timeSavings * 0.6)} hours of routine customer inquiries</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>Claude (Anthropic) - For deep, nuanced customer support</li>
-                      <li>ChatGPT API - For quick, accurate responses</li>
-                      <li>Dialogflow (Google) - For custom chatbot development</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Set up automated email response systems to reduce response time by up to 80%</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>GPT-4 API - For personalized email drafting</li>
-                      <li>Resend.com - For automated email infrastructure</li>
-                      <li>Customer.io - For email automation workflows</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h6 className="font-medium text-primary mb-2">Workflow Optimization</h6>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Integrate AI document processing to save approximately {Math.round(savings.efficiencyImprovement * 0.3)} hours monthly</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>Adobe PDF Services API - For document parsing</li>
-                      <li>OpenAI GPT-4 Vision - For image and document analysis</li>
-                      <li>Amazon Textract - For automated data extraction</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Implement smart task prioritization to boost team efficiency by {Math.round(savings.efficiencyImprovement / savings.timeSavings * 10)}%</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>Asana + GPT Integration - For AI-powered task management</li>
-                      <li>Motion.app - For AI scheduling and prioritization</li>
-                      <li>Notion AI - For smart project organization</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h6 className="font-medium text-primary mb-2">Revenue Opportunities</h6>
-            <ul className="space-y-2 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Use AI insights to identify upsell opportunities worth up to ${Math.round(savings.revenueIncrease * 0.4)} monthly</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>Salesforce Einstein - For AI-powered sales insights</li>
-                      <li>Gong.io - For conversation intelligence</li>
-                      <li>HubSpot AI Tools - For customer behavior analysis</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <div>
-                  <span>Implement predictive analytics to improve customer retention and boost revenue by ${Math.round(savings.revenueIncrease * 0.6)}</span>
-                  <div className="mt-1 text-gray-600 text-xs">
-                    Recommended tools:
-                    <ul className="ml-4 list-disc">
-                      <li>BigQuery ML - For customer churn prediction</li>
-                      <li>Amazon SageMaker - For custom ML models</li>
-                      <li>DataRobot - For automated machine learning</li>
-                    </ul>
-                  </div>
-                </div>
-              </li>
-            </ul>
+        <div className="space-y-3">
+          <h4 className="font-medium text-gray-700">Cost Reduction</h4>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="p-3 bg-blue-50 rounded-md">
+              <p className="text-sm text-gray-500">Monthly</p>
+              <p className="text-xl font-bold text-blue-600">${costReduction.monthly.toLocaleString()}</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-md">
+              <p className="text-sm text-gray-500">Yearly</p>
+              <p className="text-xl font-bold text-blue-600">${costReduction.yearly.toLocaleString()}</p>
+            </div>
+            <div className="p-3 bg-blue-50 rounded-md">
+              <p className="text-sm text-gray-500">Reduction</p>
+              <p className="text-xl font-bold text-blue-600">{costReduction.percentage}%</p>
+            </div>
           </div>
         </div>
+
+        <div className="space-y-3">
+          <h4 className="font-medium text-gray-700">Revenue Increase</h4>
+          <div className="grid grid-cols-3 gap-2">
+            <div className="p-3 bg-purple-50 rounded-md">
+              <p className="text-sm text-gray-500">Monthly</p>
+              <p className="text-xl font-bold text-purple-600">${revenueIncrease.monthly.toLocaleString()}</p>
+            </div>
+            <div className="p-3 bg-purple-50 rounded-md">
+              <p className="text-sm text-gray-500">Yearly</p>
+              <p className="text-xl font-bold text-purple-600">${revenueIncrease.yearly.toLocaleString()}</p>
+            </div>
+            <div className="p-3 bg-purple-50 rounded-md">
+              <p className="text-sm text-gray-500">Growth</p>
+              <p className="text-xl font-bold text-purple-600">{revenueIncrease.percentage}%</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-4 border-t border-b py-4 my-4">
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Total Annual Benefit</p>
+            <p className="text-2xl font-bold text-green-600">${totalBenefit.toLocaleString()}</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">ROI</p>
+            <p className="text-2xl font-bold text-green-600">{roi}%</p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Payback Period</p>
+            <p className="text-2xl font-bold text-green-600">{paybackPeriod} months</p>
+          </div>
+        </div>
+
+        <Button 
+          onClick={onReset} 
+          variant="outline" 
+          className="w-full"
+        >
+          Calculate Another Scenario
+        </Button>
       </div>
     </div>
   );
 };
-
-export default SavingsResults;

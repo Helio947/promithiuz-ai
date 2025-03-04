@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -15,6 +14,9 @@ const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
 const Profile = lazy(() => import("@/pages/Profile"));
+
+// Add an import for our new HuggingFaceDemo
+import { HuggingFaceDemo } from './components/HuggingFaceDemo';
 
 // Loading fallback component
 const LoadingFallback = () => (
@@ -122,6 +124,10 @@ const router = createBrowserRouter([
         <Profile />
       </Suspense>
     ),
+  },
+  {
+    path: "/huggingface-demo",
+    element: <HuggingFaceDemo />,
   },
   {
     path: "*",
