@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { calculateAISavings, type CalculatorInputs, type CalculatedSavings } from "@/utils/ai-calculator";
 import CalculatorInput from "./calculator/CalculatorInput";
-import SavingsResults from "./calculator/SavingsResults";
+import { SavingsResults } from "./calculator/SavingsResults";
 import CalculationMethodology from "./calculator/CalculationMethodology";
 
 const ROICalculator = () => {

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,15 +21,39 @@ export interface Prompt {
 }
 
 export interface CreatePromptDialogProps {
-  onPromptCreated: (newPrompt: Prompt) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
+  onCreatePrompt?: (newPrompt: Prompt) => void;
+  onPromptCreated?: (newPrompt: Prompt) => void;
+  categories?: string[];
 }
 
-const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
-  const [open, setOpen] = useState(false);
+const CreatePromptDialog = ({ 
+  isOpen, 
+  onClose, 
+  onCreatePrompt, 
+  onPromptCreated,
+  categories = allCategories.filter(cat => cat !== 'All')
+}: CreatePromptDialogProps) => {
+  const [open, setOpen] = useState(isOpen || false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState(allCategories[0]);
+  const [category, setCategory] = useState(categories[0]);
+
+  // Update open state when isOpen prop changes
+  useEffect(() => {
+    if (isOpen !== undefined) {
+      setOpen(isOpen);
+    }
+  }, [isOpen]);
+
+  // Handle external close requests
+  useEffect(() => {
+    if (!open && onClose) {
+      onClose();
+    }
+  }, [open, onClose]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +69,17 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
       createdAt: new Date().toISOString(),
     };
     
-    onPromptCreated(newPrompt);
+    // Support both callback naming conventions
+    if (onPromptCreated) onPromptCreated(newPrompt);
+    if (onCreatePrompt) onCreatePrompt(newPrompt);
+    
     setOpen(false);
     
     // Reset form
     setTitle("");
     setDescription("");
     setContent("");
-    setCategory(allCategories[0]);
+    setCategory(categories[0]);
   };
 
   return (
@@ -109,7 +136,7 @@ const CreatePromptDialog = ({ onPromptCreated }: CreatePromptDialogProps) => {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {allCategories.filter(cat => cat !== 'All').map((cat) => (
+                {categories.map((cat) => (
                   <SelectItem key={cat} value={cat}>
                     {cat}
                   </SelectItem>

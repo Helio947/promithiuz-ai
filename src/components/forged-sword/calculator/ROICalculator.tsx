@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CalculatorInput from "./CalculatorInput";
-import SavingsResults from "./SavingsResults";
+import { SavingsResults } from "./SavingsResults";
 import CalculationMethodology from "./CalculationMethodology";
 import { Calculator } from "lucide-react";
 
