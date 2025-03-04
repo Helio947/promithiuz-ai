@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 interface ResetPasswordFormProps {
   onBack: () => void;
@@ -87,6 +87,7 @@ const ResetPasswordForm = ({ onBack, onSubmit }: ResetPasswordFormProps) => {
           className="w-full" 
           disabled={loading}
         >
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {loading ? "Sending..." : "Send Reset Instructions"}
         </Button>
       </form>

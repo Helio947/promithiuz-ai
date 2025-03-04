@@ -29,7 +29,7 @@ const ResetPassword = () => {
     checkSession();
   }, [navigate]);
 
-  const handleResetPassword = async (e) => {
+  const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (password !== confirmPassword) {
@@ -54,7 +54,7 @@ const ResetPassword = () => {
       
       toast.success("Password has been reset successfully!");
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message || "Failed to reset password. Please try again.");
     } finally {
       setLoading(false);
