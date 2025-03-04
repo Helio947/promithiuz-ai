@@ -79,6 +79,25 @@ const ROICalculator = () => {
     <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 space-y-6">
       <h3 className="text-2xl font-semibold mb-6">Calculate Your AI ROI</h3>
       
+      <div className="bg-blue-50 p-4 rounded-lg border border-blue-100 mb-6">
+        <h4 className="text-lg font-medium text-blue-700 mb-2">What is this calculator for?</h4>
+        <p className="text-blue-600 mb-3">
+          This calculator helps you estimate the potential financial benefits of implementing AI in your business operations.
+        </p>
+        <div className="space-y-2 text-sm text-blue-600">
+          <p><span className="font-medium">How to use it:</span></p>
+          <ol className="list-decimal list-inside space-y-1 pl-2">
+            <li>Fill in the fields with your business information</li>
+            <li>Include details about your current operations (employees, response times, etc.)</li>
+            <li>Click "Calculate Savings" to see your potential AI ROI</li>
+            <li>Review the detailed breakdown of potential savings below the results</li>
+          </ol>
+          <p className="mt-3 italic">
+            Hover over each field's <span className="inline-flex items-center">ℹ️</span> icon for more information about what each input means.
+          </p>
+        </div>
+      </div>
+      
       <div className="grid gap-6 md:grid-cols-2">
         {calculatorInputs.map((input) => (
           <CalculatorInput
