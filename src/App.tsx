@@ -1,6 +1,8 @@
+
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("@/pages/Index"));
@@ -142,9 +144,30 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ErrorBoundary>
-      <RouterProvider router={router} />
+      <RouterProvider
+        router={router}
+        future={{
+          v7_startTransition: true,
+        }}
+      />
     </ErrorBoundary>
   );
 }
 
-export default App;
+// Create a wrapper component to provide auth context
+export const AppWithProviders = () => {
+  return (
+    <ErrorBoundary>
+      <AuthProvider>
+        <RouterProvider 
+          router={router}
+          future={{
+            v7_startTransition: true,
+          }}
+        />
+      </AuthProvider>
+    </ErrorBoundary>
+  );
+};
+
+export default AppWithProviders;

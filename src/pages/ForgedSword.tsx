@@ -1,23 +1,55 @@
 
+import { useEffect, useCallback } from "react";
 import MainContent from "@/components/forged-sword/MainContent";
 import Overview from "@/components/forged-sword/Overview";
 import Header from "@/components/Header";
 import ROICalculator from "@/components/forged-sword/ROICalculator";
 import { textToTextContent } from "@/data/forged-sword-content";
-import { useCallback } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import analytics from "@/utils/analytics";
 
 const ForgedSword = () => {
   const { toast } = useToast();
+  const { isAuthenticated, profile } = useAuth();
+
+  useEffect(() => {
+    // Track page view
+    analytics.trackEvent("page_view", { page: "forged_sword" });
+  }, []);
 
   const handleUnlock = useCallback(() => {
-    toast({
-      title: "Premium Access",
-      description: "This feature is coming soon!",
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to unlock premium features.",
+      });
+      return;
+    }
+    
+    const isPremium = profile?.subscription_tier && profile.subscription_tier !== "free";
+    
+    if (!isPremium) {
+      toast({
+        title: "Premium Access",
+        description: "This feature requires a premium subscription. Upgrade your plan to access it.",
+      });
+    } else {
+      toast({
+        title: "Premium Access",
+        description: "This feature is coming soon for premium users!",
+      });
+    }
+    
+    analytics.trackEvent("premium_feature_click", { 
+      feature: "unlock_advanced_content",
+      subscriptionTier: profile?.subscription_tier || "none"
     });
-  }, [toast]);
+  }, [toast, isAuthenticated, profile]);
 
   const handleMasteryClick = useCallback(() => {
+    analytics.trackEvent("feature_click", { feature: "mastery_program" });
+    
     toast({
       title: "Mastery Program",
       description: "Starting your AI mastery journey soon!",
