@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -23,6 +22,7 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
   const [loaded, setLoaded] = useState(false);
   const [paypalButtonsRendered, setPaypalButtonsRendered] = useState(false);
   const [session, setSession] = useState<any>(null);
+  const [clientId, setClientId] = useState<string>('');
 
   useEffect(() => {
     const getSession = async () => {
@@ -34,11 +34,30 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
   }, []);
 
   useEffect(() => {
-    // Load the PayPal JS SDK if it's not already loaded
-    if (!window.paypal) {
-      const clientID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test';
+    const getPayPalClientId = async () => {
+      try {
+        const { data, error } = await supabase.functions.invoke('get-paypal-client-id');
+        if (error) throw error;
+        
+        if (data && data.clientId) {
+          setClientId(data.clientId);
+        } else {
+          console.error('No PayPal client ID returned');
+          toast.error('Could not load payment provider. Please try again later.');
+        }
+      } catch (error) {
+        console.error('Error getting PayPal client ID:', error);
+        toast.error('Payment provider configuration error. Please try again later.');
+      }
+    };
+    
+    getPayPalClientId();
+  }, []);
+
+  useEffect(() => {
+    if (!window.paypal && clientId) {
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientID}&currency=USD&intent=subscription`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD&intent=subscription`;
       script.async = true;
       script.onload = () => setLoaded(true);
       document.body.appendChild(script);
@@ -46,18 +65,16 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
       return () => {
         document.body.removeChild(script);
       };
-    } else {
+    } else if (window.paypal) {
       setLoaded(true);
     }
-  }, []);
+  }, [clientId]);
 
   useEffect(() => {
-    // Render PayPal buttons once the SDK is loaded
     if (loaded && !paypalButtonsRendered && window.paypal && session) {
       const paypalButtonsContainer = document.getElementById('paypal-buttons');
       
       if (paypalButtonsContainer) {
-        // Clear any existing buttons
         paypalButtonsContainer.innerHTML = '';
         
         try {
@@ -77,7 +94,6 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
             },
             onApprove: async (data: any, actions: any) => {
               try {
-                // Update subscription in database
                 const subscriptionEnd = new Date();
                 subscriptionEnd.setMonth(subscriptionEnd.getMonth() + (planPeriod === 'per month' ? 1 : 12));
                 
@@ -155,7 +171,7 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
         Secure payment processing by PayPal
       </div>
       <div id="paypal-buttons" className="w-full min-h-[45px]"></div>
-      {!loaded && (
+      {(!loaded || !clientId) && (
         <Button disabled className="w-full">
           Loading PayPal...
         </Button>

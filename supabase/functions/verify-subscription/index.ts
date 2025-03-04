@@ -35,24 +35,73 @@ serve(async (req) => {
       );
     }
 
-    // Verify the subscription with PayPal - in a production environment
-    // you would make an API call to PayPal to verify the subscription
-    // For now, we'll assume it's valid
+    // Get PayPal access token
+    const clientId = Deno.env.get("PAYPAL_CLIENT_ID");
+    const clientSecret = Deno.env.get("PAYPAL_CLIENT_SECRET");
     
-    // For a real integration, you would use something like:
-    // const paypalVerification = await fetch(`https://api.paypal.com/v1/billing/subscriptions/${subscriptionId}`, {
-    //   headers: {
-    //     'Authorization': `Bearer ${paypalToken}`,
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
-    // const verificationData = await paypalVerification.json();
+    if (!clientId || !clientSecret) {
+      console.error("PayPal credentials not configured");
+      return new Response(
+        JSON.stringify({ error: "Payment provider not properly configured" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    
+    // Get PayPal OAuth token
+    const tokenResponse = await fetch("https://api-m.paypal.com/v1/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization": `Basic ${btoa(`${clientId}:${clientSecret}`)}`
+      },
+      body: "grant_type=client_credentials"
+    });
+    
+    if (!tokenResponse.ok) {
+      const tokenError = await tokenResponse.text();
+      console.error("PayPal OAuth error:", tokenError);
+      return new Response(
+        JSON.stringify({ error: "Failed to authenticate with payment provider" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+    
+    // Verify the subscription with PayPal
+    const verificationResponse = await fetch(`https://api-m.paypal.com/v1/billing/subscriptions/${subscriptionId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${accessToken}`
+      }
+    });
+    
+    if (!verificationResponse.ok) {
+      const verificationError = await verificationResponse.text();
+      console.error("PayPal verification error:", verificationError);
+      return new Response(
+        JSON.stringify({ error: "Failed to verify subscription" }),
+        { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
+    
+    const subscriptionData = await verificationResponse.json();
+    console.log("Subscription data:", subscriptionData);
+    
+    if (subscriptionData.status !== "ACTIVE" && subscriptionData.status !== "APPROVED") {
+      return new Response(
+        JSON.stringify({ error: "Subscription is not active" }),
+        { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
+      );
+    }
     
     // Calculate subscription dates
     const startDate = new Date();
     const endDate = new Date();
     
-    // Set end date based on plan
+    // Set end date based on plan and billing cycle from PayPal
     if (planName.toLowerCase() === "basic") {
       endDate.setMonth(endDate.getMonth() + 1); // 1 month
     } else if (planName.toLowerCase() === "business") {
