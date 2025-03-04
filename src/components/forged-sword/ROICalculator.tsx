@@ -5,6 +5,7 @@ import { calculateAISavings, type CalculatorInputs, type CalculatedSavings } fro
 import CalculatorInput from "./calculator/CalculatorInput";
 import { SavingsResults } from "./calculator/SavingsResults";
 import CalculationMethodology from "./calculator/CalculationMethodology";
+import { BusinessInsights } from "./calculator/BusinessInsights";
 
 const ROICalculator = () => {
   const [inputs, setInputs] = useState<CalculatorInputs>({
@@ -17,14 +18,17 @@ const ROICalculator = () => {
   });
 
   const [results, setResults] = useState<CalculatedSavings | null>(null);
+  const [showBusinessInsights, setShowBusinessInsights] = useState(false);
 
   const handleCalculate = () => {
     const savings = calculateAISavings(inputs);
     setResults(savings);
+    setShowBusinessInsights(true);
   };
 
   const handleReset = () => {
     setResults(null);
+    setShowBusinessInsights(false);
   };
 
   const handleInputChange = (field: keyof CalculatorInputs, value: string) => {
@@ -124,6 +128,8 @@ const ROICalculator = () => {
       </Button>
 
       {results && <SavingsResults savings={results} onReset={handleReset} />}
+      
+      {showBusinessInsights && inputs.businessType && <BusinessInsights inputs={inputs} />}
       
       <CalculationMethodology />
     </div>
