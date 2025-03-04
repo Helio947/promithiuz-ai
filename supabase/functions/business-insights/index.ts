@@ -1,110 +1,140 @@
 
-import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
-
-interface RequestBody {
-  query: string;
-  businessContext?: {
-    industry?: string;
-    size?: string;
-    goal?: string;
-  };
-  previousMessages?: Array<{
-    role: 'user' | 'assistant';
-    content: string;
-  }>;
-}
 
 serve(async (req) => {
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Parse the request body
-    const requestData: RequestBody = await req.json();
-    const { query, businessContext, previousMessages } = requestData;
+    const openAIApiKey = Deno.env.get("OPENAI_API_KEY");
     
-    console.log('Processing business insight query:', query);
-    console.log('Business context:', businessContext);
-
-    if (!query) {
-      throw new Error('Query is required');
-    }
-
     if (!openAIApiKey) {
-      throw new Error('OpenAI API key is not configured');
+      console.error("OpenAI API key is not configured");
+      return new Response(
+        JSON.stringify({ error: "OpenAI API key is not configured" }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
     }
 
-    // Prepare the system message with business context if available
-    let systemMessage = 'You are a business insights AI assistant. You help business professionals understand their data and provide actionable recommendations.';
-    
-    if (businessContext) {
-      systemMessage += ` The user is in the ${businessContext.industry || 'unspecified'} industry with a ${businessContext.size || 'unspecified'} sized business. Their primary goal is ${businessContext.goal || 'business growth'}.`;
+    const { businessData } = await req.json();
+
+    if (!businessData) {
+      return new Response(
+        JSON.stringify({ error: "Business data is required" }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
     }
 
-    // Prepare the messages array for the OpenAI API
-    const messages = [
-      { role: 'system', content: systemMessage },
-    ];
+    // Prepare the prompt for OpenAI
+    const prompt = `
+      Analyze the following business data and provide strategic insights focused on how AI tools could help optimize operations, reduce costs, and grow revenue:
+      
+      Business Data:
+      ${JSON.stringify(businessData, null, 2)}
+      
+      Please provide:
+      1. 3-5 key opportunities for automation or AI implementation
+      2. Estimated time savings per week for each opportunity
+      3. Estimated cost savings per month for each opportunity
+      4. Recommended AI tools or approaches for each opportunity
+      5. A 3-month implementation roadmap
+      
+      Format the response as JSON with these sections:
+      {
+        "opportunities": [
+          {
+            "title": "Opportunity title",
+            "description": "Brief description",
+            "timeSavingsWeekly": "X hours",
+            "costSavingsMonthly": "$Y",
+            "recommendedTools": ["Tool 1", "Tool 2"]
+          }
+        ],
+        "roadmap": [
+          {
+            "month": 1,
+            "focus": "What to focus on",
+            "actions": ["Action 1", "Action 2"]
+          }
+        ],
+        "summary": "Brief executive summary"
+      }
+    `;
 
-    // Add previous conversation messages if available
-    if (previousMessages && previousMessages.length > 0) {
-      messages.push(...previousMessages);
-    }
-
-    // Add the current user query
-    messages.push({ role: 'user', content: query });
-
-    // Make the request to OpenAI
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${openAIApiKey}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages,
-        temperature: 0.7,
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "You are a business analytics AI specializing in identifying opportunities for small businesses to leverage AI tools." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.5,
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(`OpenAI API error: ${response.statusText}`);
-    }
-
     const data = await response.json();
-    const aiResponse = data.choices[0].message.content;
 
-    // Track usage for the user if available
-    const authHeader = req.headers.get('Authorization');
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.substring(7);
-      
-      // Use Supabase client from Deno to update user's AI query usage
-      // This would need to be implemented with proper authentication
-      console.log('Would update user AI query usage here with token', token);
+    if (data.error) {
+      console.error("OpenAI API error:", data.error);
+      return new Response(
+        JSON.stringify({ error: "Error generating business insights" }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
     }
 
-    return new Response(JSON.stringify({ response: aiResponse }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    // Parse the JSON response
+    try {
+      const insights = JSON.parse(data.choices[0].message.content);
+      return new Response(
+        JSON.stringify(insights),
+        { 
+          status: 200, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    } catch (error) {
+      console.error("Error parsing OpenAI response:", error);
+      return new Response(
+        JSON.stringify({ 
+          error: "Error parsing insights. Please try again.",
+          rawResponse: data.choices[0].message.content
+        }),
+        { 
+          status: 500, 
+          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        }
+      );
+    }
   } catch (error) {
-    console.error('Error in business-insights function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    console.error("Error in business-insights function:", error);
+    return new Response(
+      JSON.stringify({ error: "Internal server error" }),
+      { 
+        status: 500, 
+        headers: { ...corsHeaders, "Content-Type": "application/json" } 
+      }
+    );
   }
 });

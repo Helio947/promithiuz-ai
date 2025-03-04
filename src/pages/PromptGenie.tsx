@@ -1,190 +1,196 @@
 
-import { useState } from "react";
-import { UserPromptsProvider } from "@/contexts/UserPromptsContext";
-import Header from "@/components/Header";
-import { Textarea } from "@/components/ui/textarea";
+import { useState, useEffect } from "react";
+import { Layout } from "@/components/Layout";
+import CategoryFilter from "@/components/prompt-engine/CategoryFilter";
+import SearchBar from "@/components/prompt-engine/SearchBar";
+import PromptCard from "@/components/prompt-engine/PromptCard";
+import CreatePromptDialog from "@/components/prompt-engine/CreatePromptDialog";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/components/ui/use-toast";
-import { Copy, Wand2, Sparkles } from "lucide-react";
-import { promptStructureSections, sectionLabels, sectionColors } from "@/types/prompt-engine";
+import { PlusCircle, Loader2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { prompts as samplePrompts } from "@/data/prompts";
+import { useNavigate } from "react-router-dom";
 
-const PromptCodexContent = () => {
-  const [userGoal, setUserGoal] = useState("");
-  const [generating, setGenerating] = useState(false);
-  const [generatedPrompt, setGeneratedPrompt] = useState<Record<string, string> | null>(null);
-  const { toast } = useToast();
+const categories = [
+  "All",
+  "Content Creation",
+  "Marketing",
+  "Sales",
+  "Customer Support",
+  "Research",
+  "SEO",
+  "Social Media",
+  "Productivity",
+];
 
-  const handleGenerate = () => {
-    if (!userGoal.trim()) {
-      toast({
-        title: "Please describe your goal",
-        description: "Tell Prompt Codex what you're trying to accomplish",
-        variant: "destructive",
-      });
-      return;
+const PromptGenie = () => {
+  const navigate = useNavigate();
+  const [category, setCategory] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [prompts, setPrompts] = useState(samplePrompts);
+  const [filteredPrompts, setFilteredPrompts] = useState(samplePrompts);
+  const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        toast.error("Please sign in to access this feature");
+        navigate("/auth");
+        return;
+      }
+      
+      setSession(session);
+      setLoading(false);
+      
+      // In a real app, we would fetch user's prompts from the database
+      // For this demo, we'll use the sample prompts
+    };
+    
+    checkAuth();
+  }, [navigate]);
+
+  useEffect(() => {
+    // Filter prompts based on category and search term
+    let filtered = prompts;
+    
+    if (category !== "All") {
+      filtered = filtered.filter(prompt => prompt.category === category);
     }
-
-    setGenerating(true);
     
-    // Simulate prompt generation (in a real app, this would call an AI service)
-    setTimeout(() => {
-      const generatedPrompt = {
-        goal: `Create highly effective content for ${userGoal}`,
-        returnFormat: `Deliver a comprehensive, well-structured output with clear sections, actionable insights, and professional formatting.`,
-        warnings: `Avoid generic advice, industry jargon, or unsubstantiated claims. Ensure all content is accurate, ethical, and appropriate for the intended audience.`,
-        contextDump: `This content will be used by professionals looking to improve their ${userGoal} capabilities and outcomes. The audience has basic familiarity with the topic but needs clear, practical guidance.`
-      };
-      
-      setGeneratedPrompt(generatedPrompt);
-      setGenerating(false);
-    }, 1500);
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(prompt => 
+        prompt.title.toLowerCase().includes(term) || 
+        prompt.description.toLowerCase().includes(term)
+      );
+    }
+    
+    setFilteredPrompts(filtered);
+  }, [category, searchTerm, prompts]);
+
+  const handleCreatePrompt = (newPrompt) => {
+    // In a real app, we would save the prompt to the database
+    setPrompts(prev => [
+      {
+        id: `prompt-${Date.now()}`,
+        userId: session?.user?.id,
+        ...newPrompt,
+        likes: 0,
+        isPublic: false,
+        createdAt: new Date().toISOString()
+      },
+      ...prev
+    ]);
+    
+    // Add to user's usage metrics
+    if (session?.user?.id) {
+      supabase.rpc('increment_counter', { 
+        row_id: session.user.id, 
+        counter_name: 'ai_generations_used', 
+        increment_amount: 1 
+      });
+    }
+    
+    toast.success("Prompt created successfully!");
+    setIsDialogOpen(false);
   };
 
-  const copyPrompt = () => {
-    if (!generatedPrompt) return;
-    
-    const formattedPrompt = Object.entries(generatedPrompt)
-      .map(([key, value]) => `${sectionLabels[key as keyof typeof sectionLabels]}:\n${value}`)
-      .join('\n\n');
-      
-    navigator.clipboard.writeText(formattedPrompt);
-    
-    toast({
-      title: "Copied to clipboard",
-      description: "Your prompt is ready to use with any AI tool",
-    });
+  const handleDeletePrompt = (promptId) => {
+    // In a real app, we would delete the prompt from the database
+    setPrompts(prev => prev.filter(p => p.id !== promptId));
+    toast.success("Prompt deleted");
   };
+
+  const handleLikePrompt = (promptId) => {
+    // In a real app, we would update the likes in the database
+    setPrompts(prev => prev.map(p => 
+      p.id === promptId ? { ...p, likes: p.likes + 1 } : p
+    ));
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </Layout>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      
-      <main className="container mx-auto px-4 pt-24 pb-20">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-2">
-              <div className="relative">
-                <Wand2 className="h-12 w-12 text-primary" />
-                <Sparkles className="h-6 w-6 text-amber-400 absolute -top-1 -right-1" />
-              </div>
-            </div>
+    <Layout>
+      <div className="container py-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div>
             <h1 className="text-3xl font-bold mb-2">Prompt Codex</h1>
-            <p className="text-muted-foreground max-w-md mx-auto">
-              Instantly create perfect AI prompts for any goal using our proven framework
+            <p className="text-muted-foreground">
+              Discover, create and share powerful AI prompts to maximize productivity
             </p>
           </div>
-          
-          <div className="bg-white rounded-lg border shadow-sm p-6 mb-8">
-            <p className="text-sm mb-6">
-              Prompt Codex creates universal prompts with four simple parts that help AI tools understand exactly what you need:
-            </p>
-            <div className="grid grid-cols-2 gap-4">
-              {promptStructureSections.map((section) => (
-                <div key={section} className="flex items-start space-x-3">
-                  <div className={`${sectionColors[section]} w-2 h-6 rounded mt-0.5 flex-shrink-0`}></div>
-                  <div>
-                    <h3 className="font-medium text-sm">{sectionLabels[section]}</h3>
-                    <p className="text-xs text-gray-500">
-                      {section === "goal" && "What you want to achieve"}
-                      {section === "returnFormat" && "How you want it presented"}
-                      {section === "warnings" && "Things to avoid or be careful about"}
-                      {section === "contextDump" && "Background information that helps"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <Button 
+            onClick={() => setIsDialogOpen(true)} 
+            className="mt-4 md:mt-0"
+          >
+            <PlusCircle className="h-4 w-4 mr-2" />
+            Create Prompt
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="md:col-span-2">
+            <SearchBar 
+              searchTerm={searchTerm} 
+              setSearchTerm={setSearchTerm} 
+            />
           </div>
-          
-          <div className="space-y-6">
-            <div className="space-y-3">
-              <label className="font-medium">
-                What do you want to create a prompt for?
-              </label>
-              <Textarea
-                value={userGoal}
-                onChange={(e) => setUserGoal(e.target.value)}
-                placeholder="e.g., 'Creating engaging social media posts for my coffee shop' or 'Analyzing customer feedback data to find patterns'"
-                className="min-h-[100px]"
-              />
-              <Button 
-                onClick={handleGenerate}
-                className="w-full"
-                disabled={generating}
-              >
-                {generating ? (
-                  <>
-                    <span className="mr-2">Generating...</span>
-                    <div className="h-4 w-4 rounded-full border-2 border-t-transparent border-white animate-spin"></div>
-                  </>
-                ) : (
-                  <>
-                    <Wand2 className="mr-2 h-4 w-4" />
-                    Generate Perfect Prompt
-                  </>
-                )}
-              </Button>
-            </div>
-            
-            {generatedPrompt && (
-              <div className="bg-gray-50 rounded-lg border p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="font-medium">Your Universal Prompt</h3>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={copyPrompt}
-                    className="h-8"
-                  >
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy All
-                  </Button>
-                </div>
-                
-                <Tabs defaultValue="structured">
-                  <TabsList className="mb-2">
-                    <TabsTrigger value="structured">Structured</TabsTrigger>
-                    <TabsTrigger value="complete">Complete</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="structured" className="space-y-4">
-                    {promptStructureSections.map((section) => (
-                      <div key={section} className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <div className={`${sectionColors[section]} w-2 h-5 rounded`}></div>
-                          <h4 className="text-sm font-medium">{sectionLabels[section]}</h4>
-                        </div>
-                        <p className="text-sm pl-4 whitespace-pre-wrap">
-                          {generatedPrompt[section]}
-                        </p>
-                      </div>
-                    ))}
-                  </TabsContent>
-                  
-                  <TabsContent value="complete">
-                    <div className="text-sm whitespace-pre-wrap">
-                      {Object.entries(generatedPrompt)
-                        .map(([key, value]) => `${sectionLabels[key as keyof typeof sectionLabels]}:\n${value}`)
-                        .join('\n\n')}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            )}
+          <div>
+            <CategoryFilter 
+              categories={categories} 
+              selectedCategory={category} 
+              onSelectCategory={setCategory} 
+            />
           </div>
         </div>
-      </main>
-    </div>
+        
+        {filteredPrompts.length === 0 ? (
+          <div className="text-center py-20">
+            <h3 className="text-xl font-medium mb-2">No prompts found</h3>
+            <p className="text-muted-foreground mb-6">
+              Try a different search term or category, or create your own prompt
+            </p>
+            <Button onClick={() => setIsDialogOpen(true)}>
+              Create Prompt
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredPrompts.map(prompt => (
+              <PromptCard 
+                key={prompt.id}
+                prompt={prompt}
+                isOwner={prompt.userId === session?.user?.id}
+                onDelete={handleDeletePrompt}
+                onLike={handleLikePrompt}
+              />
+            ))}
+          </div>
+        )}
+        
+        <CreatePromptDialog 
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          onCreatePrompt={handleCreatePrompt}
+          categories={categories.filter(c => c !== "All")}
+        />
+      </div>
+    </Layout>
   );
 };
 
-const PromptCodex = () => {
-  return (
-    <UserPromptsProvider>
-      <PromptCodexContent />
-    </UserPromptsProvider>
-  );
-};
-
-export default PromptCodex;
+export default PromptGenie;

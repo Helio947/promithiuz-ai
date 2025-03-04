@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -86,30 +87,31 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
               label: 'subscribe'
             },
             createSubscription: (data: any, actions: any) => {
-              const cleanAmount = amount.replace('$', '');
+              // Use environment variables or dynamic plan IDs in a production app
+              const planId = planName.toLowerCase() === 'basic' ? 'P-BASIC123' : 'P-BUSINESS456';
+              
               return actions.subscription.create({
-                plan_id: import.meta.env.VITE_PAYPAL_PLAN_ID || 'P-TEST',
+                plan_id: planId,
                 custom_id: session?.user?.id || 'anonymous'
               });
             },
             onApprove: async (data: any, actions: any) => {
               try {
-                const subscriptionEnd = new Date();
-                subscriptionEnd.setMonth(subscriptionEnd.getMonth() + (planPeriod === 'per month' ? 1 : 12));
+                const subscriptionId = data.subscriptionID;
                 
-                const { error } = await supabase
-                  .from('profiles')
-                  .update({
-                    subscription_tier: planName.toLowerCase(),
-                    subscription_status: 'active',
-                    subscription_start_date: new Date().toISOString(),
-                    subscription_end_date: subscriptionEnd.toISOString(),
-                  })
-                  .eq('id', session?.user?.id);
+                // Verify subscription on the server
+                const { data: verifyData, error: verifyError } = await supabase.functions.invoke('verify-subscription', {
+                  body: {
+                    planName: planName.toLowerCase(),
+                    subscriptionId,
+                    userId: session?.user?.id
+                  }
+                });
                 
-                if (error) throw error;
+                if (verifyError) throw verifyError;
                 
                 toast.success(`Successfully subscribed to ${planName} plan!`);
+                
                 if (onSuccess) {
                   onSuccess({
                     subscriptionID: data.subscriptionID,
@@ -118,7 +120,7 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
                   });
                 }
               } catch (err) {
-                console.error('Error updating subscription:', err);
+                console.error('Error finalizing subscription:', err);
                 toast.error('Payment completed but we had trouble updating your account. Please contact support.');
               }
             },
@@ -138,32 +140,6 @@ const PayPalCheckout = ({ amount, planName, planPeriod, onSuccess, onError }: Pa
       }
     }
   }, [loaded, paypalButtonsRendered, amount, planName, planPeriod, onSuccess, onError, session]);
-
-  const handleUpdateProfileAfterPayment = async (userId: string, planDetails: {
-    tier: string;
-    status: string;
-    startDate: string;
-    endDate: string;
-  }) => {
-    if (!userId) return;
-    
-    try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          subscription_tier: planDetails.tier,
-          subscription_status: planDetails.status,
-          subscription_start_date: planDetails.startDate,
-          subscription_end_date: planDetails.endDate
-        })
-        .eq('id', userId);
-      
-      if (error) throw error;
-    } catch (err) {
-      console.error('Error updating profile:', err);
-      throw err;
-    }
-  };
 
   return (
     <div className="w-full space-y-4">
