@@ -30,114 +30,81 @@ const LoadingFallback = () => (
   </div>
 );
 
+// Create routes with AuthProvider wrapped around the elements
+const createRouteWithAuth = (Component) => {
+  return {
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <AuthProvider>
+          <Component />
+        </AuthProvider>
+      </Suspense>
+    ),
+  };
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Index />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(Index),
   },
   {
     path: "/who-we-are",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <WhoWeAre />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(WhoWeAre),
   },
   {
     path: "/prometheus-vision",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <PrometheusVision />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(PrometheusVision),
   },
   {
     path: "/forge",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Forge />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(Forge),
   },
   {
     path: "/prompt-codex",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <PromptCodex />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(PromptCodex),
   },
   {
     path: "/prompt-engine",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <PromptCodex />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(PromptCodex),
   },
   {
     path: "/prompt-genie",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <PromptCodex />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(PromptCodex),
   },
   {
     path: "/forged-sword",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <ForgedSword />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(ForgedSword),
   },
   {
     path: "/auth",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Auth />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(Auth),
   },
   {
     path: "/reset-password",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <ResetPassword />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(ResetPassword),
   },
   {
     path: "/dashboard",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Dashboard />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(Dashboard),
   },
   {
     path: "/profile",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <Profile />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(Profile),
   },
   {
     path: "/huggingface-demo",
-    element: <HuggingFaceDemo />,
+    element: (
+      <Suspense fallback={<LoadingFallback />}>
+        <AuthProvider>
+          <HuggingFaceDemo />
+        </AuthProvider>
+      </Suspense>
+    ),
   },
   {
     path: "*",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <NotFound />
-      </Suspense>
-    ),
+    ...createRouteWithAuth(NotFound),
   },
 ]);
 
@@ -154,20 +121,8 @@ function App() {
   );
 }
 
-// Create a wrapper component to provide auth context
-export const AppWithProviders = () => {
-  return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <RouterProvider 
-          router={router}
-          future={{
-            v7_startTransition: true,
-          }}
-        />
-      </AuthProvider>
-    </ErrorBoundary>
-  );
-};
+// Export the App component directly
+export default App;
 
-export default AppWithProviders;
+// For backwards compatibility
+export const AppWithProviders = App;
