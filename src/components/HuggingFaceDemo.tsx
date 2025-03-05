@@ -4,8 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
-import { generateText, summarizeText, classifyText } from '@/utils/huggingface-service';
+import { generateText, summarizeText, classifyText, describeImage } from '@/utils/huggingface-service';
 import { Loader2 } from 'lucide-react';
 
 export const HuggingFaceDemo = () => {
@@ -24,6 +25,8 @@ export const HuggingFaceDemo = () => {
         return 'AI will create a concise summary of your text';
       case 'text-classification':
         return 'AI will analyze the sentiment or categorize your text';
+      case 'image-to-text':
+        return 'AI will describe what\'s in the image';
       default:
         return 'Select a task to get started';
     }
@@ -37,6 +40,8 @@ export const HuggingFaceDemo = () => {
         return 'Enter a longer text to summarize (min. 30 words recommended)';
       case 'text-classification':
         return 'Enter text to analyze sentiment or classify';
+      case 'image-to-text':
+        return 'Enter an image URL to describe';
       default:
         return 'Enter your text here...';
     }
@@ -47,7 +52,7 @@ export const HuggingFaceDemo = () => {
     if (!prompt.trim()) {
       toast({
         title: "Input required",
-        description: "Please enter some text to process.",
+        description: "Please enter some text or an image URL to process.",
         variant: "destructive",
       });
       return;
@@ -88,6 +93,14 @@ export const HuggingFaceDemo = () => {
               ? response.result.map(r => `${r.label}: ${(r.score * 100).toFixed(2)}%`).join('\n')
               : `${response.result.label}: ${(response.result.score * 100).toFixed(2)}%`
           );
+          break;
+        case 'image-to-text':
+          toast({
+            title: "Processing",
+            description: "Analyzing image...",
+          });
+          response = await describeImage(prompt);
+          setResult(response.result.text || "Could not analyze the image.");
           break;
         default:
           response = await generateText(prompt);
@@ -132,6 +145,7 @@ export const HuggingFaceDemo = () => {
                   <SelectItem value="text-generation">Text Generation</SelectItem>
                   <SelectItem value="summarization">Summarization</SelectItem>
                   <SelectItem value="text-classification">Text Classification</SelectItem>
+                  <SelectItem value="image-to-text">Image Description</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -140,15 +154,41 @@ export const HuggingFaceDemo = () => {
               <label className="text-sm font-medium">
                 {task === 'text-generation' ? 'Your Prompt' : 
                  task === 'summarization' ? 'Text to Summarize' : 
-                 'Text to Classify'}
+                 task === 'text-classification' ? 'Text to Classify' :
+                 'Image URL'}
               </label>
-              <Textarea
-                placeholder={getTaskPlaceholder()}
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows={5}
-                className="resize-y min-h-[120px]"
-              />
+              {task === 'image-to-text' ? (
+                <Input 
+                  type="url"
+                  placeholder="Enter a direct URL to an image"
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  className="w-full"
+                />
+              ) : (
+                <Textarea
+                  placeholder={getTaskPlaceholder()}
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+                  rows={5}
+                  className="resize-y min-h-[120px]"
+                />
+              )}
+              
+              {task === 'image-to-text' && prompt && (
+                <div className="mt-4">
+                  <p className="text-sm text-gray-500 mb-2">Image Preview:</p>
+                  <img 
+                    src={prompt} 
+                    alt="Preview" 
+                    className="max-h-[200px] object-contain border rounded-md"
+                    onError={(e) => {
+                      e.currentTarget.src = '/placeholder.svg';
+                      e.currentTarget.classList.add('border-red-500');
+                    }} 
+                  />
+                </div>
+              )}
             </div>
 
             {result && (
@@ -184,4 +224,3 @@ export const HuggingFaceDemo = () => {
     </div>
   );
 };
-

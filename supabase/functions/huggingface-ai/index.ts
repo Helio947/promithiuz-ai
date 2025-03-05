@@ -84,10 +84,21 @@ serve(async (req) => {
       case 'image-to-text':
         selectedModel = selectedModel || 'Salesforce/blip-image-captioning-base';
         console.log(`Using model: ${selectedModel}`);
-        result = await hf.imageToText({
-          model: selectedModel,
-          data: prompt // In this case, prompt should be a URL or base64 image
-        });
+        try {
+          // Check if the input is a valid URL
+          new URL(prompt);
+          
+          result = await hf.imageToText({
+            model: selectedModel,
+            data: prompt  // Expecting a URL to the image
+          });
+        } catch (urlError) {
+          console.error('Invalid image URL:', urlError);
+          return new Response(
+            JSON.stringify({ error: 'Invalid image URL. Please provide a direct link to an image.' }),
+            { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+          );
+        }
         break;
         
       default:
