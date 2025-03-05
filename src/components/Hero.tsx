@@ -78,45 +78,6 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Key Business Areas Grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 transform hover:scale-105 transition-transform">
-                <div className="flex justify-center mb-4">
-                  <MessageSquare className="h-12 w-12 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Customer Support</h3>
-                <div className="space-y-2">
-                  <p className="text-3xl font-bold text-green-500">80%</p>
-                  <p className="text-muted-foreground">Inquiries Automated</p>
-                  <p className="text-xl font-semibold text-primary">$2,000/mo saved</p>
-                </div>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 transform hover:scale-105 transition-transform">
-                <div className="flex justify-center mb-4">
-                  <Users className="h-12 w-12 text-purple-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Social Media</h3>
-                <div className="space-y-2">
-                  <p className="text-3xl font-bold text-green-500">416hrs</p>
-                  <p className="text-muted-foreground">Saved Yearly</p>
-                  <p className="text-xl font-semibold text-primary">$1,500/mo saved</p>
-                </div>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-sm p-6 rounded-xl border border-white/20 transform hover:scale-105 transition-transform">
-                <div className="flex justify-center mb-4">
-                  <Brain className="h-12 w-12 text-blue-500" />
-                </div>
-                <h3 className="text-lg font-semibold mb-2">Content Creation</h3>
-                <div className="space-y-2">
-                  <p className="text-3xl font-bold text-green-500">70%</p>
-                  <p className="text-muted-foreground">Faster Production</p>
-                  <p className="text-xl font-semibold text-primary">$20K/yr saved</p>
-                </div>
-              </div>
-            </div>
-
             {/* Value Proposition Section */}
             <div className="bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-gray-200 shadow-sm max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold mb-6 text-center">Why Choose Promithiuz AI?</h3>
