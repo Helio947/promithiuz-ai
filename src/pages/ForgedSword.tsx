@@ -4,6 +4,7 @@ import MainContent from "@/components/forged-sword/MainContent";
 import Overview from "@/components/forged-sword/Overview";
 import Header from "@/components/Header";
 import ROICalculator from "@/components/forged-sword/ROICalculator";
+import PromptInstructor from "@/components/forged-sword/PromptInstructor";
 import { textToTextContent } from "@/data/forged-sword-content";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -66,6 +67,16 @@ const ForgedSword = () => {
           onUnlock={handleUnlock}
           onMasteryClick={handleMasteryClick}
         />
+        
+        <div className="max-w-4xl mx-auto mb-12">
+          <h2 className="text-2xl font-bold mb-6">Prompt Engineering Assistant</h2>
+          <p className="text-gray-600 mb-6">
+            This AI assistant will help you learn how to write effective prompts for text-based AI models. 
+            Ask questions about prompt structure, get examples for business use cases, and learn techniques 
+            to get the best results from AI language models.
+          </p>
+          <PromptInstructor />
+        </div>
         
         <div className="max-w-4xl mx-auto mb-12">
           <ROICalculator />
