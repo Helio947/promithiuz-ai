@@ -1,4 +1,3 @@
-
 import { Brain, Sparkles, MessageSquare, Sword, BarChart3, Users, Clock, DollarSign } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -40,6 +39,13 @@ export const features: Feature[] = [
     route: "/forged-sword",
     isPremium: true,
     businessImpact: "ROI of 300-500% within 6 months"
+  },
+  {
+    icon: Sparkles,
+    title: "Hugging Face AI Playground",
+    description: "Experiment with state-of-the-art open-source AI models for text generation, summarization, and image analysis.",
+    route: "/huggingface-ai",
+    businessImpact: "Rapid AI prototyping and testing"
   }
 ];
 

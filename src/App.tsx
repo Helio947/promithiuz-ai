@@ -17,9 +17,8 @@ const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
 const Profile = lazy(() => import("@/pages/Profile"));
+const HuggingFaceAI = lazy(() => import("@/pages/HuggingFaceAI"));
 
-// Add an import for our new HuggingFaceDemo
-import { HuggingFaceDemo } from './components/HuggingFaceDemo';
 import Logo from "./components/ui/Logo";
 
 // Loading fallback component
@@ -101,16 +100,8 @@ const router = createBrowserRouter([
     ...createRouteWithAuth(Profile, true),
   },
   {
-    path: "/huggingface-demo",
-    element: (
-      <Suspense fallback={<LoadingFallback />}>
-        <AuthProvider>
-          <ProtectedRoute>
-            <HuggingFaceDemo />
-          </ProtectedRoute>
-        </AuthProvider>
-      </Suspense>
-    ),
+    path: "/huggingface-ai",
+    ...createRouteWithAuth(HuggingFaceAI, true),
   },
   {
     path: "*",
