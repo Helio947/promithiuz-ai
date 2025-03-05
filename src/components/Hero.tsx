@@ -30,7 +30,7 @@ const Hero = () => {
               Save 15+ Hours Weekly & Cut Costs by 40%
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-              Small businesses using our AI platform save 520-1,560 hours yearly and reduce costs by $10,000-$50,000 annually. <span className="font-semibold">Guaranteed results within 30 days.</span>
+              Learn how to leverage AI to save time, reduce costs, and grow your small business.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
