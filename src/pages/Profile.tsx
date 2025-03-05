@@ -179,11 +179,11 @@ const ProfilePage = () => {
 
   return (
     <Layout>
-      <div className="container max-w-4xl py-10">
+      <div className="container max-w-4xl py-10 overflow-y-auto h-full pb-20">
         <h1 className="text-3xl font-bold mb-6">Profile Settings</h1>
         
         <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="mb-6">
+          <TabsList className="mb-6 sticky top-0 z-10 bg-background">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="subscription">Subscription</TabsTrigger>
             <TabsTrigger value="usage">Usage</TabsTrigger>
