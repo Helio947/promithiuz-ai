@@ -5,9 +5,9 @@ const MetricsSection = () => {
   return (
     <div className="max-w-4xl mx-auto mb-24">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4">Measurable Impact for Small Businesses</h2>
+        <h2 className="text-3xl font-bold mb-4">How AI Can Impact Small Businesses</h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Our AI platform delivers tangible, significant results
+          Our platform helps you harness the power of AI for tangible results
         </p>
       </div>
       
@@ -26,7 +26,7 @@ const MetricsSection = () => {
             <DollarSign className="h-6 w-6 text-orange-500" />
           </div>
           <h3 className="text-4xl font-bold mb-2">40%</h3>
-          <p className="text-gray-600">Cost reduction</p>
+          <p className="text-gray-600">Cost reduction potential</p>
           <p className="text-sm text-gray-500 mt-2">Lower operational expenses</p>
         </div>
         
@@ -35,7 +35,7 @@ const MetricsSection = () => {
             <TrendingUp className="h-6 w-6 text-green-600" />
           </div>
           <h3 className="text-4xl font-bold mb-2">30%</h3>
-          <p className="text-gray-600">Revenue growth</p>
+          <p className="text-gray-600">Revenue growth opportunity</p>
           <p className="text-sm text-gray-500 mt-2">Expand your business faster</p>
         </div>
       </div>
