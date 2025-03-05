@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -12,10 +11,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { Layout } from "@/components/Layout";
 import { Loader2 } from "lucide-react";
 import { Profile } from "@/types/profile";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ProfilePage = () => {
   const { toast } = useToast();
-  const [session, setSession] = useState<any>(null);
+  const { user, profile: authProfile, refreshProfile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -26,55 +26,54 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-      
-      if (!data.session) {
-        window.location.href = '/auth';
-      }
-    };
-    
-    getSession();
-  }, []);
+    if (authProfile) {
+      setProfile(authProfile);
+      setFormData({
+        full_name: authProfile.full_name || '',
+        company_name: authProfile.company_name || '',
+        job_title: authProfile.job_title || '',
+      });
+      setLoading(false);
+    } else if (user) {
+      fetchProfile();
+    } else {
+      window.location.href = '/auth';
+    }
+  }, [user, authProfile]);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!session) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        
-        if (error) {
-          throw error;
-        }
-        
-        if (data) {
-          setProfile(data as Profile);
-          setFormData({
-            full_name: data.full_name || '',
-            company_name: data.company_name || '',
-            job_title: data.job_title || '',
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching profile:', error);
-        toast({
-          title: 'Error',
-          description: 'Failed to load profile data.',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProfile = async () => {
+    if (!user) return;
     
-    fetchProfile();
-  }, [session, toast]);
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      
+      if (error) {
+        throw error;
+      }
+      
+      if (data) {
+        setProfile(data as Profile);
+        setFormData({
+          full_name: data.full_name || '',
+          company_name: data.company_name || '',
+          job_title: data.job_title || '',
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load profile data.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -90,7 +89,11 @@ const ProfilePage = () => {
     
     try {
       console.log("Updating profile with data:", formData);
-      console.log("User ID:", session?.user?.id);
+      console.log("User ID:", user?.id);
+      
+      if (!user?.id) {
+        throw new Error("User ID is missing. Please sign in again.");
+      }
       
       const { error } = await supabase
         .from('profiles')
@@ -99,7 +102,7 @@ const ProfilePage = () => {
           company_name: formData.company_name,
           job_title: formData.job_title
         })
-        .eq('id', session.user.id);
+        .eq('id', user.id);
       
       if (error) {
         console.error("Supabase update error:", error);
@@ -111,7 +114,8 @@ const ProfilePage = () => {
         description: 'Your profile has been updated.',
       });
       
-      // Update local profile state
+      await refreshProfile();
+      
       setProfile(prev => prev ? { ...prev, ...formData } : null);
     } catch (error: any) {
       console.error('Error updating profile:', error);
@@ -135,14 +139,14 @@ const ProfilePage = () => {
   };
 
   const handleCancelSubscription = async () => {
-    if (!session) return;
+    if (!user) return;
     
     if (confirm("Are you sure you want to cancel your subscription? This will take effect at the end of your billing period.")) {
       try {
         const { error } = await supabase
           .from('profiles')
           .update({ subscription_status: 'canceled' })
-          .eq('id', session.user.id);
+          .eq('id', user.id);
         
         if (error) throw error;
         
@@ -151,7 +155,6 @@ const ProfilePage = () => {
           description: 'Your subscription has been canceled and will end on your next billing date.',
         });
         
-        // Update local profile state
         setProfile(prev => prev ? { ...prev, subscription_status: 'canceled' } : null);
       } catch (error) {
         console.error('Error canceling subscription:', error);
@@ -200,7 +203,7 @@ const ProfilePage = () => {
                     <Label htmlFor="email">Email</Label>
                     <Input 
                       id="email" 
-                      value={session?.user?.email || ''} 
+                      value={user?.email || ''} 
                       disabled 
                     />
                     <p className="text-xs text-gray-500">
