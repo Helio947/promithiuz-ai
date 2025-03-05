@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
@@ -88,12 +89,22 @@ const ProfilePage = () => {
     setSaving(true);
     
     try {
+      console.log("Updating profile with data:", formData);
+      console.log("User ID:", session?.user?.id);
+      
       const { error } = await supabase
         .from('profiles')
-        .update(formData)
+        .update({
+          full_name: formData.full_name,
+          company_name: formData.company_name,
+          job_title: formData.job_title
+        })
         .eq('id', session.user.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase update error:", error);
+        throw error;
+      }
       
       toast({
         title: 'Success',
@@ -102,11 +113,11 @@ const ProfilePage = () => {
       
       // Update local profile state
       setProfile(prev => prev ? { ...prev, ...formData } : null);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating profile:', error);
       toast({
         title: 'Error',
-        description: 'Failed to update profile.',
+        description: `Failed to update profile: ${error.message || 'Unknown error'}`,
         variant: 'destructive',
       });
     } finally {
