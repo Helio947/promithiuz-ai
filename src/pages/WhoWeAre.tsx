@@ -1,5 +1,5 @@
 
-import { Heart, Lightbulb, Users, Building, LineChart, Gauge } from "lucide-react";
+import { Heart, Lightbulb, Users } from "lucide-react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -30,11 +30,7 @@ const WhoWeAre = () => {
               </div>
               
               <p className="text-gray-600 leading-relaxed mb-6">
-                We believe that AI shouldn't be a luxury—it should be accessible to all. Our founder, after spending years consulting for both Fortune 500 companies and local businesses, recognized that without specialized knowledge, smaller organizations were being left behind in the AI revolution.
-              </p>
-              
-              <p className="text-gray-600 leading-relaxed mb-10">
-                That realization sparked a mission: to democratize AI by creating intuitive tools that business owners could use without needing a data science degree or enterprise-level resources.
+                We believe that AI shouldn't be a luxury—it should be accessible to all. That realization sparked a mission: to democratize AI by creating intuitive tools that business owners could use without needing a data science degree or enterprise-level resources.
               </p>
               
               <div className="flex flex-col md:flex-row items-center gap-6 mb-10">
@@ -66,49 +62,7 @@ const WhoWeAre = () => {
               </div>
             </div>
             
-            <h2 className="text-3xl font-bold mb-8 text-center">The Impact We're Making</h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
-                <div className="rounded-full bg-blue-100 p-4 mb-4">
-                  <Building className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Business Transformation</h3>
-                <p className="text-gray-600">
-                  Our clients have reported 40% average reduction in operational costs and 35% increase in productivity after implementing our AI solutions.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
-                <div className="rounded-full bg-amber-100 p-4 mb-4">
-                  <LineChart className="w-8 h-8 text-amber-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Market Competition</h3>
-                <p className="text-gray-600">
-                  Small businesses using our platform have successfully competed against competitors 10x their size by leveraging AI to enhance customer experiences.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
-                <div className="rounded-full bg-purple-100 p-4 mb-4">
-                  <Gauge className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Time Efficiency</h3>
-                <p className="text-gray-600">
-                  Our tools save businesses an average of 15+ hours per week through automation of repetitive tasks and AI-powered decision making.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center">
-                <div className="rounded-full bg-green-100 p-4 mb-4">
-                  <Heart className="w-8 h-8 text-green-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Customer Satisfaction</h3>
-                <p className="text-gray-600">
-                  Businesses implementing our AI solutions have seen customer satisfaction scores increase by an average of 28%.
-                </p>
-              </div>
-            </div>
+            <h2 className="text-3xl font-bold mb-8 text-center">Vision for the Future</h2>
             
             <div className="text-center">
               <h2 className="text-2xl font-bold mb-6">Join Us on This Journey</h2>
