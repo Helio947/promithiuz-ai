@@ -69,15 +69,10 @@ const WhoWeAre = () => {
               <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
                 We're more than a software company—we're partners in your business growth. Every feature we develop is born from listening to the real challenges you face, and every solution is designed with your success in mind.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex justify-center">
                 <Button asChild size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90">
                   <Link to="/forge">
                     Start Your AI Journey
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg">
-                  <Link to="/auth">
-                    Join Our Community
                   </Link>
                 </Button>
               </div>
