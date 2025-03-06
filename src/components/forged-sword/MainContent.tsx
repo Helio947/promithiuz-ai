@@ -1,9 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { Accordion } from "@/components/ui/accordion";
 import AIToolCategory from "./AIToolCategory";
 import StrategyCategory from "./StrategyCategory";
-import BestPracticeCategory from "./BestPracticeCategory";
 import SystemApproach from "./SystemApproach";
 import ModuleProgress from "./ModuleProgress";
 import InteractiveExample from "./InteractiveExample";
@@ -205,29 +203,6 @@ const MainContent = ({ modules = [], bestPractices, systemsApproach }: MainConte
           </button>
         </div>
       )}
-
-      <div className="mt-8 bg-white rounded-xl p-8 shadow-sm border border-gray-200">
-        <h3 className="text-xl font-semibold mb-4">Additional Resources</h3>
-        <Accordion type="single" collapsible className="space-y-4">
-          {bestPractices.map((practice, index) => (
-            <BestPracticeCategory
-              key={index}
-              title={practice.title}
-              practices={practice.practices}
-              index={index}
-            />
-          ))}
-
-          {systemsApproach.map((system, index) => (
-            <SystemApproach
-              key={index}
-              title={system.title}
-              steps={system.steps}
-              index={index}
-            />
-          ))}
-        </Accordion>
-      </div>
     </div>
   );
 };
