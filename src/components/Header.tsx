@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Menu, X, LogOut, UserCircle, Sparkles } from "lucide-react";
+import { Menu, X, LogOut, UserCircle } from "lucide-react";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
@@ -47,13 +47,6 @@ const Header = () => {
             <>
               <Link to="/dashboard" className="text-gray-700 hover:text-primary transition-colors">
                 Dashboard
-              </Link>
-              <Link 
-                to="/huggingface-ai" 
-                className="text-gray-700 hover:text-primary transition-colors flex items-center"
-              >
-                <Sparkles className="mr-1 h-4 w-4 text-primary" />
-                AI Playground
               </Link>
               <div className="flex items-center space-x-4">
                 <Link to="/profile" className="text-gray-700 hover:text-primary transition-colors flex items-center">
@@ -100,14 +93,6 @@ const Header = () => {
               <>
                 <Link to="/dashboard" className="text-gray-700 hover:text-primary transition-colors" onClick={toggleMenu}>
                   Dashboard
-                </Link>
-                <Link 
-                  to="/huggingface-ai" 
-                  className="text-gray-700 hover:text-primary transition-colors flex items-center" 
-                  onClick={toggleMenu}
-                >
-                  <Sparkles className="mr-1 h-4 w-4 text-primary" />
-                  AI Playground
                 </Link>
                 <Link to="/profile" className="text-gray-700 hover:text-primary transition-colors flex items-center" onClick={toggleMenu}>
                   <UserCircle className="mr-1 h-4 w-4" />
