@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
@@ -9,9 +10,23 @@ import analytics from "@/utils/analytics";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Onboarding from "@/components/Onboarding";
 import Logo from "@/components/ui/Logo";
+import { Eye, Sparkles, MessageSquare, Sword } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 const Index = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const handleFeatureClick = (route: string) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to access this feature");
+      navigate("/auth");
+      return;
+    }
+    navigate(route);
+  };
 
   useEffect(() => {
     // Initialize analytics
@@ -70,6 +85,56 @@ const Index = () => {
             <Logo size="lg" />
           </div>
         </div>
+        
+        {/* Feature Icons Bar */}
+        <div className="w-full bg-white shadow-sm py-3 px-4 sticky top-16 z-10">
+          <div className="container mx-auto flex justify-center items-center space-x-12">
+            <button 
+              onClick={() => handleFeatureClick("/prometheus-vision")}
+              className="flex flex-col items-center group transition-all"
+              aria-label="Promithiuz AI Vision"
+            >
+              <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                <Eye className="h-6 w-6 text-primary" />
+              </div>
+              <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Vision</span>
+            </button>
+            
+            <button 
+              onClick={() => handleFeatureClick("/forge")}
+              className="flex flex-col items-center group transition-all"
+              aria-label="The Forge"
+            >
+              <div className="p-3 rounded-full bg-secondary/10 group-hover:bg-secondary/20 transition-colors">
+                <Sparkles className="h-6 w-6 text-secondary" />
+              </div>
+              <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Forge</span>
+            </button>
+            
+            <button 
+              onClick={() => handleFeatureClick("/prompt-codex")}
+              className="flex flex-col items-center group transition-all"
+              aria-label="Prompt Codex"
+            >
+              <div className="p-3 rounded-full bg-blue-100 group-hover:bg-blue-200 transition-colors">
+                <MessageSquare className="h-6 w-6 text-blue-600" />
+              </div>
+              <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Codex</span>
+            </button>
+            
+            <button 
+              onClick={() => handleFeatureClick("/forged-sword")}
+              className="flex flex-col items-center group transition-all"
+              aria-label="Forged Sword"
+            >
+              <div className="p-3 rounded-full bg-amber-100 group-hover:bg-amber-200 transition-colors">
+                <Sword className="h-6 w-6 text-amber-600" />
+              </div>
+              <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Sword</span>
+            </button>
+          </div>
+        </div>
+        
         <Hero />
         <Features />
         <About />
