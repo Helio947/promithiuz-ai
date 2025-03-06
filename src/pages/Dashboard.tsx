@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, Clock, DollarSign, TrendingUp, Brain } from "lucide-react";
+import { Loader2, Clock, DollarSign, TrendingUp, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { incrementProfileMetric } from "@/utils/profile-utils";
 import { Profile } from "@/types/profile";
@@ -71,7 +70,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Brain className="h-5 w-5 mr-2 text-purple-500" />
+                  <Eye className="h-5 w-5 mr-2 text-purple-500" />
                   <span className="text-2xl font-bold">{profile?.ai_queries_used || 0}</span>
                 </div>
                 <Button size="sm" onClick={() => navigate("/prometheus-vision")}>Use AI</Button>
@@ -117,7 +116,7 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent className="grid gap-2">
               <Button variant="outline" onClick={() => navigate("/prometheus-vision")} className="justify-start">
-                <Brain className="h-4 w-4 mr-2" /> Prometheus Vision
+                <Eye className="h-4 w-4 mr-2" /> Prometheus Vision
               </Button>
               <Button variant="outline" onClick={() => navigate("/forge")} className="justify-start">
                 <Clock className="h-4 w-4 mr-2" /> The Forge

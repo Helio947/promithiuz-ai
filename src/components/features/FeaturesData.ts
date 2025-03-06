@@ -1,4 +1,4 @@
-import { Brain, Sparkles, MessageSquare, Sword, BarChart3, Users, Clock, DollarSign } from "lucide-react";
+import { Eye, Sparkles, MessageSquare, Sword, BarChart3, Users, Clock, DollarSign } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface Feature {
@@ -12,7 +12,7 @@ interface Feature {
 
 export const features: Feature[] = [
   {
-    icon: Brain,
+    icon: Eye,
     title: "Promithiuz AI Vision",
     description: "Get data-driven insights and forecasts to make better business decisions with 89% accuracy.",
     route: "/prometheus-vision",

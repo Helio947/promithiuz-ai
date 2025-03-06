@@ -6,6 +6,7 @@ import { toast } from "@/components/ui/use-toast";
 import { Profile } from "@/types/profile";
 import { incrementProfileMetric } from "@/utils/profile-utils";
 import SuggestedQueries from "@/components/prometheus-vision/SuggestedQueries";
+import { Eye } from "lucide-react";
 
 const PrometheusVision = () => {
   const [messages, setMessages] = useState<Message[]>([]);

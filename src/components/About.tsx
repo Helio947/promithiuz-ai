@@ -1,5 +1,4 @@
-
-import { Brain, TrendingUp, Clock, DollarSign } from "lucide-react";
+import { Eye, TrendingUp, Clock, DollarSign } from "lucide-react";
 
 const About = () => {
   return (
@@ -51,7 +50,7 @@ const About = () => {
               </div>
               
               <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg transition-all duration-300 hover:bg-blue-100">
-                <Brain className="w-7 h-7 md:w-8 md:h-8 text-blue-500 shrink-0" />
+                <Eye className="w-7 h-7 md:w-8 md:h-8 text-blue-500 shrink-0" />
                 <div>
                   <p className="font-semibold">5x Faster Decision Making</p>
                   <p className="text-sm text-gray-600">With AI-powered insights</p>
