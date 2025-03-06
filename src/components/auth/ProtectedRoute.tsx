@@ -11,6 +11,11 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated, loading } = useAuth();
   const location = useLocation();
 
+  // Bypass authentication check - temporarily allowing access without login
+  return <>{children}</>;
+
+  // Original authentication logic - commented out
+  /*
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-gray-50 to-gray-100">
@@ -28,6 +33,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   }
 
   return <>{children}</>;
+  */
 };
 
 export default ProtectedRoute;
