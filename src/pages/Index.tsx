@@ -20,12 +20,18 @@ const Index = () => {
   const { isAuthenticated } = useAuth();
 
   const handleFeatureClick = (route: string) => {
+    // Temporarily bypass authentication check
+    navigate(route);
+    
+    // Original authentication logic - commented out
+    /*
     if (!isAuthenticated) {
       toast.info("Please log in to access this feature");
       navigate("/auth");
       return;
     }
     navigate(route);
+    */
   };
 
   useEffect(() => {
