@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Copy, Heart, Trash, ExternalLink } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Prompt } from "./CreatePromptDialog";
@@ -75,11 +75,9 @@ const PromptCard = ({ prompt, isOwner = false, onDelete, onLike }: PromptCardPro
             <Button variant="ghost" size="icon" onClick={handleCopy}>
               <Copy className="h-4 w-4" />
             </Button>
-            <DialogTrigger asChild onClick={() => setShowDetails(true)}>
-              <Button variant="ghost" size="icon">
-                <ExternalLink className="h-4 w-4" />
-              </Button>
-            </DialogTrigger>
+            <Button variant="ghost" size="icon" onClick={() => setShowDetails(true)}>
+              <ExternalLink className="h-4 w-4" />
+            </Button>
           </div>
         </CardFooter>
       </Card>
