@@ -17,6 +17,7 @@ const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const WhoWeAre = lazy(() => import("@/pages/WhoWeAre"));
 const Profile = lazy(() => import("@/pages/Profile"));
+const AIAgentAcademy = lazy(() => import("@/pages/AIAgentAcademy"));
 
 import Logo from "./components/ui/Logo";
 
@@ -81,6 +82,10 @@ const router = createBrowserRouter([
   {
     path: "/forged-sword",
     ...createRouteWithAuth(ForgedSword, true),
+  },
+  {
+    path: "/ai-agent-academy",
+    ...createRouteWithAuth(AIAgentAcademy, false),
   },
   {
     path: "/auth",

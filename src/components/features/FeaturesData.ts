@@ -1,4 +1,5 @@
-import { Eye, Sparkles, MessageSquare, Sword, BarChart3, Users, Clock, DollarSign } from "lucide-react";
+
+import { Eye, Sparkles, MessageSquare, Sword, BarChart3, Users, Clock, DollarSign, Bot } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface Feature {
@@ -39,6 +40,13 @@ export const features: Feature[] = [
     route: "/forged-sword",
     isPremium: true,
     businessImpact: "ROI of 300-500% within 6 months"
+  },
+  {
+    icon: Bot,
+    title: "AI Agent Academy",
+    description: "Interactive visual game that teaches you how to use AI agents in your daily life and business.",
+    route: "/ai-agent-academy",
+    businessImpact: "Master AI adoption in just 15 minutes"
   }
 ];
 
