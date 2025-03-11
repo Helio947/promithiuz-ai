@@ -1,5 +1,5 @@
 
-import { Brain, TrendingUp, Clock } from "lucide-react";
+import { Clock, TrendingUp } from "lucide-react";
 
 const BenefitsSection = () => {
   return (
@@ -34,18 +34,6 @@ const BenefitsSection = () => {
             <h3 className="font-semibold">40% Cost Reduction</h3>
             <p className="text-sm text-gray-600">
               Our clients see significant savings in operational costs
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-4 items-start">
-          <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-            <Brain className="w-5 h-5 text-green-600" />
-          </div>
-          <div>
-            <h3 className="font-semibold">Start in Minutes</h3>
-            <p className="text-sm text-gray-600">
-              No complicated setup - just sign up and get started immediately
             </p>
           </div>
         </div>

@@ -78,7 +78,7 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Value Proposition Section */}
+            {/* Value Proposition Section - REMOVED THE THREE VALUE PROP ITEMS FROM IMAGE */}
             <div className="bg-white/80 backdrop-blur-sm p-8 rounded-xl border border-gray-200 shadow-sm max-w-4xl mx-auto">
               <h3 className="text-2xl font-bold mb-6 text-center">Why Choose Promithiuz AI?</h3>
               
@@ -100,36 +100,6 @@ const Hero = () => {
                   <div>
                     <h4 className="font-semibold mb-1">Fast Implementation</h4>
                     <p className="text-gray-600 text-sm">Get up and running with AI in days, not months</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Proven Results</h4>
-                    <p className="text-gray-600 text-sm">500+ small businesses have already achieved significant ROI</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Complete AI Solution</h4>
-                    <p className="text-gray-600 text-sm">All the AI tools your business needs in one platform</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Check className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Dedicated Support</h4>
-                    <p className="text-gray-600 text-sm">AI experts available to ensure your success</p>
                   </div>
                 </div>
                 
