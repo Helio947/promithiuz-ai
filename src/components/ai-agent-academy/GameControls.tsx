@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw, Bot } from "lucide-react";
 
 interface GameControlsProps {
   onNext: () => void;
@@ -33,7 +33,7 @@ const GameControls = ({
         </Button>
       </div>
       
-      <div>
+      <div className="flex gap-2">
         <Button
           variant="outline"
           onClick={onRestart}
@@ -42,6 +42,16 @@ const GameControls = ({
           <RotateCcw className="h-4 w-4" />
           Restart
         </Button>
+        
+        {stageCompleted && (
+          <Button
+            variant="secondary"
+            className="flex items-center gap-1"
+          >
+            <Bot className="h-4 w-4" />
+            Launch AI Agent
+          </Button>
+        )}
       </div>
       
       <div>

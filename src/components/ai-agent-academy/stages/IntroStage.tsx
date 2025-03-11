@@ -1,5 +1,5 @@
 
-import { Robot, Sparkles, Activity, Clock, Users } from "lucide-react";
+import { Bot, Sparkles, Activity, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface IntroStageProps {
@@ -11,7 +11,7 @@ const IntroStage = ({ onContinue }: IntroStageProps) => {
     <div className="space-y-8">
       <div className="flex flex-col items-center justify-center p-6 text-center">
         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-4">
-          <Robot className="h-10 w-10 text-white" />
+          <Bot className="h-10 w-10 text-white" />
         </div>
         <h3 className="text-2xl font-bold mb-2">Welcome to AI Agent Academy!</h3>
         <p className="text-gray-600 max-w-2xl">
