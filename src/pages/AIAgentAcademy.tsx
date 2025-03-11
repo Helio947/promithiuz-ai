@@ -83,7 +83,6 @@ const AIAgentAcademy = () => {
   );
 };
 
-// Game stages data
 const gameStages = [
   {
     id: "intro",
@@ -95,61 +94,61 @@ const gameStages = [
   },
   {
     id: "basics",
-    title: "AI Agent Basics",
-    description: "Understand what AI agents are and how they work",
+    title: "Let's Get to Know You",
+    description: "Help us understand your experience with AI agents so we can personalize your learning journey",
     content: "basics",
     interactionType: "quiz",
     completionCriteria: "correct-answer",
     questions: [
       {
-        question: "What is an AI agent?",
+        question: "What's your current experience with AI agents?",
         options: [
-          "A robot with physical capabilities",
-          "A digital assistant that can perform tasks autonomously",
-          "A human pretending to be AI",
-          "A type of smart home device"
+          "I've never used AI tools before",
+          "I've used ChatGPT or similar tools occasionally",
+          "I regularly use AI in my work/life",
+          "I'm an AI professional or developer"
         ],
         correctIndex: 1
       },
       {
-        question: "Which is NOT a typical capability of AI agents?",
+        question: "What's your main goal for learning about AI agents?",
         options: [
-          "Processing natural language",
-          "Making physical repairs to hardware",
-          "Automating routine tasks",
-          "Analyzing data patterns"
+          "Automating personal tasks",
+          "Improving work productivity",
+          "Building AI-powered applications",
+          "Just curious about the technology"
         ],
         correctIndex: 1
       },
       {
-        question: "How do AI agents learn?",
+        question: "Which AI capability interests you the most?",
         options: [
-          "By reading textbooks",
-          "Through trial and error only",
-          "From patterns in large datasets",
-          "They don't learn, they only follow instructions"
+          "Processing and analyzing text",
+          "Working with images and visual content",
+          "Handling data and numbers",
+          "Conversational abilities"
         ],
-        correctIndex: 2
+        correctIndex: 3
       },
       {
-        question: "What's the best way to interact with an AI agent?",
+        question: "How do you prefer to interact with AI tools?",
         options: [
-          "Using vague and ambiguous instructions",
-          "Providing clear, specific instructions",
-          "Speaking very loudly",
-          "Using technical jargon only"
+          "Through natural conversation",
+          "Using specific commands/prompts",
+          "Via a graphical interface",
+          "Through code/programming"
+        ],
+        correctIndex: 0
+      },
+      {
+        question: "What's your biggest concern about using AI agents?",
+        options: [
+          "Privacy and security",
+          "Accuracy and reliability",
+          "Ease of use",
+          "Cost and accessibility"
         ],
         correctIndex: 1
-      },
-      {
-        question: "What's a key benefit of using AI agents?",
-        options: [
-          "They never make mistakes",
-          "They work without electricity",
-          "They can automate repetitive tasks",
-          "They have human emotions"
-        ],
-        correctIndex: 2
       }
     ]
   },

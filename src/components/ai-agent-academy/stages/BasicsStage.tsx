@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check, X, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface BasicsStageProps {
   questions: Array<{
@@ -21,7 +21,6 @@ const BasicsStage = ({ questions, onAnswer }: BasicsStageProps) => {
     return <div>No questions available</div>;
   }
   
-  // Limit to 5 questions
   const limitedQuestions = questions.slice(0, 5);
   const currentQuestion = limitedQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === limitedQuestions.length - 1;
@@ -29,13 +28,11 @@ const BasicsStage = ({ questions, onAnswer }: BasicsStageProps) => {
   const handleOptionSelect = (index: number) => {
     setSelectedOption(index);
     
-    // Mark the current question as completed
     const newCompleted = [...completedQuestions];
     newCompleted[currentQuestionIndex] = true;
     setCompletedQuestions(newCompleted);
     
-    // If it's the last question and the answer is correct, complete the stage
-    if (isLastQuestion && index === currentQuestion.correctIndex) {
+    if (isLastQuestion) {
       setTimeout(() => {
         onAnswer(index);
       }, 1500);
@@ -48,8 +45,6 @@ const BasicsStage = ({ questions, onAnswer }: BasicsStageProps) => {
       setSelectedOption(null);
     }
   };
-  
-  const isCorrect = selectedOption === currentQuestion.correctIndex;
   
   return (
     <div className="space-y-6">
@@ -84,44 +79,15 @@ const BasicsStage = ({ questions, onAnswer }: BasicsStageProps) => {
               disabled={selectedOption !== null}
               className={`w-full text-left p-4 rounded-lg border transition-all ${
                 selectedOption === index
-                  ? isCorrect
-                    ? "border-green-500 bg-green-50"
-                    : "border-red-500 bg-red-50"
+                  ? "border-primary bg-primary/10"
                   : "border-gray-200 hover:border-primary"
               }`}
             >
-              <div className="flex items-center justify-between">
-                <span>{option}</span>
-                {selectedOption === index && (
-                  isCorrect ? (
-                    <Check className="h-5 w-5 text-green-500" />
-                  ) : (
-                    <X className="h-5 w-5 text-red-500" />
-                  )
-                )}
-              </div>
+              <span>{option}</span>
             </button>
           ))}
         </div>
       </div>
-      
-      {selectedOption !== null && (
-        <div className={`p-4 rounded-lg ${
-          isCorrect ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"
-        }`}>
-          {isCorrect ? (
-            <p className="text-green-800">
-              {isLastQuestion 
-                ? "Excellent! You've completed all questions correctly. You now understand the basics of AI agents!"
-                : "Correct! That's the right answer."}
-            </p>
-          ) : (
-            <div className="text-red-800">
-              <p className="mb-2">That's not quite right. The correct answer is: {currentQuestion.options[currentQuestion.correctIndex]}</p>
-            </div>
-          )}
-        </div>
-      )}
       
       {selectedOption !== null && !isLastQuestion && (
         <Button 
@@ -130,6 +96,14 @@ const BasicsStage = ({ questions, onAnswer }: BasicsStageProps) => {
         >
           Next Question <ArrowRight className="h-4 w-4" />
         </Button>
+      )}
+
+      {selectedOption !== null && isLastQuestion && (
+        <div className="p-4 rounded-lg bg-green-50 border border-green-200">
+          <p className="text-green-800">
+            Thanks for sharing! We'll use your responses to personalize your learning experience.
+          </p>
+        </div>
       )}
     </div>
   );
