@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import AIAgentGameHeader from "@/components/ai-agent-academy/AIAgentGameHeader";
@@ -111,6 +110,46 @@ const gameStages = [
           "A type of smart home device"
         ],
         correctIndex: 1
+      },
+      {
+        question: "Which is NOT a typical capability of AI agents?",
+        options: [
+          "Processing natural language",
+          "Making physical repairs to hardware",
+          "Automating routine tasks",
+          "Analyzing data patterns"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "How do AI agents learn?",
+        options: [
+          "By reading textbooks",
+          "Through trial and error only",
+          "From patterns in large datasets",
+          "They don't learn, they only follow instructions"
+        ],
+        correctIndex: 2
+      },
+      {
+        question: "What's the best way to interact with an AI agent?",
+        options: [
+          "Using vague and ambiguous instructions",
+          "Providing clear, specific instructions",
+          "Speaking very loudly",
+          "Using technical jargon only"
+        ],
+        correctIndex: 1
+      },
+      {
+        question: "What's a key benefit of using AI agents?",
+        options: [
+          "They never make mistakes",
+          "They work without electricity",
+          "They can automate repetitive tasks",
+          "They have human emotions"
+        ],
+        correctIndex: 2
       }
     ]
   },

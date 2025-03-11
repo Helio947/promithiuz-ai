@@ -50,15 +50,12 @@ interface GameStageProps {
 }
 
 const GameStage = ({ stage, onComplete }: GameStageProps) => {
-  const [userAnswer, setUserAnswer] = useState<number | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  
   const renderStageContent = () => {
     switch (stage.content) {
       case "intro":
         return <IntroStage onContinue={onComplete} />;
       case "basics":
-        return <BasicsStage questions={stage.questions || []} onAnswer={handleQuizAnswer} />;
+        return <BasicsStage questions={stage.questions || []} onAnswer={() => onComplete()} />;
       case "use-cases":
         return <UseCasesStage items={stage.items || []} onComplete={onComplete} />;
       case "instruction":
@@ -78,21 +75,6 @@ const GameStage = ({ stage, onComplete }: GameStageProps) => {
             <Button onClick={onComplete} className="mt-4">Continue</Button>
           </div>
         );
-    }
-  };
-  
-  const handleQuizAnswer = (selectedIndex: number) => {
-    setUserAnswer(selectedIndex);
-    
-    if (stage.questions && stage.questions.length > 0) {
-      const correct = selectedIndex === stage.questions[0].correctIndex;
-      setIsCorrect(correct);
-      
-      if (correct) {
-        setTimeout(() => {
-          onComplete();
-        }, 1000);
-      }
     }
   };
   
