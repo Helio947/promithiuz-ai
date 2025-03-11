@@ -1,6 +1,6 @@
-
 import { Award, Download, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 interface GraduationStageProps {
   onComplete: () => void;

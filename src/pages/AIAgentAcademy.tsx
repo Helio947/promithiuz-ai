@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import Layout from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import AIAgentGameHeader from "@/components/ai-agent-academy/AIAgentGameHeader";
 import GameStage from "@/components/ai-agent-academy/GameStage";
 import GameControls from "@/components/ai-agent-academy/GameControls";
