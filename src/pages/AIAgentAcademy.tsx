@@ -94,61 +94,61 @@ const gameStages = [
   },
   {
     id: "basics",
-    title: "Let's Get to Know You",
-    description: "Help us understand your experience with AI agents so we can personalize your learning journey",
+    title: "Understanding AI Agents - Knowledge Check",
+    description: "Let's discover what you know about AI agents and tailor your learning journey accordingly",
     content: "basics",
     interactionType: "quiz",
     completionCriteria: "correct-answer",
     questions: [
       {
-        question: "What's your current experience with AI agents?",
+        question: "An AI agent is a computer program that can automatically perform tasks and make decisions. Which of these best describes what makes an AI agent different from regular software?",
         options: [
-          "I've never used AI tools before",
-          "I've used ChatGPT or similar tools occasionally",
-          "I regularly use AI in my work/life",
-          "I'm an AI professional or developer"
+          "It only follows pre-written commands exactly as programmed",
+          "It can understand context, learn from interactions, and adapt its responses",
+          "It requires constant human supervision to function properly",  
+          "It can only work with text-based information"
         ],
         correctIndex: 1
       },
       {
-        question: "What's your main goal for learning about AI agents?",
+        question: "AI agents can be designed to handle various types of tasks autonomously. Which scenario best demonstrates an AI agent's capability?",
         options: [
-          "Automating personal tasks",
-          "Improving work productivity",
-          "Building AI-powered applications",
-          "Just curious about the technology"
+          "A calculator that adds numbers when you press buttons",
+          "A smart assistant that reads your emails, prioritizes them, and drafts responses based on their content and urgency",
+          "A website that displays the same information to every visitor",
+          "A video player that plays files when you click on them"
         ],
         correctIndex: 1
       },
       {
-        question: "Which AI capability interests you the most?",
+        question: "Modern AI agents can process and understand different types of information. What types of data can advanced AI agents typically work with?",
         options: [
-          "Processing and analyzing text",
-          "Working with images and visual content",
-          "Handling data and numbers",
-          "Conversational abilities"
+          "Only text and numbers",
+          "Only images and videos", 
+          "Text, images, audio, code, and structured data like spreadsheets",
+          "Only information that has been specifically programmed into them"
         ],
-        correctIndex: 3
+        correctIndex: 2
       },
       {
-        question: "How do you prefer to interact with AI tools?",
+        question: "AI agents can be connected together to create powerful workflows. What happens when you chain multiple AI agents together?",
         options: [
-          "Through natural conversation",
-          "Using specific commands/prompts",
-          "Via a graphical interface",
-          "Through code/programming"
-        ],
-        correctIndex: 0
-      },
-      {
-        question: "What's your biggest concern about using AI agents?",
-        options: [
-          "Privacy and security",
-          "Accuracy and reliability",
-          "Ease of use",
-          "Cost and accessibility"
+          "They compete with each other and slow down the process",
+          "Each agent can specialize in one task, then pass results to the next agent, creating complex automated workflows",
+          "They all do the same task simultaneously for backup",
+          "They can only work if a human supervises each step"
         ],
         correctIndex: 1
+      },
+      {
+        question: "To get the best results from an AI agent, how should you communicate with it?",
+        options: [
+          "Use only single-word commands",
+          "Speak to it exactly like you would to a computer program with technical terms",
+          "Give clear, specific instructions with context about what you want to achieve, similar to briefing a skilled assistant",
+          "Ask it to guess what you want without providing details"
+        ],
+        correctIndex: 2
       }
     ]
   },
