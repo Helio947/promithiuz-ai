@@ -8,7 +8,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import PrometheusVision from "./pages/PrometheusVision";
-import PromptCodex from "./pages/PromptCodex";
+import PromptEngine from "./pages/PromptEngine";
 import ForgedSword from "./pages/ForgedSword";
 import AIAgentAcademy from "./pages/AIAgentAcademy";
 
@@ -25,7 +25,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/prometheus-vision" element={<PrometheusVision />} />
-            <Route path="/prompt-codex" element={<PromptCodex />} />
+            <Route path="/prompt-codex" element={<PromptEngine />} />
             <Route path="/forged-sword" element={<ForgedSword />} />
             <Route path="/ai-agent-academy" element={<AIAgentAcademy />} />
           </Routes>
