@@ -10,7 +10,7 @@ import analytics from "@/utils/analytics";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import Onboarding from "@/components/Onboarding";
 import Logo from "@/components/ui/Logo";
-import { Eye, Sparkles, MessageSquare, Sword, Bot } from "lucide-react";
+import { Eye, MessageSquare, Sword, Bot } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
@@ -104,17 +104,6 @@ const Index = () => {
                 <Eye className="h-6 w-6 text-primary" />
               </div>
               <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Vision</span>
-            </button>
-            
-            <button 
-              onClick={() => handleFeatureClick("/forge")}
-              className="flex flex-col items-center group transition-all"
-              aria-label="The Forge"
-            >
-              <div className="p-3 rounded-full bg-secondary/10 group-hover:bg-secondary/20 transition-colors">
-                <Sparkles className="h-6 w-6 text-secondary" />
-              </div>
-              <span className="text-xs mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Forge</span>
             </button>
             
             <button 
