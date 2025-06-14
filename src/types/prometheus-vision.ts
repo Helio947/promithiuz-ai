@@ -4,6 +4,7 @@ export interface Message {
   content: string;
   id: string;
   timestamp: Date;
+  imageUrl?: string;
 }
 
 export interface BusinessNode {

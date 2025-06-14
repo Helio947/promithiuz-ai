@@ -1,5 +1,7 @@
+
 import { useState, useRef, useCallback } from 'react';
 import { Message } from '@/types/prometheus-vision';
+import { createUserMessage, createAssistantMessage, formatMessageForAPI } from '@/utils/chat-helpers';
 
 export const useChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -8,13 +10,7 @@ export const useChat = () => {
 
   const sendMessage = useCallback(async (content: string, imageUrl?: string) => {
     setIsLoading(true);
-    const userMessage = {
-      id: Date.now().toString(),
-      role: 'user',
-      content,
-      timestamp: new Date(),
-      ...(imageUrl && { imageUrl })
-    };
+    const userMessage = createUserMessage(content, imageUrl);
     setMessages(prev => [...prev, userMessage]);
 
     try {
@@ -27,11 +23,7 @@ export const useChat = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: [...messages, userMessage].map(msg => ({
-            role: msg.role,
-            content: msg.content,
-            ...(msg.imageUrl && { imageUrl: msg.imageUrl })
-          })),
+          messages: [...messages, userMessage].map(formatMessageForAPI),
           imageUrl
         }),
         signal
@@ -57,12 +49,7 @@ export const useChat = () => {
         partialResponse += textDecoder.decode(value);
 
         setMessages(prev => {
-          const assistantMessage = {
-            id: Date.now().toString(),
-            role: 'assistant',
-            content: partialResponse,
-            timestamp: new Date()
-          };
+          const assistantMessage = createAssistantMessage(partialResponse);
           const existingAssistantMessageIndex = prev.findIndex(m => m.role === 'assistant' && m.id === assistantMessage.id);
           if (existingAssistantMessageIndex > -1) {
             return prev.map((m, index) => index === existingAssistantMessageIndex ? assistantMessage : m);
