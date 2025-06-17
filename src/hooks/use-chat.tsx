@@ -39,6 +39,7 @@ export const useChat = () => {
       }
 
       let partialResponse = "";
+      let assistantMessageId = Date.now().toString();
 
       while (true) {
         const { done, value } = await reader.read();
@@ -49,12 +50,18 @@ export const useChat = () => {
         partialResponse += textDecoder.decode(value);
 
         setMessages(prev => {
-          const assistantMessage = createAssistantMessage(partialResponse);
-          const existingAssistantMessageIndex = prev.findIndex(m => m.role === 'assistant' && m.id === assistantMessage.id);
+          const assistantMessage = {
+            id: assistantMessageId,
+            role: 'assistant' as const,
+            content: partialResponse,
+            timestamp: new Date()
+          };
+          
+          const existingAssistantMessageIndex = prev.findIndex(m => m.role === 'assistant' && m.id === assistantMessageId);
           if (existingAssistantMessageIndex > -1) {
             return prev.map((m, index) => index === existingAssistantMessageIndex ? assistantMessage : m);
           } else {
-            return [...prev.filter(m => m.role !== 'assistant'), assistantMessage];
+            return [...prev.filter(m => !(m.role === 'assistant' && m.id === assistantMessageId)), assistantMessage];
           }
         });
       }

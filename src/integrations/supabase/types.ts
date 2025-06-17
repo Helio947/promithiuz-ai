@@ -9,6 +9,120 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      activities: {
+        Row: {
+          contact_id: string
+          created_at: string
+          date: string
+          deal_id: string | null
+          description: string | null
+          id: string
+          type: Database["public"]["Enums"]["activity_type"]
+          user_id: string
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          date: string
+          deal_id?: string | null
+          description?: string | null
+          id?: string
+          type: Database["public"]["Enums"]["activity_type"]
+          user_id: string
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          date?: string
+          deal_id?: string | null
+          description?: string | null
+          id?: string
+          type?: Database["public"]["Enums"]["activity_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean
+          name: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          id: string
+          last_contacted: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          status: Database["public"]["Enums"]["contact_status"] | null
+          tags: string[] | null
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contacted?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["contact_status"] | null
+          tags?: string[] | null
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          last_contacted?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          status?: Database["public"]["Enums"]["contact_status"] | null
+          tags?: string[] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       dating_profiles: {
         Row: {
           bio: string | null
@@ -42,6 +156,84 @@ export type Database = {
           looking_for?: Database["public"]["Enums"]["relationship_preference"]
           occupation?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      deals: {
+        Row: {
+          close_date: string | null
+          contact_id: string
+          created_at: string
+          id: string
+          notes: string | null
+          pipeline_id: string
+          stage: Database["public"]["Enums"]["deal_stage"]
+          status: Database["public"]["Enums"]["deal_status"]
+          title: string
+          user_id: string
+          value: number | null
+        }
+        Insert: {
+          close_date?: string | null
+          contact_id: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pipeline_id: string
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          title: string
+          user_id: string
+          value?: number | null
+        }
+        Update: {
+          close_date?: string | null
+          contact_id?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          pipeline_id?: string
+          stage?: Database["public"]["Enums"]["deal_stage"]
+          status?: Database["public"]["Enums"]["deal_status"]
+          title?: string
+          user_id?: string
+          value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_pipeline_id_fkey"
+            columns: ["pipeline_id"]
+            isOneToOne: false
+            referencedRelation: "pipelines"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pipelines: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -140,6 +332,45 @@ export type Database = {
           },
         ]
       }
+      transactions: {
+        Row: {
+          amount: number
+          category_name: string
+          created_at: string
+          description: string | null
+          id: string
+          receipt_url: string | null
+          transaction_date: string
+          type: string
+          user_id: string
+          vendor: string
+        }
+        Insert: {
+          amount: number
+          category_name: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          receipt_url?: string | null
+          transaction_date: string
+          type: string
+          user_id: string
+          vendor: string
+        }
+        Update: {
+          amount?: number
+          category_name?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          receipt_url?: string | null
+          transaction_date?: string
+          type?: string
+          user_id?: string
+          vendor?: string
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           completed: boolean | null
@@ -178,6 +409,15 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      activity_type: "call" | "email" | "meeting" | "task"
+      contact_status: "lead" | "prospect" | "client"
+      deal_stage:
+        | "New"
+        | "Qualified"
+        | "Proposal"
+        | "Closed Won"
+        | "Closed Lost"
+      deal_status: "open" | "won" | "lost"
       relationship_preference:
         | "romantic"
         | "friendship"
@@ -298,6 +538,10 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      activity_type: ["call", "email", "meeting", "task"],
+      contact_status: ["lead", "prospect", "client"],
+      deal_stage: ["New", "Qualified", "Proposal", "Closed Won", "Closed Lost"],
+      deal_status: ["open", "won", "lost"],
       relationship_preference: [
         "romantic",
         "friendship",
